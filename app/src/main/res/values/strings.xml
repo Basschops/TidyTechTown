@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">TidyTechTowns</string>
+    <!--Welcome Page Strings-->
+    <string name="welcome">Welcome to Tidy Tech Towns</string>
+    <string name="codeError">That code is incorrect, please try again. If you need to contact someone about your community code, please click here</string>
+    <string name="Signup">SignUp</string>
+    <string name="signUpHeading">Register a Community</string>
+    <string name="join">Join a Community</string>
+    <string name="joinCom">To join a community, please enter the unique code</string>
+    <string name="enterApp">Use independent of a Community</string>
+    <string name="enter">Enter</string>
+    <string name="JJjoin"> Join</string>
+    <string name="title_activity_maps">Map</string>
+
+    <!--Registration Page Strings-->
+    <string name = "regMe">Register</string>
+    <string name="regHeading"> Register Your Community </string>
+    <string name="comName"> Community Name</string>
+    <string name="townName"> Town</string>
+    <string name="county"> County</string>
+    <string name="Registrar"> Registrar Details</string>
+    <string name="fname"> First name</string>
+    <string name="sname"> Second name</string>
+
+    <!--ShowRandomCode Strings-->
+    <string name="thankYou">Thank you for registering your Community</string>
+    <string name="description">To have others join and contribute to your community, please distribute this unique community code. The other members of your community can use thos unique string on the login page under "Join a Community"</string>
+
+    <string name="yourRank"> Your Rankings </string>
+    <string name="commRank"> Community Rankings </string>
+
+
+</resources>
