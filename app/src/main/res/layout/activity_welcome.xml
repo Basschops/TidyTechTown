@@ -10,7 +10,7 @@
     <TextView
         android:id="@+id/textView"
         android:layout_width="278dp"
-        android:layout_height="87dp"
+        android:layout_height="0dp"
         android:layout_marginTop="48dp"
         android:text="@string/welcome"
         android:textSize="20sp"
@@ -22,69 +22,100 @@
 
     <Button
         android:id="@+id/btn_start_scores"
-        android:layout_width="212dp"
-        android:layout_height="49dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="75dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="424dp"
         android:onClick="startScores"
         android:text="Get yer scores"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
     <Button
         android:id="@+id/btn_start_events"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/btn_start_scores"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="340dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="24dp"
         android:onClick="startEventCalendar"
         android:text="See exciting eco events"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/btn_start_scores"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
     <Button
         android:id="@+id/mapEnterBtn"
-        android:layout_width="195dp"
-        android:layout_height="51dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="268dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="24dp"
         android:text="Maps"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/btn_start_events"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/carbonEnterBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
+        android:layout_marginStart="24dp"
         android:text="carbon calculator"
         app:layout_constraintBottom_toTopOf="@+id/mapEnterBtn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/allotEnterBtn" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/allotEnterBtn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
         android:text="Allotment"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/carbonEnterBtn"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/voteEnterBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:text="Voting"
+        app:layout_constraintBottom_toTopOf="@+id/carbonEnterBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/allotEnterBtn"
-        tools:layout_editor_absoluteY="157dp" />
+        app:layout_constraintHorizontal_bias="0.113"
+        app:layout_constraintStart_toEndOf="@+id/allotEnterBtn" />
+
+    <Button
+        android:id="@+id/mapInfo"
+        android:layout_width="145sp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:onClick="binButton"
+        android:text="MapMarkerInfo"
+        app:layout_constraintBottom_toTopOf="@+id/CommunityInfo"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/CommunityInfo"
+        android:layout_width="145sp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="CommunityInfo"
+        app:layout_constraintBottom_toTopOf="@+id/RecycleInfo"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/RecycleInfo"
+        android:layout_width="145sp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="75dp"
+        android:layout_marginEnd="8dp"
+        android:text="RCenterInfo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </android.support.constraint.ConstraintLayout>

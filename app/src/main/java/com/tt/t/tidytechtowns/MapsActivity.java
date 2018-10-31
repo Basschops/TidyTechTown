@@ -1,9 +1,11 @@
 package com.tt.t.tidytechtowns;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -37,6 +39,8 @@ import java.util.Map;
         private LocationListener locationListener;
         private LatLng currentLocation;
         private Button gpsbutton;
+        private MyDatabase db;
+        private Cursor bins;
 
         public void addBin(LatLng latlng) {
 
@@ -51,13 +55,15 @@ import java.util.Map;
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.map);
             mapFragment.getMapAsync(this);
+            db = new MyDatabase(this);
+            bins = db.getBins();
 
             Button binShow = (Button) findViewById(R.id.binBtn);
             binShow.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick (View view){
                     if (!showing) {
-                        LatLng bin1 = new LatLng(53, -6);
+                        LatLng bin1 = new LatLng(bins.getDouble(2), bins.getDouble(3));
                         bin = mMap.addMarker(new MarkerOptions().position(bin1).title("This is a BIN!").draggable(true));
                         Button button = (Button) findViewById(R.id.binBtn);
                         button.setText("Hide bins");
@@ -124,6 +130,7 @@ import java.util.Map;
             }
             // this code won't execute IF permissions are not allowed, because in the line above there is return statement.
             gpsbutton.setOnClickListener(new View.OnClickListener() {
+                @SuppressLint("MissingPermission")
                 @Override
                 public void onClick(View view) {
                     //noinspection MissingPermission
