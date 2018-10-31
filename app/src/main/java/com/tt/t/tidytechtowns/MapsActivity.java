@@ -13,7 +13,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -34,6 +36,9 @@ import java.util.Map;
         private LocationManager locationManager;
         private LocationListener locationListener;
 
+        private ListView mDrawerList;
+        private ArrayAdapter<String> mAdapter;
+
         public void addBin(LatLng latlng) {
 
         }
@@ -47,6 +52,10 @@ import java.util.Map;
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.map);
             mapFragment.getMapAsync(this);
+
+            mDrawerList = (ListView)findViewById(R.id.navList);
+            addDrawerItems();
+
 
 //        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 //        locationListener = new LocationListener() {
@@ -158,6 +167,12 @@ import java.util.Map;
             mMap.addMarker(new MarkerOptions().position(bin1).title("This is a BIN!"));
         }
 
+        private void addDrawerItems() {
+            String[] osArray = { "Carbon calculator", "Join", "My rankings", "Town rankings", "Maps"};
+            mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
+            mDrawerList.setAdapter(mAdapter);
+        }
 
 
-    }
+
+    } // end class

@@ -4,15 +4,25 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 
 public class ScoresActivity extends AppCompatActivity {
+
+    private ListView mDrawerList2;
+    private ArrayAdapter<String> mAdapter2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scores);
+
+        mDrawerList2 = (ListView)findViewById(R.id.navList);
+        addDrawerItems();
+
+
     }
 
 
@@ -38,4 +48,11 @@ public class ScoresActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-}
+    private void addDrawerItems() {
+        String[] osArray = { "Carbon calculator", "Join", "My rankings", "Town rankings", "Maps"};
+        mAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
+        mDrawerList2.setAdapter(mAdapter2);
+    }
+
+
+} // end class
