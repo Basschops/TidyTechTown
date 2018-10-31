@@ -30,6 +30,14 @@ public class Welcome extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void startCarbonFootPrintCalculator(View v) {
+        Intent intent = new Intent(Welcome.this, CarbonFootprint.class);
+        startActivity(intent);
+    }
+
+
+
+
 
     public void startEventCalendar(View v) {
         Intent intent = new Intent(Welcome.this, EventActivity.class);

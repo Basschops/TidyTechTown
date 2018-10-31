@@ -13,7 +13,7 @@
     <string name="title_activity_maps">Map</string>
 
     <!--Registration Page Strings-->
-    <string name = "regMe">Register</string>
+    <string name="regMe">Register</string>
     <string name="regHeading"> Register Your Community </string>
     <string name="comName"> Community Name</string>
     <string name="townName"> Town</string>
