@@ -1,22 +1,15 @@
 package com.tt.t.tidytechtowns;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Looper;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -38,15 +31,12 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, proximityDialog.mapDialogListener {
 
     private GoogleMap mMap;
     private boolean showing = false;
@@ -56,6 +46,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LatLng currentLocation;
     private Button gpsbutton;
+    private boolean proximity = true;
 
 
     private LocationRequest mLocationRequest;
@@ -104,14 +95,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
              @Override
              public void onClick(View view) {
 
-                 final boolean[] proximity = {true};
+                 //final boolean[] proximity = {true};
                  if (currentLocation==null){
                      Toast.makeText(getApplicationContext(), "Acquiring locaiton ... Please try again", Toast.LENGTH_SHORT).show();
 
                  }
                  else {
                      final LatLng you = new LatLng(currentLocation.latitude, currentLocation.longitude);
-                     markerDialogFragment box = new markerDialogFragment();
+                     //markerDialogFragment box = new markerDialogFragment();
                      // Check if location is by existing marker
                      for (Marker marker : mMarkerArray) {
 
@@ -124,34 +115,52 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                          loc2.setLongitude(you.longitude);
 
                          if (loc1.distanceTo(loc2) < 20) {
-                             Toast toast = Toast.makeText(getApplicationContext(), "You are too near.", Toast.LENGTH_SHORT);
-                             toast.show();
-                             // Code to check if user wants to place another here.
-//                            box.show();
+
+                             // Dialog to check if user wants to proceed
                             openDialog();
-
-
+                            // If close to one that is enough to break
                             break;
-
-
                          }
                      }
-                     if (proximity[0]) {
+
+                     Toast.makeText(getApplicationContext(), "Addingmarker"+proximity, Toast.LENGTH_SHORT).show();
+                     if (proximity) {
+                         addMarker(you);
+                     }
+                     /*
                          String msg1 = currentLocation.longitude + " " + currentLocation.latitude;
                          Toast.makeText(getApplicationContext(), msg1, Toast.LENGTH_SHORT).show();
                          Marker marker = mMap.addMarker(new MarkerOptions().position(you).title("Yep, you!").icon(BitmapDescriptorFactory
                                  .defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
                          mMarkerArray.add(marker);
-                     }
+                     }*/
                  }
 
              }
          });
     }
 
+    public void addMarker(LatLng latlon){
+        Marker marker = mMap.addMarker(new MarkerOptions().position(latlon).title("Yep, you!").icon(BitmapDescriptorFactory
+                .defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+        mMarkerArray.add(marker);
+    }
+
     public void openDialog(){
         proximityDialog box = new proximityDialog();
         box.show(getSupportFragmentManager(), "Proximity check");
+    }
+
+    @Override
+    public void proximityPositiveClick(proximityDialog dialog) {
+        proximity = true;
+        Toast.makeText(getApplicationContext(), "Pressed OK"+proximity, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void proximityNegativeClick(proximityDialog dialog) {
+        proximity = false;
+        Toast.makeText(getApplicationContext(), "Pressed cancel"+proximity, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -182,35 +191,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Looper.myLooper());
     }
 
-    // Adapted from https://developer.android.com/guide/topics/ui/dialogs
 
-    public static class markerDialogFragment extends DialogFragment {
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstantState) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage("Close to other bin so you want to proceed")
-                    .
 
-                            setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    //proximity[0] = true;
-                                    //Toast.makeText(this, "You pressed OK", Toast.LENGTH_SHORT).show();
-                                    //addNewMarker(you);
-                                }
-                            })
-                    .
-
-                            setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    //proximity[0] = false;
-                                }
-                            });
-
-            return builder.create();
-
-        }
-
-    }
 
 
 
