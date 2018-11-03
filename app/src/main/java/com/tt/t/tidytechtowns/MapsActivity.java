@@ -2,6 +2,8 @@ package com.tt.t.tidytechtowns;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -58,7 +60,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private LocationRequest mLocationRequest;
     private long UPDATE_INTERVAL = 10 * 1000;  /* 10 secs */
-    private long FASTEST_INTERVAL = 2000; /* 2 sec */
+    private long FASTEST_INTERVAL = 5000; /* 5 sec */
 
 
     private ArrayList<Marker> mMarkerArray = new ArrayList<Marker>();
@@ -73,6 +75,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        // Set up function with button to display bins on map
         Button binShow = (Button) findViewById(R.id.binBtn);
         binShow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,25 +104,61 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
              @Override
              public void onClick(View view) {
 
+                 final boolean[] proximity = {true};
                  if (currentLocation==null){
-                     Toast.makeText(getApplicationContext(), "Null", Toast.LENGTH_SHORT).show();
+                     Toast.makeText(getApplicationContext(), "Acquiring locaiton ... Please try again", Toast.LENGTH_SHORT).show();
 
                  }
                  else {
-                     String msg1 = "LL" + Double.toString(currentLocation.latitude);
-                     Toast.makeText(getApplicationContext(), msg1, Toast.LENGTH_SHORT).show();
+                     final LatLng you = new LatLng(currentLocation.latitude, currentLocation.longitude);
+                     markerDialogFragment box = new markerDialogFragment();
+                     // Check if location is by existing marker
+                     for (Marker marker : mMarkerArray) {
+
+                         Location loc1 = new Location("");
+                         loc1.setLatitude(marker.getPosition().latitude);
+                         loc1.setLongitude(marker.getPosition().longitude);
+
+                         Location loc2 = new Location("");
+                         loc2.setLatitude(you.latitude);
+                         loc2.setLongitude(you.longitude);
+
+                         if (loc1.distanceTo(loc2) < 20) {
+                             Toast toast = Toast.makeText(getApplicationContext(), "You are too near.", Toast.LENGTH_SHORT);
+                             toast.show();
+                             // Code to check if user wants to place another here.
+//                            box.show();
+                            openDialog();
+
+
+                            break;
+
+
+                         }
+                     }
+                     if (proximity[0]) {
+                         String msg1 = currentLocation.longitude + " " + currentLocation.latitude;
+                         Toast.makeText(getApplicationContext(), msg1, Toast.LENGTH_SHORT).show();
+                         Marker marker = mMap.addMarker(new MarkerOptions().position(you).title("Yep, you!").icon(BitmapDescriptorFactory
+                                 .defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                         mMarkerArray.add(marker);
+                     }
                  }
 
              }
          });
     }
 
+    public void openDialog(){
+        proximityDialog box = new proximityDialog();
+        box.show(getSupportFragmentManager(), "Proximity check");
+    }
+
 
     // Location request adapted from https://github.com/codepath/android_guides/wiki/Retrieving-Location-with-LocationServices-API
     protected void startLocationUpdates() {
-
+        // Test message to see if location is updating
         Toast.makeText(getApplicationContext(), "updates", Toast.LENGTH_SHORT).show();
-
 
         mLocationRequest = new LocationRequest();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -134,18 +173,43 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         settingsClient.checkLocationSettings(locationSettingsRequest);
 
         getFusedLocationProviderClient(this).requestLocationUpdates(mLocationRequest, new LocationCallback(){
-
+            // Change stored location when location changes
             @Override
             public void onLocationResult (LocationResult locationResult){
-
-
             onLocationChanged(locationResult.getLastLocation());
-            String msg = "string";
-            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-
             }
         },
         Looper.myLooper());
+    }
+
+    // Adapted from https://developer.android.com/guide/topics/ui/dialogs
+
+    public static class markerDialogFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstantState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("Close to other bin so you want to proceed")
+                    .
+
+                            setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    //proximity[0] = true;
+                                    //Toast.makeText(this, "You pressed OK", Toast.LENGTH_SHORT).show();
+                                    //addNewMarker(you);
+                                }
+                            })
+                    .
+
+                            setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    //proximity[0] = false;
+                                }
+                            });
+
+            return builder.create();
+
+        }
+
     }
 
 
@@ -171,87 +235,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String msg = "Updated Location: " +
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         // You can now create a LatLng Object for use with maps
         currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-    @Override
-        public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-            switch (requestCode) {
-                case 10:
-                    configureButton();
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        public void addNewMarker(LatLng location) {
-            Marker marker = mMap.addMarker(new MarkerOptions().position(location).title("Yep, you!").icon(BitmapDescriptorFactory
-                    .defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-            mMarkerArray.add(marker);
-        }
-
-        void configureButton() {
-            // first check for permissions
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET}
-                            , 10);
-                }
-                locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
-
-                return;
-            }
-            // this code won't execute IF permissions are not allowed, because in the line above there is return statement.
-            gpsbutton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String msg1 = "LL"+Double.toString(currentLocation.latitude);
-                    Toast.makeText(getApplicationContext(), msg1 , Toast.LENGTH_SHORT).show();
-
-                }
-            });
-        }
-
-
-
-       /* public void onLocationChanged(Location location) {
-            // New location has now been determined
-            String msg = "Updated Location: " +
-                    Double.toString(location.getLatitude()) + "," +
-                    Double.toString(location.getLongitude());
-            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-            // You can now create a LatLng Object for use with maps
-            currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-        }
-
-    }*/
