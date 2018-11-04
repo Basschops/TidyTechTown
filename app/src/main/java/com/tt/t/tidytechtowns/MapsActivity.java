@@ -98,7 +98,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                  //final boolean[] proximity = {true};
                  if (currentLocation==null){
                      Toast.makeText(getApplicationContext(), "Acquiring locaiton ... Please try again", Toast.LENGTH_SHORT).show();
-
+                    return;
                  }
                  else {
                      final LatLng you = new LatLng(currentLocation.latitude, currentLocation.longitude);
@@ -118,6 +118,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                              // Dialog to check if user wants to proceed
                             openDialog();
+
+                            // for some reason does not proceed past here until function is called again...
+
                             // If close to one that is enough to break
                             break;
                          }
