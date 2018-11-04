@@ -41,19 +41,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private boolean showing = false;
     private Marker bin;
-    private LocationManager locationManager;
-    private LocationListener locationListener;
-    private FusedLocationProviderClient fusedLocationProviderClient;
     private LatLng currentLocation;
     private Button gpsbutton;
     private boolean proximity = true;
-
-
     private LocationRequest mLocationRequest;
     private long UPDATE_INTERVAL = 10 * 1000;  /* 10 secs */
     private long FASTEST_INTERVAL = 5000; /* 5 sec */
-
-
     private ArrayList<Marker> mMarkerArray = new ArrayList<Marker>();
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -90,6 +83,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         startLocationUpdates();
 
+        // Function to add marker to map
         gpsbutton = (Button) findViewById(R.id.GPS);
         gpsbutton.setOnClickListener(new View.OnClickListener() {
              @Override
@@ -130,36 +124,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                      if (proximity) {
                          addMarker(you);
                      }
-                     /*
-                         String msg1 = currentLocation.longitude + " " + currentLocation.latitude;
-                         Toast.makeText(getApplicationContext(), msg1, Toast.LENGTH_SHORT).show();
-                         Marker marker = mMap.addMarker(new MarkerOptions().position(you).title("Yep, you!").icon(BitmapDescriptorFactory
-                                 .defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-                         mMarkerArray.add(marker);
-                     }*/
                  }
 
              }
          });
     }
 
+    /**
+     * Add marker to map at location latlon
+     * @param latlon
+     */
     public void addMarker(LatLng latlon){
         Marker marker = mMap.addMarker(new MarkerOptions().position(latlon).title("Yep, you!").icon(BitmapDescriptorFactory
                 .defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
         mMarkerArray.add(marker);
     }
 
+
+    // opens dialog box if location is near an existing marker
     public void openDialog(){
         proximityDialog box = new proximityDialog();
         box.show(getSupportFragmentManager(), "Proximity check");
     }
 
+    // uses interface to dialog box positive button
     @Override
     public void proximityPositiveClick(proximityDialog dialog) {
         proximity = true;
         Toast.makeText(getApplicationContext(), "Pressed OK"+proximity, Toast.LENGTH_SHORT).show();
     }
 
+    // uses interface to dialog box positive button
     @Override
     public void proximityNegativeClick(proximityDialog dialog) {
         proximity = false;
@@ -194,18 +189,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Looper.myLooper());
     }
 
-
-
-
-
-
+    // set up google map
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
         LatLng dublin = new LatLng(53.3498, -6.2603);
-        mMap.addMarker(new MarkerOptions().position(dublin).title("This is Dublin!"));
+        //mMap.addMarker(new MarkerOptions().position(dublin).title("This is Dublin!"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(dublin, 10));
 
     }
