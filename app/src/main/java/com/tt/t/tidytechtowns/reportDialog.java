@@ -50,13 +50,15 @@ public class reportDialog extends AppCompatDialogFragment {
                         String[] array = getResources().getStringArray(R.array.report);
                         resp.add(0, array[i]);
                     }
-                }).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                })
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 String r = (String) resp.get(0);
                 mListener.reportPositiveClick(reportDialog.this, r);
             }
-        }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+        })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 mListener.reportNegativeClick(reportDialog.this);

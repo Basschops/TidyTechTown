@@ -53,12 +53,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Marker bin;
     private LatLng currentLocation;
     // private Button gpsbutton;
-    private Button reportIssue;
+    //private Button reportIssue;
     private boolean proximity = true;
     private LocationRequest mLocationRequest;
     private long UPDATE_INTERVAL = 10 * 1000;  /* 10 secs */
     private long FASTEST_INTERVAL = 5000; /* 5 sec */
     private ArrayList<Marker> mMarkerArray = new ArrayList<Marker>();
+    private ArrayList<Marker> mLitterArray = new ArrayList<Marker>();
+    private ArrayList<Marker> mDumpingArray = new ArrayList<Marker>();
+    private ArrayList<Marker> mSpillArray = new ArrayList<Marker>();
+    private ArrayList<Marker> mGraffitiArray = new ArrayList<Marker>();
+
+
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
     private boolean gpsAcquired = false;
 
@@ -96,79 +102,65 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         startLocationUpdates();
-
-        //reportIssue = (Button) findViewById(R.id.reportBtn);
-
-        // Function to add marker to map
-
-        // NEED TO MAKE THIS A FUNCTION AND LINK THROUGH activity_maps2.xml
-        Button gpsbutton = (Button) findViewById(R.id.GPS);
-        gpsbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), " " + gpsAcquired, Toast.LENGTH_SHORT).show();
-
-                if (!gpsAcquired) {
-                    startLocationUpdates();
-                }
-
-                //final boolean[] proximity = {true};
-                if (currentLocation == null) {
-                    Toast.makeText(getApplicationContext(), "Acquiring locaiton ... Please try again", Toast.LENGTH_SHORT).show();
-                    return;
-                } else {
-                    final LatLng you = new LatLng(currentLocation.latitude, currentLocation.longitude);
-                    //markerDialogFragment box = new markerDialogFragment();
-                    // Check if location is by existing marker
-                    for (Marker marker : mMarkerArray) {
-
-                        Location loc1 = new Location("");
-                        loc1.setLatitude(marker.getPosition().latitude);
-                        loc1.setLongitude(marker.getPosition().longitude);
-
-                        Location loc2 = new Location("");
-                        loc2.setLatitude(you.latitude);
-                        loc2.setLongitude(you.longitude);
-
-                        if (loc1.distanceTo(loc2) < 20) {
-
-                            // Dialog to check if user wants to proceed
-                            openBinDialog();
-
-                            // for some reason does not proceed past here until function is called again...
-
-                            // If close to one that is enough to break
-                            break;
-                        }
-                    }
-
-                    Toast.makeText(getApplicationContext(), "Addingmarker" + proximity, Toast.LENGTH_SHORT).show();
-                    if (proximity) {
-                        addMarker(you);
-                    }
-                }
-
-            }
-        });
     }
 
     public void reportIssue(View view) {
-        Toast.makeText(getApplicationContext(), " " + gpsAcquired, Toast.LENGTH_SHORT).show();
+        // If no GPS try to change settings
         if (!gpsAcquired) {
             startLocationUpdates();
         }
-
         if (currentLocation == null) {
-            Toast.makeText(getApplicationContext(), "Acquiring locaiton ... Please try again", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Acquiring location ... Please try again", Toast.LENGTH_SHORT).show();
             return;
         } else {
             openReportDialog();
-
                 }
+        }
+
+    public void addBinMarker(View view){
+        // If no GPS try to change settings
+        if (!gpsAcquired) {
+            startLocationUpdates();
+        }
+        if (currentLocation == null) {
+            Toast.makeText(getApplicationContext(), "Acquiring locaiton ... Please try again", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else {
+            LatLng you = new LatLng(currentLocation.latitude, currentLocation.longitude);
+            // Check if location is by existing marker
+            boolean near;
+            near = checkProximity(you, mMarkerArray);
+            if(near) {
+                openBinDialog();
             }
+            else{addMarker(you);}
+           // if (proximity) {
+            //    addMarker(you);
+           // }
+        }
+    }
 
+    public boolean checkProximity(LatLng position, ArrayList<Marker> markerList){
+         boolean near = false;
+        for (Marker marker : markerList) {
 
+            Location loc1 = new Location("");
+            loc1.setLatitude(marker.getPosition().latitude);
+            loc1.setLongitude(marker.getPosition().longitude);
 
+            Location loc2 = new Location("");
+            loc2.setLatitude(position.latitude);
+            loc2.setLongitude(position.longitude);
+
+            if (loc1.distanceTo(loc2) < 50) {
+                near = true;
+                // If close to one that is enough to break
+                break;
+            }
+        }
+        return near;
+    }
 
     /**
      * Add marker to map at location latlon
@@ -176,7 +168,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     public void addMarker(LatLng latlon) {
         Marker marker = mMap.addMarker(new MarkerOptions().position(latlon).title("Yep, you!").icon(BitmapDescriptorFactory
-                .defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                .defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         mMarkerArray.add(marker);
     }
 
@@ -281,11 +273,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    public void showBin() {
-        LatLng bin1 = new LatLng(53, 6);
-        mMap.addMarker(new MarkerOptions().position(bin1).title("This is a BIN!"));
-    }
-
     // Function that stores new location on update
     public void onLocationChanged(Location location) {
         currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
@@ -302,6 +289,55 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public String reportPositiveClick(reportDialog dialog, String result) {
         Toast.makeText(getApplicationContext(), "Processed " + result, Toast.LENGTH_SHORT).show();
+
+        LatLng you = new LatLng(currentLocation.latitude, currentLocation.longitude);
+        Marker marker;
+        boolean near;
+        proximity = true;
+        switch(result){
+            case "Litter":  near = checkProximity(you, mLitterArray);
+                    if(near){
+                        openBinDialog();
+                    }
+                    if(proximity){
+                        marker = mMap.addMarker(new MarkerOptions().position(you).title(result).icon(BitmapDescriptorFactory
+                                .defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+                        mLitterArray.add(marker);
+                    }
+                break;
+            case "Dumping": near = checkProximity(you, mDumpingArray);
+                if(near){
+                    openBinDialog();
+                }
+                if(proximity) {
+                    marker = mMap.addMarker(new MarkerOptions().position(you).title(result).icon(BitmapDescriptorFactory
+                            .defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                    mDumpingArray.add(marker);
+                }
+                break;
+            case "Graffiti":  near = checkProximity(you, mGraffitiArray);
+                if(near){
+                    openBinDialog();
+                }
+                if(proximity) {
+                    marker = mMap.addMarker(new MarkerOptions().position(you).title(result).icon(BitmapDescriptorFactory
+                            .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                    mGraffitiArray.add(marker);
+                }
+                break;
+            case "Chemical spill":  near = checkProximity(you, mSpillArray);
+                if(near){
+                    openBinDialog();
+                }
+                if(proximity) {
+                    marker = mMap.addMarker(new MarkerOptions().position(you).title(result).icon(BitmapDescriptorFactory
+                            .defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+                    mSpillArray.add(marker);
+                }
+                break;
+        }
+
+
         return result;
     }
 

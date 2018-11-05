@@ -34,7 +34,7 @@ public class proximityDialog extends AppCompatDialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.map_dialog, null);
 
-        builder.setView(view).setTitle("Bins near here!")
+        builder.setView(view).setTitle("Already one in this area!")
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
