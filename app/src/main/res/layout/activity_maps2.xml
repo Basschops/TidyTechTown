@@ -34,10 +34,24 @@
             android:text="Show recycling" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/GPS"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="GPS" />
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/GPS"
+            android:layout_width="175dp"
+            android:layout_height="wrap_content"
+            android:text="Add bin" />
+
+        <Button
+            android:id="@+id/reportBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="reportIssue"
+            android:text="Report issue" />
+    </LinearLayout>
 
 </LinearLayout>
