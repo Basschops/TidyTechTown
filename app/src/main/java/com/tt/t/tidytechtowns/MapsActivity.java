@@ -46,7 +46,7 @@ import java.util.ArrayList;
 
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, proximityDialog.mapDialogListener {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, proximityDialog.mapDialogListener, reportDialog.reportDialogListener {
 
     private GoogleMap mMap;
     private boolean showing = false;
@@ -162,32 +162,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Toast.makeText(getApplicationContext(), "Acquiring locaiton ... Please try again", Toast.LENGTH_SHORT).show();
             return;
         } else {
-            final LatLng you = new LatLng(currentLocation.latitude, currentLocation.longitude);
-            //markerDialogFragment box = new markerDialogFragment();
-            // Check if location is by existing marker
-            for (Marker marker : mMarkerArray) {
+            openReportDialog();
 
-                Location loc1 = new Location("");
-                loc1.setLatitude(marker.getPosition().latitude);
-                loc1.setLongitude(marker.getPosition().longitude);
-
-                Location loc2 = new Location("");
-                loc2.setLatitude(you.latitude);
-                loc2.setLongitude(you.longitude);
-
-                if (loc1.distanceTo(loc2) < 20) {
-
-                    // Dialog to check if user wants to proceed
-                    openReportDialog();
-
-                    // for some reason does not proceed past here until function is called again...
-
-                    // If close to one that is enough to break
-                    break;
                 }
             }
-        }
-    }
+
+
 
 
     /**
@@ -207,23 +187,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         box.show(getSupportFragmentManager(), "Proximity check");
     }
 
-    public void openReportDialog() {
-        reportDialog box = new reportDialog();
-        box.show(getSupportFragmentManager(), "Proximity check");
-    }
-
     // uses interface to dialog box positive button
     @Override
     public void proximityPositiveClick(proximityDialog dialog) {
         proximity = true;
-        Toast.makeText(getApplicationContext(), "Pressed OK" + proximity, Toast.LENGTH_SHORT).show();
     }
 
     // uses interface to dialog box positive button
     @Override
     public void proximityNegativeClick(proximityDialog dialog) {
         proximity = false;
-        Toast.makeText(getApplicationContext(), "Pressed cancel" + proximity, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -316,6 +289,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // Function that stores new location on update
     public void onLocationChanged(Location location) {
         currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+    }
+
+    // Show dialog for reporting problems in the area
+    public void openReportDialog() {
+        // Create an instance of the dialog fragment and show it
+        reportDialog dialog = new reportDialog();
+        dialog.show(getSupportFragmentManager(), "reportDialog");
+    }
+
+
+    @Override
+    public String reportPositiveClick(reportDialog dialog, String result) {
+        Toast.makeText(getApplicationContext(), "Processed " + result, Toast.LENGTH_SHORT).show();
+        return result;
+    }
+
+    @Override
+    public void reportNegativeClick(reportDialog dialog) {
+        return;
     }
 
 }
