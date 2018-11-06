@@ -29,5 +29,19 @@
     <string name="yourRank"> Your Rankings </string>
     <string name="commRank"> Community Rankings </string>
 
+    <!--Dialog strings-->
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="reoprtHideTitle">Show/hide reports</string>
+    <string name="reoprtTitle">What are you reporting?</string>
+
+
+    <string-array name="report">
+        <item>Litter</item>
+        <item>Dumping</item>
+        <item>Graffiti</item>
+        <item>Chemical spill</item>
+    </string-array>
+
 
 </resources>

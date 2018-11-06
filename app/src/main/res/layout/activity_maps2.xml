@@ -8,6 +8,7 @@
 
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="16dp"
@@ -25,13 +26,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/binBtn"
             android:layout_width="174dp"
             android:layout_height="wrap_content"
+            android:onClick="showBins"
             android:text="Show bins" />
 
         <Button
@@ -40,6 +42,35 @@
             android:layout_height="wrap_content"
             android:text="Show recycling" />
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/reportBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="reportIssue"
+            android:text="Report issue" />
+
+        <Button
+            android:id="@+id/addBinBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Add Bin"
+            android:onClick="addBinMarker"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/showHideReportBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="openShowReportDialog"
+        android:text="Show/Hide Reports" />
 
 </LinearLayout>
 
