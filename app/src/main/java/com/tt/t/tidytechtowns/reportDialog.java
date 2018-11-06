@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class reportDialog extends AppCompatDialogFragment {
 
     public interface reportDialogListener {
-        String reportPositiveClick(reportDialog dialog, String response);
+        void reportPositiveClick(reportDialog dialog, String response);
         void reportNegativeClick(reportDialog dialog);
     }
 

@@ -46,15 +46,13 @@ import java.util.ArrayList;
 
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, proximityDialog.mapDialogListener, reportDialog.reportDialogListener {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, proximityDialog.mapDialogListener, reportDialog.reportDialogListener
+, reportNearbyDialog.mapDialogListener {
 
     private GoogleMap mMap;
     private boolean showing = false;
-    private Marker bin;
-    private LatLng currentLocation;
-    // private Button gpsbutton;
-    //private Button reportIssue;
-    private boolean proximity = true;
+    //private Marker bin;
+    private static LatLng currentLocation;
     private LocationRequest mLocationRequest;
     private long UPDATE_INTERVAL = 10 * 1000;  /* 10 secs */
     private long FASTEST_INTERVAL = 5000; /* 5 sec */
@@ -80,7 +78,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         // Set up function with button to display bins on map
-        Button binShow = (Button) findViewById(R.id.binBtn);
+        /*Button binShow = (Button) findViewById(R.id.binBtn);
         binShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,12 +96,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     showing = false;
                 }
             }
-        });
+        }); */
 
 
         startLocationUpdates();
     }
 
+    public void showBins(View view){
+        Toast.makeText(getApplicationContext(), "Show/hide"+showing, Toast.LENGTH_SHORT).show();
+        Button button = (Button) findViewById(R.id.binBtn);
+        if(showing) {
+            for (Marker marker : mMarkerArray) {
+                marker.setVisible(false);
+                button.setText("Show bins");
+                showing = false;
+            }
+        }
+        else{
+            for(Marker marker: mMarkerArray){
+                marker.setVisible(true);
+                button.setText("Hide bins");
+                showing = true;
+            }
+        }
+    }
+
+    // Report issue button function
     public void reportIssue(View view) {
         // If no GPS try to change settings
         if (!gpsAcquired) {
@@ -127,14 +145,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         }
         else {
-            LatLng you = new LatLng(currentLocation.latitude, currentLocation.longitude);
+            //LatLng you = new LatLng(currentLocation.latitude, currentLocation.longitude);
             // Check if location is by existing marker
             boolean near;
-            near = checkProximity(you, mMarkerArray);
+            near = checkProximity(currentLocation, mMarkerArray);
             if(near) {
                 openBinDialog();
             }
-            else{addMarker(you);}
+            else{addMarker(currentLocation);}
            // if (proximity) {
             //    addMarker(you);
            // }
@@ -170,6 +188,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Marker marker = mMap.addMarker(new MarkerOptions().position(latlon).title("Yep, you!").icon(BitmapDescriptorFactory
                 .defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         mMarkerArray.add(marker);
+        Toast.makeText(getApplicationContext(), " "+ mMarkerArray.size() , Toast.LENGTH_SHORT).show();
+
     }
 
 
@@ -182,13 +202,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // uses interface to dialog box positive button
     @Override
     public void proximityPositiveClick(proximityDialog dialog) {
-        proximity = true;
+        // Need to figure out how to put the function in here.
+        // Variable to switch function.....?
+        //LatLng you = new LatLng(currentLocation.latitude, currentLocation.longitude);
+        addMarker(currentLocation);
     }
 
     // uses interface to dialog box positive button
     @Override
     public void proximityNegativeClick(proximityDialog dialog) {
-        proximity = false;
+        return;
     }
 
 
@@ -285,65 +308,77 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         dialog.show(getSupportFragmentManager(), "reportDialog");
     }
 
+    // Show method was overloaded to pass through type of report information
+    public void openReportNearbyDialog(String type) {
+        // Create an instance of the dialog fragment and show it
+        reportNearbyDialog dialog = new reportNearbyDialog();
+        dialog.show(getSupportFragmentManager(), "reportNearbyDialog", type);
+    }
+
+    // uses interface to dialog box positive button
+    @Override
+    public void reportNearbyPositiveClick(reportNearbyDialog dialog, String type) {
+        // Need to figure out how to put the function in here.
+        // Variable to switch function.....?
+        //LatLng you = new LatLng(currentLocation.latitude, currentLocation.longitude);
+        addReportMarker(type, currentLocation);
+    }
+
+    // uses interface to dialog box positive button
+    @Override
+    public void reportNearbyNegativeClick(reportNearbyDialog dialog) { return;    }
+
 
     @Override
-    public String reportPositiveClick(reportDialog dialog, String result) {
-        Toast.makeText(getApplicationContext(), "Processed " + result, Toast.LENGTH_SHORT).show();
-
-        LatLng you = new LatLng(currentLocation.latitude, currentLocation.longitude);
-        Marker marker;
-        boolean near;
-        proximity = true;
-        switch(result){
-            case "Litter":  near = checkProximity(you, mLitterArray);
-                    if(near){
-                        openBinDialog();
-                    }
-                    if(proximity){
-                        marker = mMap.addMarker(new MarkerOptions().position(you).title(result).icon(BitmapDescriptorFactory
-                                .defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
-                        mLitterArray.add(marker);
-                    }
-                break;
-            case "Dumping": near = checkProximity(you, mDumpingArray);
-                if(near){
-                    openBinDialog();
-                }
-                if(proximity) {
-                    marker = mMap.addMarker(new MarkerOptions().position(you).title(result).icon(BitmapDescriptorFactory
-                            .defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-                    mDumpingArray.add(marker);
-                }
-                break;
-            case "Graffiti":  near = checkProximity(you, mGraffitiArray);
-                if(near){
-                    openBinDialog();
-                }
-                if(proximity) {
-                    marker = mMap.addMarker(new MarkerOptions().position(you).title(result).icon(BitmapDescriptorFactory
-                            .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
-                    mGraffitiArray.add(marker);
-                }
-                break;
-            case "Chemical spill":  near = checkProximity(you, mSpillArray);
-                if(near){
-                    openBinDialog();
-                }
-                if(proximity) {
-                    marker = mMap.addMarker(new MarkerOptions().position(you).title(result).icon(BitmapDescriptorFactory
-                            .defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
-                    mSpillArray.add(marker);
-                }
-                break;
+    public void reportPositiveClick(reportDialog dialog, String type) {
+        Toast.makeText(getApplicationContext(), "Processed " + type, Toast.LENGTH_SHORT).show();
+        //LatLng you = new LatLng(currentLocation.latitude, currentLocation.longitude);
+        boolean near=false;
+        switch (type){
+            case "Litter": near = checkProximity(currentLocation, mLitterArray); break;
+            case "Dumping": near = checkProximity(currentLocation, mDumpingArray); break;
+            case "Graffiti": near = checkProximity(currentLocation, mGraffitiArray); break;
+            case "Chemical spill": near = checkProximity(currentLocation, mSpillArray); break;
         }
+        if (near) {
+            openReportNearbyDialog(type);
+        } else { addReportMarker(type, currentLocation);}
+    }
 
 
-        return result;
+    public void addReportMarker(String type, LatLng you){
+        Marker marker;
+        switch (type){
+            case "Litter":
+                marker = mMap.addMarker(new MarkerOptions().position(you).title(type).icon(BitmapDescriptorFactory
+                        .defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+                mLitterArray.add(marker);
+            break;
+            case "Dumping":
+                marker = mMap.addMarker(new MarkerOptions().position(you).title(type).icon(BitmapDescriptorFactory
+                        .defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                mDumpingArray.add(marker);
+
+            break;
+            case "Graffiti":
+                marker = mMap.addMarker(new MarkerOptions().position(you).title(type).icon(BitmapDescriptorFactory
+                        .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                mGraffitiArray.add(marker);
+            break;
+            case "Chemical spill":
+                marker = mMap.addMarker(new MarkerOptions().position(you).title(type).icon(BitmapDescriptorFactory
+                        .defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+                mSpillArray.add(marker);
+
+            break;
+        }
     }
 
     @Override
     public void reportNegativeClick(reportDialog dialog) {
         return;
     }
+
+
 
 }

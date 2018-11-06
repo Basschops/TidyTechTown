@@ -26,6 +26,7 @@
             android:id="@+id/binBtn"
             android:layout_width="174dp"
             android:layout_height="wrap_content"
+            android:onClick="showBins"
             android:text="Show bins" />
 
         <Button
