@@ -43,19 +43,20 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, proximityDialog.mapDialogListener, reportDialog.reportDialogListener
-, reportNearbyDialog.mapDialogListener {
+, reportNearbyDialog.mapDialogListener, showHideReports.reportShowHideDialogListener {
 
     private GoogleMap mMap;
     private boolean showing = false;
-    //private Marker bin;
     private static LatLng currentLocation;
     private LocationRequest mLocationRequest;
     private long UPDATE_INTERVAL = 10 * 1000;  /* 10 secs */
     private long FASTEST_INTERVAL = 5000; /* 5 sec */
+    // Arrays to store markers. Will replace with database?
     private ArrayList<Marker> mMarkerArray = new ArrayList<Marker>();
     private ArrayList<Marker> mLitterArray = new ArrayList<Marker>();
     private ArrayList<Marker> mDumpingArray = new ArrayList<Marker>();
@@ -77,28 +78,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        // Set up function with button to display bins on map
-        /*Button binShow = (Button) findViewById(R.id.binBtn);
-        binShow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // change set visibility in stead to avoid global variables
-                if (!showing) {
-                    LatLng bin1 = new LatLng(53, -6);
-                    bin = mMap.addMarker(new MarkerOptions().position(bin1).title("This is a BIN!").draggable(true));
-                    Button button = (Button) findViewById(R.id.binBtn);
-                    button.setText("Hide bins");
-                    showing = true;
-                } else {
-                    bin.remove();
-                    Button button = (Button) findViewById(R.id.binBtn);
-                    button.setText("Show bins");
-                    showing = false;
-                }
-            }
-        }); */
-
-
         startLocationUpdates();
     }
 
@@ -106,18 +85,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Toast.makeText(getApplicationContext(), "Show/hide"+showing, Toast.LENGTH_SHORT).show();
         Button button = (Button) findViewById(R.id.binBtn);
         if(showing) {
-            for (Marker marker : mMarkerArray) {
-                marker.setVisible(false);
-                button.setText("Show bins");
-                showing = false;
-            }
+            hideMarkers(mMarkerArray);
+            button.setText("Show bins");
+            showing = false;
         }
         else{
-            for(Marker marker: mMarkerArray){
-                marker.setVisible(true);
-                button.setText("Hide bins");
-                showing = true;
-            }
+            showMarkers(mMarkerArray);
+            button.setText("Hide bins");
+            showing = true;
         }
     }
 
@@ -129,7 +104,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         if (currentLocation == null) {
             Toast.makeText(getApplicationContext(), "Acquiring location ... Please try again", Toast.LENGTH_SHORT).show();
-            return;
         } else {
             openReportDialog();
                 }
@@ -141,8 +115,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             startLocationUpdates();
         }
         if (currentLocation == null) {
-            Toast.makeText(getApplicationContext(), "Acquiring locaiton ... Please try again", Toast.LENGTH_SHORT).show();
-            return;
+            Toast.makeText(getApplicationContext(), "Acquiring location ... Please try again", Toast.LENGTH_SHORT).show();
         }
         else {
             //LatLng you = new LatLng(currentLocation.latitude, currentLocation.longitude);
@@ -153,9 +126,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 openBinDialog();
             }
             else{addMarker(currentLocation);}
-           // if (proximity) {
-            //    addMarker(you);
-           // }
         }
     }
 
@@ -182,7 +152,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     /**
      * Add marker to map at location latlon
-     * @param latlon
+     * @param latlon location of user
      */
     public void addMarker(LatLng latlon) {
         Marker marker = mMap.addMarker(new MarkerOptions().position(latlon).title("Yep, you!").icon(BitmapDescriptorFactory
@@ -210,10 +180,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     // uses interface to dialog box positive button
     @Override
-    public void proximityNegativeClick(proximityDialog dialog) {
-        return;
-    }
-
+    public void proximityNegativeClick(proximityDialog dialog) { }
 
     // Location request adapted from https://github.com/codepath/android_guides/wiki/Retrieving-Location-with-LocationServices-API
     protected void startLocationUpdates() {
@@ -229,7 +196,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         builder.addLocationRequest(mLocationRequest);
         LocationSettingsRequest locationSettingsRequest = builder.build();
 
-        // Working code to access location preferences
         SettingsClient client = LocationServices.getSettingsClient(this);
         Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
 
@@ -239,7 +205,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 gpsAcquired = true;
             }
         });
-
 
         task.addOnFailureListener(this, new OnFailureListener() {
             @Override
@@ -259,7 +224,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         });
-        // end of code
 
         SettingsClient settingsClient = LocationServices.getSettingsClient(this);
         settingsClient.checkLocationSettings(locationSettingsRequest);
@@ -284,14 +248,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Looper.myLooper());
     }
 
-    // set up google map
+    // Set up google map
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         // This could be a variable dependent on the relevant town.
         LatLng dublin = new LatLng(53.3498, -6.2603);
-        //mMap.addMarker(new MarkerOptions().position(dublin).title("This is Dublin!"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(dublin, 10));
 
     }
@@ -319,20 +281,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void reportNearbyPositiveClick(reportNearbyDialog dialog, String type) {
         // Need to figure out how to put the function in here.
-        // Variable to switch function.....?
-        //LatLng you = new LatLng(currentLocation.latitude, currentLocation.longitude);
         addReportMarker(type, currentLocation);
     }
 
     // uses interface to dialog box positive button
     @Override
-    public void reportNearbyNegativeClick(reportNearbyDialog dialog) { return;    }
+    public void reportNearbyNegativeClick(reportNearbyDialog dialog) {  }
 
 
     @Override
     public void reportPositiveClick(reportDialog dialog, String type) {
+        if(type == null){return;}
         Toast.makeText(getApplicationContext(), "Processed " + type, Toast.LENGTH_SHORT).show();
-        //LatLng you = new LatLng(currentLocation.latitude, currentLocation.longitude);
         boolean near=false;
         switch (type){
             case "Litter": near = checkProximity(currentLocation, mLitterArray); break;
@@ -379,6 +339,69 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return;
     }
 
+    // When dialog is positive button is selected only show the items that were selected
+    @Override
+    public void reportShowHidePositive(showHideReports dialog, ArrayList<Integer> selected){
+        String[] reportTypes = getResources().getStringArray(R.array.report);
 
+        for(int i=0; i<4; i+=1){
+            if(selected.contains(i)) {
+                switch (reportTypes[i]) {
+                    case "Litter":
+                        showMarkers(mLitterArray);
+                        break;
+                    case "Dumping":
+                        showMarkers(mDumpingArray);
+                        break;
+                    case "Graffiti":
+                        showMarkers(mGraffitiArray);
+                        break;
+                    case "Chemical spill":
+                        showMarkers(mSpillArray);
+                        break;
+                }
+            }
+            else {
+                switch (reportTypes[i]) {
+                    case "Litter":
+                        hideMarkers(mLitterArray);
+                        break;
+                    case "Dumping":
+                        hideMarkers(mDumpingArray);
+                        break;
+                    case "Graffiti":
+                        hideMarkers(mGraffitiArray);
+                        break;
+                    case "Chemical spill":
+                        hideMarkers(mSpillArray);
+                        break;
+                }
+            }
+        }
+
+    }
+
+    @Override
+    public void reportShowHideNegative(showHideReports dialog){
+        return;
+    }
+
+    public void openShowReportDialog(View view) {
+        showHideReports box = new showHideReports();
+        box.show(getSupportFragmentManager(), "Proximity check");
+    }
+
+    public void showMarkers(ArrayList<Marker> markerArray){
+
+        for(Marker marker: markerArray){
+            marker.setVisible(true);
+        }
+    }
+    public void hideMarkers(ArrayList<Marker> markerArray){
+
+        for(Marker marker: markerArray){
+            marker.setVisible(false);
+        }
+    }
 
 }

@@ -37,24 +37,25 @@ public class reportDialog extends AppCompatDialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
 
-        final ArrayList resp = new ArrayList();
+        final ArrayList response = new ArrayList();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setTitle("What are you reporting?")
+        builder.setTitle(R.string.reoprtTitle)
                 .setSingleChoiceItems(R.array.report, -1, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // This method will be invoked when a button in the dialog is clicked.
-                        //response[0] = (String) R.array.report;
                         String[] array = getResources().getStringArray(R.array.report);
-                        resp.add(0, array[i]);
+                        response.add(0, array[i]);
                     }
                 })
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                String r = (String) resp.get(0);
+                // Protect against case if none selected.
+                if(response.isEmpty()){ mListener.reportPositiveClick(reportDialog.this, null);}
+                String r = (String) response.get(0);
                 mListener.reportPositiveClick(reportDialog.this, r);
             }
         })
