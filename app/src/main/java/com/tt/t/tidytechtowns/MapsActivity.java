@@ -12,9 +12,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -43,6 +45,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 , reportNearbyDialog.mapDialogListener, showHideReports.reportShowHideDialogListener {
 
     private GoogleMap mMap;
+    private final String TAG = "daragh";
     private boolean showing = false;
     private static LatLng currentLocation;
     private LocationRequest mLocationRequest;
@@ -55,13 +58,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ArrayList<Marker> mSpillArray = new ArrayList<Marker>();
     private ArrayList<Marker> mGraffitiArray = new ArrayList<Marker>();
 
-
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
     private boolean gpsAcquired = false;
 
     private MyDatabase db;
-
-    private Cursor bins;
+    private Cursor markers;
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -77,8 +78,54 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         startLocationUpdates();
     }
 
+    public void loadMarkers(){
+        db = new MyDatabase(this);
+        markers = db.getBins();
+        LatLng temp;
+        String type;
+        Marker marker;
+        int i =0;
+        while (markers.moveToNext()){
+            // put in error checking for wrong data types. Try/catch??
+            i++;
+            //try {
+                temp = new LatLng(markers.getDouble(1), markers.getDouble(2));
+                type = markers.getString(3);
+                Log.d(TAG, "Making markers "+i+" "+temp.latitude+" "+ temp.longitude+" "+type);
+
+                switch (type) {
+                    case "Bin":
+                        marker = mMap.addMarker(new MarkerOptions().position(temp).title(type).icon(BitmapDescriptorFactory
+                                .defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                        mMarkerArray.add(marker);
+                   case "Litter":
+                        marker = mMap.addMarker(new MarkerOptions().position(temp).title(type).icon(BitmapDescriptorFactory
+                                .defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+                        mLitterArray.add(marker);
+                        break;
+                    case "Dumping":
+                        marker = mMap.addMarker(new MarkerOptions().position(temp).title(type).icon(BitmapDescriptorFactory
+                                .defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                        mDumpingArray.add(marker);
+                        break;
+                    case "Graffiti":
+                        marker = mMap.addMarker(new MarkerOptions().position(temp).title(type).icon(BitmapDescriptorFactory
+                                .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                        mGraffitiArray.add(marker);
+                        break;
+                    case "Chemical spill":
+                        marker = mMap.addMarker(new MarkerOptions().position(temp).title(type).icon(BitmapDescriptorFactory
+                                .defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+                        mSpillArray.add(marker);
+                        break;
+                }
+            //}
+            //finally {}
+
+        }
+    }
+
     public void showBins(View view) {
-        Toast.makeText(getApplicationContext(), "Show/hide" + showing, Toast.LENGTH_SHORT).show();
         Button button = (Button) findViewById(R.id.binBtn);
         if (showing) {
             hideMarkers(mMarkerArray);
@@ -120,6 +167,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 openBinDialog();
             } else {
                 addMarker(currentLocation);
+                db.writeDatabase(currentLocation.latitude, currentLocation.longitude, "Bin");
             }
         }
     }
@@ -151,10 +199,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * @param latlon location of user
      */
     public void addMarker(LatLng latlon) {
-        Marker marker = mMap.addMarker(new MarkerOptions().position(latlon).title("Yep, you!").icon(BitmapDescriptorFactory
+        Marker marker = mMap.addMarker(new MarkerOptions().position(latlon).title("Bin").icon(BitmapDescriptorFactory
                 .defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         mMarkerArray.add(marker);
-        Toast.makeText(getApplicationContext(), " " + mMarkerArray.size(), Toast.LENGTH_SHORT).show();
+        db.writeDatabase(currentLocation.latitude, currentLocation.longitude, "Bin");
 
     }
 
@@ -181,8 +229,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     // Location request adapted from https://github.com/codepath/android_guides/wiki/Retrieving-Location-with-LocationServices-API
     protected void startLocationUpdates() {
-        // Test message to see if location is updating
-        Toast.makeText(getApplicationContext(), "updates", Toast.LENGTH_SHORT).show();
 
         mLocationRequest = new LocationRequest();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -252,6 +298,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // This could be a variable dependent on the relevant town.
         LatLng dublin = new LatLng(53.3498, -6.2603);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(dublin, 10));
+        loadMarkers();
 
     }
 
@@ -292,7 +339,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (type == null) {
             return;
         }
-        Toast.makeText(getApplicationContext(), "Processed " + type, Toast.LENGTH_SHORT).show();
         boolean near = false;
         switch (type) {
             case "Litter":
@@ -323,23 +369,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 marker = mMap.addMarker(new MarkerOptions().position(you).title(type).icon(BitmapDescriptorFactory
                         .defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
                 mLitterArray.add(marker);
+                db.writeDatabase(currentLocation.latitude, currentLocation.longitude, type);
                 break;
             case "Dumping":
                 marker = mMap.addMarker(new MarkerOptions().position(you).title(type).icon(BitmapDescriptorFactory
                         .defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
                 mDumpingArray.add(marker);
-
+                db.writeDatabase(currentLocation.latitude, currentLocation.longitude, type);
                 break;
             case "Graffiti":
                 marker = mMap.addMarker(new MarkerOptions().position(you).title(type).icon(BitmapDescriptorFactory
                         .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
                 mGraffitiArray.add(marker);
+                db.writeDatabase(currentLocation.latitude, currentLocation.longitude, type);
                 break;
             case "Chemical spill":
                 marker = mMap.addMarker(new MarkerOptions().position(you).title(type).icon(BitmapDescriptorFactory
                         .defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
                 mSpillArray.add(marker);
-
+                db.writeDatabase(currentLocation.latitude, currentLocation.longitude, type);
                 break;
         }
     }
@@ -416,8 +464,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void displayBins(View view) {
         db = new MyDatabase(this);
-        bins = db.getBins();
-        String msg = bins.getString(2);
-        Toast.makeText(getApplicationContext(), "Processed " + msg, Toast.LENGTH_SHORT).show();
+        markers = db.getBins();
+        int i = 0;
+        while (markers.moveToNext()) {
+
+            String msg = markers.getString(2)+" "+markers.getString(3);
+            Toast.makeText(getApplicationContext(), "Processed "+i+" " + msg, Toast.LENGTH_SHORT).show();
+        }
     }
 }

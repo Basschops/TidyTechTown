@@ -2,7 +2,6 @@ package com.tt.t.tidytechtowns;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -54,7 +53,8 @@ public class reportDialog extends AppCompatDialogFragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 // Protect against case if none selected.
-                if(response.isEmpty()){ mListener.reportPositiveClick(reportDialog.this, null);}
+                if(response.isEmpty()){ mListener.reportPositiveClick(reportDialog.this, null);
+                return;}
                 String r = (String) response.get(0);
                 mListener.reportPositiveClick(reportDialog.this, r);
             }
