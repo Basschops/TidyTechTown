@@ -13,7 +13,7 @@
     <string name="title_activity_maps">Map</string>
 
     <!--Registration Page Strings-->
-    <string name = "regMe">Register</string>
+    <string name="regMe">Register</string>
     <string name="regHeading"> Register Your Community </string>
     <string name="comName"> Community Name</string>
     <string name="townName"> Town</string>
@@ -28,6 +28,13 @@
 
     <string name="yourRank"> Your Rankings </string>
     <string name="commRank"> Community Rankings </string>
+    <string name="title_activity_carbon">Carbon</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
 
 
 </resources>

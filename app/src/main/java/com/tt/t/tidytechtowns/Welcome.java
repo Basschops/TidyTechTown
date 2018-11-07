@@ -58,6 +58,12 @@ public class Welcome extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void startCarbon(View v) {
+        Intent intent = new Intent(Welcome.this, Carbon.class);
+        startActivity(intent);
+    }
+
+
 
     private void addDrawerItems() {
         String[] osArray = { "Carbon calculator", "Join", "My rankings", "Town rankings", "Maps"};
