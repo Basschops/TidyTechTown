@@ -1,12 +1,16 @@
 package com.tt.t.tidytechtowns;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -66,6 +70,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
     private boolean gpsAcquired = false;
+
+    private MyDatabase db;
+    private Cursor bins;
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
