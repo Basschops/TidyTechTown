@@ -1,6 +1,8 @@
 package com.tt.t.tidytechtowns;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,6 +18,13 @@ public class Welcome extends AppCompatActivity {
 
     private ListView mDrawerList;
     private ArrayAdapter<String> mAdapter;
+
+    private Cursor bins;
+    private boolean lastBin = false;
+    private Cursor centers;
+    private Cursor communities;
+    private MyDatabase db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +50,8 @@ public class Welcome extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        db = new MyDatabase(this);
+        bins = db.getBins();
     }
 
 
