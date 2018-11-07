@@ -17,6 +17,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -50,6 +51,7 @@ import static com.google.android.gms.location.LocationServices.getFusedLocationP
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, proximityDialog.mapDialogListener, reportDialog.reportDialogListener
 , reportNearbyDialog.mapDialogListener, showHideReports.reportShowHideDialogListener {
 
+    private static final String TAG = "Daragh";
     private GoogleMap mMap;
     private boolean showing = false;
     private static LatLng currentLocation;
@@ -82,7 +84,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void showBins(View view){
-        Toast.makeText(getApplicationContext(), "Show/hide"+showing, Toast.LENGTH_SHORT).show();
         Button button = (Button) findViewById(R.id.binBtn);
         if(showing) {
             hideMarkers(mMarkerArray);
@@ -158,7 +159,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Marker marker = mMap.addMarker(new MarkerOptions().position(latlon).title("Yep, you!").icon(BitmapDescriptorFactory
                 .defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         mMarkerArray.add(marker);
-        Toast.makeText(getApplicationContext(), " "+ mMarkerArray.size() , Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "Number of active bins"+mMarkerArray.size());
 
     }
 
@@ -184,9 +185,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     // Location request adapted from https://github.com/codepath/android_guides/wiki/Retrieving-Location-with-LocationServices-API
     protected void startLocationUpdates() {
-        // Test message to see if location is updating
-        Toast.makeText(getApplicationContext(), "updates", Toast.LENGTH_SHORT).show();
-
         mLocationRequest = new LocationRequest();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(UPDATE_INTERVAL);
@@ -229,7 +227,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         settingsClient.checkLocationSettings(locationSettingsRequest);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
             //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -292,7 +289,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void reportPositiveClick(reportDialog dialog, String type) {
         if(type == null){return;}
-        Toast.makeText(getApplicationContext(), "Processed " + type, Toast.LENGTH_SHORT).show();
         boolean near=false;
         switch (type){
             case "Litter": near = checkProximity(currentLocation, mLitterArray); break;

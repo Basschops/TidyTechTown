@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -54,5 +55,6 @@ public class proximityDialog extends AppCompatDialogFragment {
     public interface mapDialogListener{
         void proximityPositiveClick(proximityDialog dialog);
         void proximityNegativeClick(proximityDialog dialog);
+
     }
 }
