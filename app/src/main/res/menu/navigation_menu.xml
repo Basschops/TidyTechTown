@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+
+<item android:id="@+id/ratings"
+    android:title="See scores"/>
+<item android:id="@+id/map"
+    android:title="Map"/>
+<item android:id="@+id/events"
+    android:title="Events Calendar"/>
+    <item android:id="@+id/carbon"
+        android:title="Carbon"/>
+    <item android:id="@+id/carbonfootprint"
+        android:title="Carbon Footprint"/>
+
+</menu>

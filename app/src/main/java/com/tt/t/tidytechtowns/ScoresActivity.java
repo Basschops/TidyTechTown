@@ -6,12 +6,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 
 
 public class ScoresActivity extends AppCompatActivity {
 
-    private ListView mDrawerList2;
-    private ArrayAdapter<String> mAdapter2;
+
+    private DrawerLayout dl;
+    private ActionBarDrawerToggle t;
+    private NavigationView nv;
 
 
     @Override
@@ -19,8 +29,46 @@ public class ScoresActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scores);
 
-        mDrawerList2 = (ListView)findViewById(R.id.navList);
-        addDrawerItems();
+
+
+        dl = (DrawerLayout) findViewById(R.id.activity_main);
+        t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
+
+        dl.addDrawerListener(t);
+        t.syncState();
+
+
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        nv = (NavigationView) findViewById(R.id.nv);
+        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+
+                switch (id) {
+                    case R.id.ratings: startScores(nv);
+                        break;
+                    case R.id.map: startMaps(nv);
+                        break;
+                    case R.id.events: startEventCalendar(nv);
+                        break;
+                    case R.id.carbon: startCarbon(nv);
+                        break;
+                    case R.id.carbonfootprint: startCarbonFootPrintCalculator(nv);
+                        break;
+
+                    default:
+                        return true;
+                }
+
+                return true;
+
+            }
+        });
+
 
 
     }
@@ -45,14 +93,38 @@ public class ScoresActivity extends AppCompatActivity {
             return true;
         }
 
+        if(t.onOptionsItemSelected(item))
+            return true;
+
         return super.onOptionsItemSelected(item);
     }
 
-    private void addDrawerItems() {
-        String[] osArray = { "Carbon calculator", "Join", "My rankings", "Town rankings", "Maps"};
-        mAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
-        mDrawerList2.setAdapter(mAdapter2);
+
+    public void startScores(View v) {
+        Intent intent = new Intent(ScoresActivity.this, ScoresActivity.class);
+        startActivity(intent);
     }
 
+    public void startCarbonFootPrintCalculator(View v) {
+        Intent intent = new Intent(ScoresActivity.this, CarbonFootprint.class);
+        startActivity(intent);
+    }
+
+
+    public void startEventCalendar(View v) {
+        Intent intent = new Intent(ScoresActivity.this, EventActivity.class);
+        startActivity(intent);
+    }
+
+    public void startCarbon(View v) {
+        Intent intent = new Intent(ScoresActivity.this, Carbon.class);
+        startActivity(intent);
+    }
+
+
+    public void startMaps(View v) {
+        Intent i = new Intent(getBaseContext(), MapsActivity.class);
+        startActivity(i);
+    }
 
 } // end class
