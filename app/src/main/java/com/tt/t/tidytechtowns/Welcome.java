@@ -13,11 +13,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.MenuItem;
 
 public class Welcome extends AppCompatActivity {
 
-    private ListView mDrawerList;
-    private ArrayAdapter<String> mAdapter;
 
     private Cursor bins;
     private boolean lastBin = false;
@@ -26,32 +29,75 @@ public class Welcome extends AppCompatActivity {
     private MyDatabase db;
 
 
+    private DrawerLayout dl;
+    private ActionBarDrawerToggle t;
+    private NavigationView nv;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        mDrawerList = (ListView)findViewById(R.id.navList);
-        addDrawerItems();
 
-        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(Welcome.this, "Time for an upgrade!", Toast.LENGTH_SHORT).show();
-            }
-        });
 
-        Button button=(Button)findViewById(R.id.mapEnterBtn);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent i = new Intent(getBaseContext(), MapsActivity.class);
-                startActivity(i);
-            }
-        });
         db = new MyDatabase(this);
         bins = db.getBins();
+
+
+
+        dl = (DrawerLayout) findViewById(R.id.activity_main);
+        t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
+
+        dl.addDrawerListener(t);
+        t.syncState();
+
+
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        nv = (NavigationView) findViewById(R.id.nv);
+        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+
+                switch (id) {
+                    case R.id.ratings: startScores(nv);
+                        break;
+                    case R.id.map: startMaps(nv);
+                        break;
+                    case R.id.events: startEventCalendar(nv);
+                        break;
+                    case R.id.carbon: startCarbon(nv);
+                        break;
+                    case R.id.carbonfootprint: startCarbonFootPrintCalculator(nv);
+                        break;
+
+                    default:
+                        return true;
+                }
+
+                return true;
+
+            }
+        });
+
+
+
+
+
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(t.onOptionsItemSelected(item))
+            return true;
+
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -62,13 +108,6 @@ public class Welcome extends AppCompatActivity {
         Intent intent = new Intent(Welcome.this, ScoresActivity.class);
         startActivity(intent);
     }
-
-    public void startCarbonFootPrintCalculator(View v) {
-        Intent intent = new Intent(Welcome.this, CarbonFootprint.class);
-        startActivity(intent);
-    }
-
-
 
 
 
@@ -83,12 +122,18 @@ public class Welcome extends AppCompatActivity {
     }
 
 
-
-    private void addDrawerItems() {
-        String[] osArray = { "Carbon calculator", "Join", "My rankings", "Town rankings", "Maps"};
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
-        mDrawerList.setAdapter(mAdapter);
+    public void startMaps(View v) {
+        Intent i = new Intent(getBaseContext(), MapsActivity.class);
+        startActivity(i);
     }
+
+
+    public void startCarbonFootPrintCalculator(View v) {
+        Intent intent = new Intent(Welcome.this, CarbonFootprint.class);
+        startActivity(intent);
+    }
+
+
 
 
 

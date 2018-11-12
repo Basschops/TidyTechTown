@@ -43,6 +43,9 @@
     <string name="reoprtTitle">What are you reporting?</string>
 
 
+    <string name="Close">Close</string>
+    <string name="Open">Open</string>
+
     <string-array name="report">
         <item>Litter</item>
         <item>Dumping</item>
