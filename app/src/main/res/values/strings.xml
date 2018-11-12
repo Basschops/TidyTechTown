@@ -49,6 +49,7 @@
         <item>Graffiti</item>
         <item>Chemical spill</item>
     </string-array>
+    <string name="title_activity_plogging">Map</string>
 
 
 </resources>
