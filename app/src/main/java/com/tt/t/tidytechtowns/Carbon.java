@@ -107,6 +107,7 @@ public class Carbon extends AppCompatActivity {
 
             switch (position){
 
+
                 case 0:
                     Tab1 tab1 = new Tab1();
                     return tab1;

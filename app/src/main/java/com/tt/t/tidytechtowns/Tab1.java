@@ -1,4 +1,5 @@
 package com.tt.t.tidytechtowns;
+import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,8 +11,11 @@ public class Tab1 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.tab1, container, false);
 
+        View rootView = inflater.inflate(R.layout.tab1, container, false);
         return rootView;
+
+
+
     }
 }

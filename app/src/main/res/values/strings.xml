@@ -25,7 +25,6 @@
     <!--ShowRandomCode Strings-->
     <string name="thankYou">Thank you for registering your Community</string>
     <string name="description">To have others join and contribute to your community, please distribute this unique community code. The other members of your community can use thos unique string on the login page under "Join a Community"</string>
-
     <string name="yourRank"> Your Rankings </string>
     <string name="commRank"> Community Rankings </string>
     <string name="action_settings">Settings</string>
@@ -48,6 +47,40 @@
         <item>Graffiti</item>
         <item>Chemical spill</item>
     </string-array>
+
+    <!--Carbon Calculator strings-->
+
+    <!--Tab1 strings-->
+    <string name="how_many">How Many People Currently Live in your home?</string>
+    <string name="electricity">Electricity</string>
+    <string name="heating">Heating</string>
+    <string name="coal">Coal</string>
+    <string name="LPG">LPG</string>
+    <string name="propane">Propane</string>
+    <string name="woord">Wood</string>
+    <string name="total">Total Co2 Emissions are: %1$d</string>
+
+    <!--Tab2 strings-->
+
+    <string name="flights">Flights</string>
+    <string name="flight_type">Please Select the flight type</string>
+    <string name="vehicle_type">Please Select the Vehicle type</string>
+    <string name="fuel_type">Please Select the fuel type</string>
+
+    <string name="trips">Trips</string>
+    <string name="vehicle">Vehicle</string>
+    <string name="milage">Milage</string>
+    <string name="pt">Public Transport</string>
+    <string name="bus">Bus</string>
+    <string name="rail">Rail</string>
+    <string name="tram">Luas/Tram</string>
+    <string name="hint" />
+
+
+    <!--Tab3 strings-->
+
+
+
 
 
 </resources>
