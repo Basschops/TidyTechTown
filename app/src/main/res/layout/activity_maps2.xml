@@ -10,14 +10,14 @@
     android:paddingRight="16dp"
     android:orientation="vertical" >
 
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:map="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/map"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
-    android:layout_width="match_parent"
-    android:layout_height="400dp"
-    tools:context=".MapsActivity" />
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        tools:context=".MapsActivity" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,14 +29,14 @@
             android:layout_width="174dp"
             android:layout_height="wrap_content"
             android:onClick="showBins"
-            android:text="Show bins" />
+            android:text="Hide bins" />
 
         <Button
             android:id="@+id/recyBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="displayBins"
-            android:text="Show recycling" />
+            android:onClick="goToPlogging"
+            android:text="Plogging" />
     </LinearLayout>
 
     <LinearLayout

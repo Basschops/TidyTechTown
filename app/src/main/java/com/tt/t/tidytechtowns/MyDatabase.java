@@ -64,13 +64,28 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
         return c;
     }
 
+    public Cursor getPloggingInfo()
+    {
+        SQLiteDatabase db = getReadableDatabase();
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+
+        String [] sqlSelect = {"_id", "Lat", "Long", "Type"};
+        String sqlTables = "mapMarkers";
+
+        qb.setTables(sqlTables);
+        Cursor c = qb.query(db, sqlSelect, null, null, null, null, null);
+
+        c.moveToFirst();
+        return c;
+    }
+
     public Cursor getCenters()
     {
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
-        String [] sqlSelect = {"_id", "OpenHours", "Days", "Address", "Plastics", "Metals", "Paper", "Organic"};
-        String sqlTables = "recyleCenters";
+        String [] sqlSelect = {"_id", "Lat", "Lon","Name"};
+        String sqlTables = "recyclingCenters";
 
         qb.setTables(sqlTables);
         Cursor c = qb.query(db, sqlSelect, null, null, null, null, null);

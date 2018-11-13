@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,7 +13,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -33,11 +33,22 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.maps.DirectionsApi;
+import com.google.maps.GeoApiContext;
+import com.google.maps.android.PolyUtil;
+import com.google.maps.android.ui.IconGenerator;
+import com.google.maps.errors.ApiException;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.TravelMode;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
@@ -46,12 +57,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private final String TAG = "daragh";
-    private boolean showing = false;
+    private boolean showing = true;
     private static LatLng currentLocation;
     private LocationRequest mLocationRequest;
     private long UPDATE_INTERVAL = 10 * 1000;  /* 10 secs */
     private long FASTEST_INTERVAL = 5000; /* 5 sec */
-    // Arrays to store markers. Will replace with database?
+    // Arrays to store markers
     private ArrayList<Marker> mMarkerArray = new ArrayList<Marker>();
     private ArrayList<Marker> mLitterArray = new ArrayList<Marker>();
     private ArrayList<Marker> mDumpingArray = new ArrayList<Marker>();
@@ -84,45 +95,44 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng temp;
         String type;
         Marker marker;
-        int i =0;
-        while (markers.moveToNext()){
+        //int i =0;
+        //move to next skips.
+        do {
             // put in error checking for wrong data types. Try/catch??
-            i++;
-            //try {
+            //i++;
                 temp = new LatLng(markers.getDouble(1), markers.getDouble(2));
                 type = markers.getString(3);
-                Log.d(TAG, "Making markers "+i+" "+temp.latitude+" "+ temp.longitude+" "+type);
+                //Log.d(TAG, "Making markers "+i+" "+temp.latitude+" "+ temp.longitude+" "+type);
 
                 switch (type) {
                     case "Bin":
                         marker = mMap.addMarker(new MarkerOptions().position(temp).title(type).icon(BitmapDescriptorFactory
                                 .defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
                         mMarkerArray.add(marker);
+                        break;
                    case "Litter":
                         marker = mMap.addMarker(new MarkerOptions().position(temp).title(type).icon(BitmapDescriptorFactory
-                                .defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+                                .defaultMarker(BitmapDescriptorFactory.HUE_CYAN)).visible(false));
                         mLitterArray.add(marker);
                         break;
                     case "Dumping":
                         marker = mMap.addMarker(new MarkerOptions().position(temp).title(type).icon(BitmapDescriptorFactory
-                                .defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                                .defaultMarker(BitmapDescriptorFactory.HUE_AZURE)).visible(false));
                         mDumpingArray.add(marker);
                         break;
                     case "Graffiti":
                         marker = mMap.addMarker(new MarkerOptions().position(temp).title(type).icon(BitmapDescriptorFactory
-                                .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                                .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).visible(false));
                         mGraffitiArray.add(marker);
                         break;
                     case "Chemical spill":
                         marker = mMap.addMarker(new MarkerOptions().position(temp).title(type).icon(BitmapDescriptorFactory
-                                .defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+                                .defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)).visible(false));
                         mSpillArray.add(marker);
                         break;
                 }
-            //}
-            //finally {}
 
-        }
+        } while (markers.moveToNext());
     }
 
     public void showBins(View view) {
@@ -462,14 +472,69 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    public void displayBins(View view) {
-        db = new MyDatabase(this);
-        markers = db.getBins();
-        int i = 0;
-        while (markers.moveToNext()) {
-
-            String msg = markers.getString(2)+" "+markers.getString(3);
-            Toast.makeText(getApplicationContext(), "Processed "+i+" " + msg, Toast.LENGTH_SHORT).show();
-        }
+    public void goToPlogging(View view) throws ApiException, IOException, InterruptedException {
+        getDirections(currentLocation);
     }
+
+    // Adapted from https://android.jlelse.eu/google-maps-directions-api-5b2e11dee9b0
+    private GeoApiContext getGeoContext() {
+        GeoApiContext geoApiContext = new GeoApiContext();
+        return geoApiContext.setQueryRateLimit(3)
+                .setApiKey(getString(R.string.google_maps_key))
+                .setConnectTimeout(1, TimeUnit.SECONDS)
+                .setReadTimeout(1, TimeUnit.SECONDS)
+                .setWriteTimeout(1, TimeUnit.SECONDS);
+    }
+
+    private void getDirections(LatLng o) throws ApiException, IOException, InterruptedException {
+        // If location is null, only show route for markers
+        if(o==null){
+            o = mLitterArray.get(0).getPosition();
+        }
+        String origin = o.latitude+", "+o.longitude;
+
+        // Ensure there are litter points to include in the route
+        if(mLitterArray.isEmpty()){
+            Toast.makeText(getApplicationContext(), "There are no litter spots recorded", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            String[] waypoints = new String[mLitterArray.size()];
+            int i=0;
+            for (Marker x : mLitterArray) {
+                LatLng y = x.getPosition();
+                waypoints[i]=y.latitude + ", " + y.longitude;
+                i++;
+            }
+
+            DirectionsResult result = null;
+
+            result = DirectionsApi.newRequest(getGeoContext()).mode(TravelMode.WALKING).origin(origin)
+                    .destination(origin)
+                    .optimizeWaypoints(true)
+                    .waypoints(waypoints)
+                    .await();
+            addPolyline(result, mMap);
+        }
+//Now we can call the await method on the DirectionsApiRequest. This will make a synchronous call to the web service and return us a DirectionsResult object.
+    }
+
+
+    private void addPolyline(DirectionsResult results, GoogleMap mMap) {
+        // Display route
+        List<LatLng> decodedPath = PolyUtil.decode(results.routes[0].overviewPolyline.getEncodedPath());
+        mMap.addPolyline(new PolylineOptions().color(Color.GREEN).addAll(decodedPath));
+
+        // Display litter markers
+        showMarkers(mLitterArray);
+
+        // Display distance of route
+        IconGenerator iconFactory = new IconGenerator(this);
+        mMap.addMarker(new MarkerOptions().position(new LatLng(results.routes[0].legs[0].endLocation.lat,
+                results.routes[0].legs[0].endLocation.lng))
+                .icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(" Distance :" +
+                        results.routes[0].legs[0].distance.humanReadable+
+                        "\n Walking time: "+results.routes[0].legs[0].duration.humanReadable)))
+                .anchor(iconFactory.getAnchorU(), iconFactory.getAnchorV()));
+    }
+
 }
