@@ -19,6 +19,9 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+
+
+
     public Cursor readDatabase(String argument){
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
@@ -99,13 +102,28 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
-        String [] sqlSelect = {"_id", "Community", "Score", "Creator"};
-        String sqlTables = "mapMarkers";
+        Cursor resultSet = db.rawQuery("Select * from communities",null);
+        resultSet.moveToFirst();
 
-        qb.setTables(sqlTables);
-        Cursor c = qb.query(db, sqlSelect, null, null, null, null, null);
 
-        c.moveToFirst();
-        return c;
+
+        return resultSet;
     }
+
+    public Cursor getIndScores()
+    {
+        SQLiteDatabase db = getReadableDatabase();
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+
+
+        Cursor resultSet = db.rawQuery("Select * from individual",null);
+        resultSet.moveToFirst();
+
+        return resultSet;
+
+    }
+
+
+
+
 }

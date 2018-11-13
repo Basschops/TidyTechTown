@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
@@ -95,6 +96,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng temp;
         String type;
         Marker marker;
+
         //int i =0;
         //move to next skips.
         do {
