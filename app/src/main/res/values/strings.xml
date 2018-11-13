@@ -28,13 +28,12 @@
 
     <string name="yourRank"> Your Rankings </string>
     <string name="commRank"> Community Rankings </string>
-    <string name="title_activity_carbon">Carbon</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
-    <string name="tab_text_3">Tab 3</string>
+    <string name="tab_text_1">Home</string>
+    <string name="tab_text_2">Travel</string>
+    <string name="tab_text_3">Lifestyle</string>
 
     <!--Dialog strings-->
     <string name="ok">OK</string>
