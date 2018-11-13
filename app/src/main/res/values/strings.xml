@@ -79,6 +79,10 @@
 
     <!--Tab3 strings-->
 
+    <string name="phone">Phone Expenses</string>
+    <string name="Fand">Food and Drink Expenses</string>
+    <string name="recreation">Recreational Expenses</string>
+
 
 
 
