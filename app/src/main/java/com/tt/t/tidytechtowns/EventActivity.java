@@ -148,9 +148,6 @@ public class EventActivity extends AppCompatActivity {
                         break;
                     case R.id.carbon: startCarbon(nv);
                         break;
-                    case R.id.carbonfootprint: startCarbonFootPrintCalculator(nv);
-                        break;
-
                     default:
                         return true;
                 }
@@ -198,11 +195,6 @@ public class EventActivity extends AppCompatActivity {
 
     public void startScores(View v) {
         Intent intent = new Intent(EventActivity.this, ScoresActivity.class);
-        startActivity(intent);
-    }
-
-    public void startCarbonFootPrintCalculator(View v) {
-        Intent intent = new Intent(EventActivity.this, CarbonFootprint.class);
         startActivity(intent);
     }
 
