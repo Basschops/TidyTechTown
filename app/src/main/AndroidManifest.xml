@@ -55,7 +55,11 @@
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"></activity>
             android:label="@string/title_activity_maps" />
-        <activity android:name=".showRandomCode" />
+            android:theme="@style/AppTheme.NoActionBar" />
+        android:label="@string/title_activity_maps" />
+        <activity
+            android:name=".Plogging"
+            android:label="@string/title_activity_plogging"></activity>
     </application>
 
 </manifest>

@@ -1,5 +1,7 @@
 package com.tt.t.tidytechtowns;
 
+import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -23,6 +25,8 @@ import java.util.List;
 public class IndividualScoresFragment extends Fragment {
 
     private ArrayAdapter<String> mScoresAdapter;
+    private MyDatabase db;
+    private Cursor results;
 
     public IndividualScoresFragment() {
     }
@@ -67,41 +71,30 @@ public class IndividualScoresFragment extends Fragment {
         helloTextView.setText(R.string.yourRank);
 
 
-        // Create some dummy data for the ListView.
-        String[] scoresArray = {
-                "Mary-Kate - 200 points",
-                "Sean Behan - 201 points",
-                "Daragh O'Farrell - 202 points",
-                "Daragh John - 300 points",
-                "Sheena Davitt - 6000 points",
-                "Mary-Kate - 200 points",
-                "Sean Behan - 201 points",
-                "Daragh O'Farrell - 202 points",
-                "Daragh John - 300 points",
-                "Sheena Davitt - 6000 points",
-                "Mary-Kate - 200 points",
-                "Sean Behan - 201 points",
-                "Daragh O'Farrell - 202 points",
-                "Daragh John - 300 points",
-                "Sheena Davitt - 6000 points",
-                "Mary-Kate - 200 points",
-                "Sean Behan - 201 points",
-                "Daragh O'Farrell - 202 points",
-                "Daragh John - 300 points",
-                "Sheena Davitt - 6000 points",
-                "Mary-Kate - 200 points",
-                "Sean Behan - 201 points",
-                "Daragh O'Farrell - 202 points",
-                "Daragh John - 300 points",
-                "Sheena Davitt - 6000 points",
-                "Mary-Kate - 200 points",
-                "Sean Behan - 201 points",
-                "Daragh O'Farrell - 202 points",
-                "Daragh John - 300 points",
-                "Sheena Davitt - 6000 points"
+        db = new MyDatabase(getActivity());
+        results = db.getIndScores();
+        int number = results.getCount();
+
+        List<String> outputArray = new ArrayList<String>();
+
+
+
+        results.moveToFirst();
+        while (results.isAfterLast() == false)  {
+
+            String output = "";
+
+            String id = results.getString(0);
+            String name = results.getString(1);
+            String community = results.getString(2);
+            int score = results.getInt(3);
+            String stringscore = Integer.toString(score);
+
+            output +=  name + ":  ";
+            output +=  stringscore;
+            outputArray.add(output);
+            results.moveToNext();
         };
-        List<String> weekForecast = new ArrayList<String>(
-                Arrays.asList(scoresArray));
 
 
         mScoresAdapter =
@@ -109,7 +102,7 @@ public class IndividualScoresFragment extends Fragment {
                         getActivity(), // The current context (this activity)
                         R.layout.list_item_scores, // The name of the layout ID.
                         R.id.list_item_scores_textview, // The ID of the textview to populate.
-                        weekForecast);
+                        outputArray);
 
 
         ListView listView = (ListView) rootView.findViewById(R.id.listview_scores);

@@ -1,11 +1,18 @@
 package com.tt.t.tidytechtowns;
 
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.support.annotation.NonNull;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -39,6 +46,12 @@ public class Carbon extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+
+
+    private DrawerLayout dl;
+    private ActionBarDrawerToggle t;
+    private NavigationView nv;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

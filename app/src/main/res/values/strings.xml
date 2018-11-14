@@ -41,12 +41,16 @@
     <string name="reoprtTitle">What are you reporting?</string>
 
 
+    <string name="Close">Close</string>
+    <string name="Open">Open</string>
+
     <string-array name="report">
         <item>Litter</item>
         <item>Dumping</item>
         <item>Graffiti</item>
         <item>Chemical spill</item>
     </string-array>
+    <string name="title_activity_plogging">Map</string>
 
     <!--Carbon Calculator strings-->
 

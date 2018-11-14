@@ -1,5 +1,6 @@
 package com.tt.t.tidytechtowns;
 
+import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,12 +16,15 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import android.database.Cursor;
 
 
     // nb this code was adapted from the code for the Android tutorial Weather app
 
     public class CommunityScoresFragment extends Fragment {
 
+        private MyDatabase db;
+        private Cursor results;
         private ArrayAdapter<String> mScoresAdapter;
 
         public CommunityScoresFragment() {
@@ -61,28 +65,31 @@ import java.util.List;
             View rootView = inflater.inflate(R.layout.fragment_scores, container, false);
 
 
-            // Create some dummy data for the ListView.
-            String[] commScoresArray = {
-                    "Dublin - 200000 points",
-                    "Cork - 201 points",
-                    "Galway - 202 points",
-                    "Sligo - 300 points",
-                    "Dublin - 200000 points",
-                    "Cork - 201 points",
-                    "Galway - 202 points",
-                    "Sligo - 300 points",
-                    "Dublin - 200000 points",
-                    "Cork - 201 points",
-                    "Galway - 202 points",
-                    "Sligo - 300 points",
-                    "Dublin - 200000 points",
-                    "Cork - 201 points",
-                    "Galway - 202 points",
-                    "Sligo - 300 points"
+            db = new MyDatabase(getActivity());
+            results = db.getCommunities();
+            int number = results.getCount();
 
+            List<String> outputArray = new ArrayList<String>();
+
+
+
+            results.moveToFirst();
+            while (results.isAfterLast() == false)  {
+
+                String output = "";
+
+                String id = results.getString(0);
+                String community = results.getString(1);
+                int score = results.getInt(2);
+                String stringscore = Integer.toString(score);
+                String creator = results.getString(3);
+
+                output +=  community + ":  ";
+                output +=  stringscore + " ";
+                //output +=  creator + " ";
+                outputArray.add(output);
+                results.moveToNext();
             };
-            List<String> weekForecast = new ArrayList<String>(
-                    Arrays.asList(commScoresArray));
 
 
             mScoresAdapter =
@@ -90,7 +97,7 @@ import java.util.List;
                             getActivity(), // The current context (this activity)
                             R.layout.list_item_scores, // The name of the layout ID.
                             R.id.list_item_scores_textview, // The ID of the textview to populate.
-                            weekForecast);
+                            outputArray);
 
 
             ListView listView = (ListView) rootView.findViewById(R.id.listview_scores);
