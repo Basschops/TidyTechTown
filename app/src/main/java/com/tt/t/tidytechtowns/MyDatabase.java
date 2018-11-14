@@ -125,5 +125,19 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
 
 
 
+    public Cursor getEvents()
+    {
+        SQLiteDatabase db = getReadableDatabase();
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+
+        Cursor resultSet = db.rawQuery("Select * from events",null);
+        //resultSet.moveToFirst();
+
+
+
+        return resultSet;
+    }
+
+
 
 }
