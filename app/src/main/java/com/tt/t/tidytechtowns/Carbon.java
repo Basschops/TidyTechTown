@@ -167,5 +167,11 @@ public class Carbon extends AppCompatActivity {
         int type_of_fuel = Integer.parseInt(fuel_t.getSelectedItem().toString());
 
 
+
+        //do some calculations
+
+
+
+
     }
 }

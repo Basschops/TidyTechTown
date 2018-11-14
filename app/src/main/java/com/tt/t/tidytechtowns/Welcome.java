@@ -54,7 +54,7 @@ public class Welcome extends AppCompatActivity {
         bins = db.getBins();
     }
 
-    
+
     public void startScores(View v) {
         Intent intent = new Intent(Welcome.this, ScoresActivity.class);
         startActivity(intent);
