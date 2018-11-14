@@ -8,25 +8,6 @@
   >
 
     <TextView
-        android:id="@+id/textView28"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp"
-        android:layout_marginEnd="294dp"
-        android:layout_marginStart="31dp"
-        android:layout_marginTop="96dp"
-        android:text="@string/total"
-        android:textAlignment="textStart"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.078"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView14"
-        app:layout_constraintVertical_bias="0.428" />
-
-    <TextView
         android:id="@+id/flights"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -73,7 +54,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Spinner
-        android:id="@+id/spinner2"
+        android:id="@+id/flight_type"
         android:layout_width="145dp"
         android:layout_height="28dp"
         android:layout_marginBottom="72dp"
@@ -81,7 +62,7 @@
         android:layout_marginStart="17dp"
         android:layout_marginTop="29dp"
         android:entries="@array/flights_types"
-        app:layout_constraintBottom_toTopOf="@+id/spinner3"
+        app:layout_constraintBottom_toTopOf="@+id/vehicle_type"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textView21"
@@ -89,26 +70,26 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <Spinner
-        android:id="@+id/spinner3"
+        android:id="@+id/vehicle_type"
         android:layout_width="130dp"
         android:layout_height="25dp"
         android:layout_marginEnd="28dp"
         android:layout_marginStart="3dp"
         android:layout_marginTop="28dp"
         android:entries="@array/vehicle_types"
-        app:layout_constraintBottom_toTopOf="@+id/spinner4"
+        app:layout_constraintBottom_toTopOf="@+id/fuel_type"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView25"
-        app:layout_constraintTop_toBottomOf="@+id/editText4" />
+        app:layout_constraintTop_toBottomOf="@+id/trips" />
 
     <Spinner
-        android:id="@+id/spinner4"
+        android:id="@+id/fuel_type"
         android:layout_width="131dp"
         android:layout_height="25dp"
         android:layout_marginEnd="32dp"
         android:entries="@array/fuel_types"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner3" />
+        app:layout_constraintTop_toBottomOf="@+id/vehicle_type" />
 
     <TextView
         android:id="@+id/textView17"
@@ -119,7 +100,7 @@
         android:layout_marginTop="24dp"
         android:text="@string/bus"
         app:layout_constraintBottom_toTopOf="@+id/textView18"
-        app:layout_constraintEnd_toStartOf="@+id/editText6"
+        app:layout_constraintEnd_toStartOf="@+id/rail"
         app:layout_constraintHorizontal_bias="0.193"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pt" />
@@ -133,7 +114,7 @@
         android:layout_marginStart="16dp"
         android:text="@string/rail"
         app:layout_constraintBottom_toTopOf="@+id/textView19"
-        app:layout_constraintEnd_toStartOf="@+id/editText7"
+        app:layout_constraintEnd_toStartOf="@+id/luas"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView17" />
@@ -148,10 +129,10 @@
         android:layout_marginTop="27dp"
         android:text="@string/tram"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/editText7"
+        app:layout_constraintEnd_toStartOf="@+id/luas"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText6"
+        app:layout_constraintTop_toBottomOf="@+id/rail"
         app:layout_constraintVertical_bias="1.0" />
 
     <TextView
@@ -164,12 +145,12 @@
         android:layout_marginTop="6dp"
         android:text="@string/trips"
         app:layout_constraintBottom_toTopOf="@+id/Vehicle"
-        app:layout_constraintEnd_toStartOf="@+id/editText4"
+        app:layout_constraintEnd_toStartOf="@+id/trips"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/trips"
         android:layout_width="215dp"
         android:layout_height="35dp"
         android:layout_marginBottom="31dp"
@@ -183,11 +164,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/Vehicle"
-        app:layout_constraintTop_toBottomOf="@+id/spinner2"
+        app:layout_constraintTop_toBottomOf="@+id/flight_type"
         app:layout_constraintVertical_bias="1.0" />
 
     <EditText
-        android:id="@+id/editText5"
+        android:id="@+id/bus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
@@ -200,7 +181,7 @@
         app:layout_constraintVertical_bias="0.531" />
 
     <EditText
-        android:id="@+id/editText6"
+        android:id="@+id/rail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="76dp"
@@ -209,13 +190,13 @@
         android:ems="10"
         android:hint="@string/hint"
         android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/editText7"
+        app:layout_constraintBottom_toTopOf="@+id/luas"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView18"
-        app:layout_constraintTop_toBottomOf="@+id/editText5" />
+        app:layout_constraintTop_toBottomOf="@+id/bus" />
 
     <EditText
-        android:id="@+id/editText7"
+        android:id="@+id/luas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="124dp"
@@ -227,7 +208,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.585"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText6" />
+        app:layout_constraintTop_toBottomOf="@+id/rail" />
 
     <TextView
         android:id="@+id/textView21"
@@ -238,7 +219,7 @@
         android:layout_marginStart="16dp"
         android:text="@string/flight_type"
         app:layout_constraintBottom_toTopOf="@+id/textView20"
-        app:layout_constraintEnd_toStartOf="@+id/editText4"
+        app:layout_constraintEnd_toStartOf="@+id/trips"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/flights"
@@ -252,7 +233,7 @@
         android:layout_marginStart="6dp"
         android:layout_marginTop="4dp"
         android:text="@string/fuel_type"
-        app:layout_constraintEnd_toStartOf="@+id/spinner4"
+        app:layout_constraintEnd_toStartOf="@+id/fuel_type"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView25" />
@@ -282,12 +263,12 @@
         android:layout_marginTop="2dp"
         android:text="@string/vehicle_type"
         app:layout_constraintBottom_toTopOf="@+id/textView23"
-        app:layout_constraintEnd_toStartOf="@+id/spinner3"
+        app:layout_constraintEnd_toStartOf="@+id/vehicle_type"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Vehicle" />
 
     <EditText
-        android:id="@+id/editText12"
+        android:id="@+id/milage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="120dp"
@@ -299,7 +280,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textView24"
-        app:layout_constraintTop_toBottomOf="@+id/spinner4" />
+        app:layout_constraintTop_toBottomOf="@+id/fuel_type" />
 
 
 </android.support.constraint.ConstraintLayout>
