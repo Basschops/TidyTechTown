@@ -42,6 +42,15 @@
     <string name="reoprtHideTitle">Show/hide reports</string>
     <string name="reoprtTitle">What are you reporting?</string>
 
+    <!--Weather strings-->
+    <string name="comfort">Comfort Level</string>
+    <string name="dummy">DUMMY</string>
+    <string name="wind">Speed:</string>
+    <string name="windLab">Wind</string>
+    <string name="windAng">Direction:</string>
+    <string name="appT"><![CDATA[Apparent \n Temperature]]></string>
+    <string name="humLab">Humidity:</string>
+    <string name="slash">/</string>
 
     <string name="Close">Close</string>
     <string name="Open">Open</string>
