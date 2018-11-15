@@ -62,7 +62,7 @@
     <string name="LPG">LPG</string>
     <string name="propane">Propane</string>
     <string name="woord">Wood</string>
-    <string name="total">Total Co2 Emissions are: %1$d</string>
+    <string name="total">Total Co2 Emissions are: %1$f</string>
 
     <!--Tab2 strings-->
 
