@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
@@ -15,7 +14,6 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
@@ -38,35 +36,24 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.maps.DirectionsApi;
-import com.google.maps.GeoApiContext;
-import com.google.maps.android.PolyUtil;
-import com.google.maps.android.ui.IconGenerator;
-import com.google.maps.errors.ApiException;
-import com.google.maps.model.DirectionsResult;
-import com.google.maps.model.TravelMode;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
 public class MapsActivity extends FragmentActivity  implements OnMapReadyCallback,
         proximityDialog.mapDialogListener, reportDialog.reportDialogListener,
-        reportNearbyDialog.mapDialogListener, showHideReports.reportShowHideDialogListener,
-        GoogleMap.OnMarkerClickListener {
+        reportNearbyDialog.mapDialogListener, showHideReports.reportShowHideDialogListener
+    {
 
     private GoogleMap mMap;
     private boolean showing = true;
     private static LatLng currentLocation;
     private LocationRequest mLocationRequest;
+    protected static final int REQUEST_CHECK_SETTINGS = 0x1;
     private long UPDATE_INTERVAL = 5000;  /* 5 secs */
     private long FASTEST_INTERVAL = 2000; /* 2 secs */
     // Arrays to store map markers
@@ -75,8 +62,9 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     private ArrayList<Marker> mDumpingArray = new ArrayList<Marker>();
     private ArrayList<Marker> mSpillArray = new ArrayList<Marker>();
     private ArrayList<Marker> mGraffitiArray = new ArrayList<Marker>();
+    private ArrayList<Marker> mRecyclingArray = new ArrayList<Marker>();
 
-    protected static final int REQUEST_CHECK_SETTINGS = 0x1;
+
     private MyDatabase db;
     private Cursor markers;
 
@@ -98,7 +86,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.setOnMarkerClickListener(this);
+
         // This could be a variable dependent on the relevant town.
         LatLng dublin = new LatLng(53.3498, -6.2603);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(dublin, 10));
@@ -112,7 +100,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         db = new MyDatabase(this);
         markers = db.getBins();
         LatLng temp;
-        String type;
+        String type, name;
         Marker marker;
 
         do {
@@ -153,6 +141,17 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                 }
 
         } while (markers.moveToNext());
+       /* markers = db.getCenters();
+        do {
+            temp = new LatLng(markers.getDouble(1), markers.getDouble(2));
+            name = markers.getString(3);
+            marker = mMap.addMarker(new MarkerOptions().position(temp).title(name)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory
+                            .HUE_MAGENTA)).visible(false));
+            mRecyclingArray.add(marker);
+        } while (markers.moveToNext());
+*/
+        db.close();
     }
 
     /**
@@ -170,6 +169,22 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
             showing = true;
         }
     }
+
+        /**
+         * Connected to show/hide recycling center button to show bins on map.
+         */
+        public void showRecycling(View view) {
+            Button button = (Button) findViewById(R.id.recyBtn);
+            if (showing) {
+                hideMarkers(mRecyclingArray);
+                button.setText("Show centers");
+                showing = false;
+            } else {
+                showMarkers(mRecyclingArray);
+                button.setText("Hide centers");
+                showing = true;
+            }
+        }
 
     /**
      * Connected to report issue button. Reports issue and adds marker to map at user location
@@ -219,6 +234,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
             else {
                 addMarker(currentLocation);
                 db.writeDatabase(currentLocation.latitude, currentLocation.longitude, "Bin");
+                db.close();
             }
         }
     }
@@ -273,6 +289,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         mMarkerArray.add(marker);
         db.writeDatabase(currentLocation.latitude, currentLocation.longitude, "Bin");
+        db.close();
     }
 
 
@@ -471,7 +488,10 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                 mSpillArray.add(marker);
                 db.writeDatabase(currentLocation.latitude, currentLocation.longitude, type);
                 break;
+
+
         }
+
     }
 
     // Connected to 'show/hide report' button.
@@ -529,155 +549,6 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         return;
     }
 
-
-    /////////////////////////////////////////////////////////////////////////////////////
-    private Polyline polyline;
-    private boolean polyShowing = false;
-    private Marker plogLabel;
-    private boolean snackbarShown = false;
-
-    // Connected to 'plogging' button. Shows route or hides it if already visible.
-    public void goToPlogging(View view) throws ApiException, IOException, InterruptedException {
-        if(polyShowing){
-            polyline.remove();
-            plogLabel.remove();
-            polyShowing = false;
-        }
-        else {
-            getDirections(currentLocation);
-
-            if(!snackbarShown) {
-                View contextView = findViewById(R.id.context);
-                final Snackbar snackBar = Snackbar.make(contextView,
-                        "Click on litter markers to add or remove them from the route",
-                        Snackbar.LENGTH_INDEFINITE);
-                snackBar.setAction("Dismiss", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        snackBar.dismiss();
-                    }
-                });
-                snackBar.show();
-                snackbarShown = true;
-            }
-        }
-    }
-
-    // Adapted from https://android.jlelse.eu/google-maps-directions-api-5b2e11dee9b0
-    // Gets direction between markers on the map
-    private GeoApiContext getGeoContext() {
-        GeoApiContext geoApiContext = new GeoApiContext();
-        return geoApiContext.setQueryRateLimit(3)
-                .setApiKey(getString(R.string.google_maps_key))
-                .setConnectTimeout(1, TimeUnit.SECONDS)
-                .setReadTimeout(1, TimeUnit.SECONDS)
-                .setWriteTimeout(1, TimeUnit.SECONDS);
-    }
-
-    // Get directions between all litter waypoints and back to user location
-    private void getDirections(LatLng o) throws ApiException, IOException, InterruptedException {
-        // If location is null, only show route for markers
-        if(o==null){
-            o = mLitterArray.get(0).getPosition();
-        }
-        String origin = o.latitude+", "+o.longitude;
-
-        // Ensure there are litter points to include in the route
-        if(mLitterArray.isEmpty()){
-            Toast.makeText(getApplicationContext(), "There are no litter spots recorded",
-                    Toast.LENGTH_SHORT).show();
-        }
-        else {
-
-            int i=0;
-            ArrayList<Marker> include = new ArrayList<Marker>(mLitterArray);
-            for(Marker z: mLitterArray){
-                if(exclude.contains(z)){
-                    include.remove(z);
-                }
-            }
-
-            String[] waypoints = new String[include.size()];
-            for (Marker x : include) {
-                LatLng y = x.getPosition();
-                waypoints[i]=y.latitude + ", " + y.longitude;
-                i++;
-            }
-
-            DirectionsResult result = null;
-
-            result = DirectionsApi.newRequest(getGeoContext()).mode(TravelMode.WALKING).origin(origin)
-                    .destination(origin)
-                    .optimizeWaypoints(true)
-                    .waypoints(waypoints)
-                    .await();
-            addPolyline(result, mMap);
-        }
-//Now we can call the await method on the DirectionsApiRequest. This will make a synchronous call to the web service and return us a DirectionsResult object.
-    }
-
-    // Draw route on map with info marker.
-    private void addPolyline(DirectionsResult results, GoogleMap mMap) {
-
-        // Display route
-        if(results.routes.length >0 ){
-            List<LatLng> decodedPath = PolyUtil.decode(results.routes[0].overviewPolyline.getEncodedPath());
-            polyline = mMap.addPolyline(new PolylineOptions().color(Color.GREEN).addAll(decodedPath));
-        }
-        else{
-            Toast.makeText(getApplicationContext(), "Cannot get directions right now",
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-
-        // Display litter markers
-        showMarkers(mLitterArray);
-
-        // Display distance of route
-
-
-        IconGenerator iconFactory = new IconGenerator(this);
-        plogLabel = mMap.addMarker(new MarkerOptions().position(new LatLng(results.routes[0].legs[0]
-                .endLocation.lat, results.routes[0].legs[0].endLocation.lng))
-                .icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(" Distance: " +
-                        results.routes[0].legs[0].distance.humanReadable+
-                        "\n Walking time: "+results.routes[0].legs[0].duration.humanReadable)))
-                .anchor(iconFactory.getAnchorU(), iconFactory.getAnchorV()));
-        polyShowing = true;
-    }
-
-    ///// EXPERIMENTAL CODE
-
-    private ArrayList<Marker> exclude = new ArrayList<Marker>();
-
-    @Override
-    public boolean onMarkerClick(Marker marker) {
-        Toast.makeText(getApplicationContext(), "CHECK",
-                Toast.LENGTH_SHORT).show();
-        if (polyShowing) {
-            if (exclude.contains(marker)) {
-                exclude.remove(marker);
-            }
-            else {
-                exclude.add(marker);
-            }
-            polyline.remove();
-            plogLabel.remove();
-            try {
-
-                getDirections(currentLocation);
-            } catch (ApiException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return true;
-        }
-        return false;
-    }
 
 
 }

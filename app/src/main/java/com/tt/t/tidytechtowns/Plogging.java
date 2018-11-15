@@ -1,11 +1,33 @@
 package com.tt.t.tidytechtowns;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.IntentSender;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Looper;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -14,10 +36,28 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.maps.DirectionsApi;
+import com.google.maps.GeoApiContext;
+import com.google.maps.android.PolyUtil;
+import com.google.maps.android.ui.IconGenerator;
+import com.google.maps.errors.ApiException;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.TravelMode;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-public class Plogging extends FragmentActivity implements OnMapReadyCallback {
+import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
+
+public class Plogging extends FragmentActivity implements OnMapReadyCallback,
+        GoogleMap.OnMarkerClickListener {
 
     private final String TAG = "daragh";
     private GoogleMap mMap;
@@ -25,6 +65,15 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback {
     private Cursor markers;
     private ArrayList<Marker> mMarkerArray = new ArrayList<Marker>();
     private ArrayList<Marker> mLitterArray = new ArrayList<Marker>();
+
+    private ArrayList<Marker> exclude = new ArrayList<Marker>();
+
+    private Polyline polyline;
+    private boolean polyShowing = false;
+    private Marker plogLabel;
+    private boolean snackbarShown = false;
+    private boolean showing = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,58 +83,116 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        startLocationUpdates();
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setOnMarkerClickListener((GoogleMap.OnMarkerClickListener) this);
 
-        // Add a marker in Sydney and move the camera
         LatLng dublin = new LatLng(53.3498, -6.2603);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(dublin, 10));
-        //mMap.addMarker(new MarkerOptions().position(dublin).icon(BitmapDescriptorFactory
-          //      .defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+
         loadMarkers();
-        //getDirections(o,d);
     }
 
-    public void butLoad(View view){
-        loadMarkers();
+    /**
+     * Connected to show/hide bins button to show bins on map.
+     */
+    public void showBinsP(View view) {
+        Button button = (Button) findViewById(R.id.showBinButPlog);
+        if (showing) {
+            hideMarkers(mMarkerArray);
+            button.setText("Show bins");
+            showing = false;
+        } else {
+            showMarkers(mMarkerArray);
+            button.setText("Hide bins");
+            showing = true;
+        }
+    }
+
+    // Makes entire array of markers visible
+    public void showMarkers(ArrayList<Marker> markerArray) {
+        for (Marker marker : markerArray) {
+            marker.setVisible(true);
+        }
+    }
+
+    // Makes entire array of markers hidden
+    public void hideMarkers(ArrayList<Marker> markerArray) {
+        for (Marker marker : markerArray) {
+            marker.setVisible(false);
+        }
     }
 
     public void loadMarkers(){
-        //Toast.makeText(getApplicationContext(), "Loading Markers", Toast.LENGTH_SHORT).show();
         db2 = new MyDatabase(this);
         markers = db2.getPloggingInfo();
         LatLng temp;
         String type;
         Marker marker;
-        LatLng dub = new LatLng(53.352, -6.259);
-        marker = mMap.addMarker(new MarkerOptions().position(dub).icon(BitmapDescriptorFactory
-                .defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-        if (markers==null){            Toast.makeText(getApplicationContext(), "######", Toast.LENGTH_SHORT).show();}
 
-
+        // If no data display toast
+        if (markers==null){
+            Toast.makeText(getApplicationContext(), "No markers to display", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else {
             do {
-
-            temp = new LatLng(markers.getDouble(1), markers.getDouble(2));
-            type = markers.getString(3);
-            Toast.makeText(getApplicationContext(), "Loading Markers"+type, Toast.LENGTH_SHORT).show();
-
-            if(type=="Litter") {
-                marker = mMap.addMarker(new MarkerOptions().position(temp).title(type).icon(BitmapDescriptorFactory
-                        .defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
-                mLitterArray.add(marker);
-            }
-            else if(type=="Bin"){
-                marker = mMap.addMarker(new MarkerOptions().position(temp).title(type).icon(BitmapDescriptorFactory
-                        .defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
-                mMarkerArray.add(marker);
-            }
-        } while (markers.moveToNext());
+                temp = new LatLng(markers.getDouble(1), markers.getDouble(2));
+                type = markers.getString(3);
+                switch (type) {
+                    case "Litter":
+                        marker = mMap.addMarker(new MarkerOptions().position(temp).title(type).icon(BitmapDescriptorFactory
+                                .defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+                        mLitterArray.add(marker);
+                        break;
+                    case "Bin":
+                        marker = mMap.addMarker(new MarkerOptions().position(temp).title(type).icon(BitmapDescriptorFactory
+                                .defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).visible(false));
+                        mMarkerArray.add(marker);
+                        break;
+                }
+            } while (markers.moveToNext());
+        }
     }
-/*
+
+    // Connected to 'plogging' button. Shows route or hides it if already visible.
+    public void refreshPlogging(View view) throws ApiException, IOException, InterruptedException {
+        // Check location permissions
+        checkLocationPermission();
+        Button button = (Button) findViewById(R.id.plogBut);
+        if(polyShowing){
+            polyline.remove();
+            plogLabel.remove();
+            polyShowing = false;
+            button.setText("Go Plogging!");
+        }
+        else {
+            button.setText("Hide route");
+            getDirections(currentLocation);
+
+            if(!snackbarShown) {
+                View contextView = findViewById(R.id.contextP);
+                final Snackbar snackBar = Snackbar.make(contextView,
+                        "Click on litter markers to add or remove them from the route",
+                        Snackbar.LENGTH_INDEFINITE);
+                snackBar.setAction("Dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        snackBar.dismiss();
+                    }
+                });
+                snackBar.show();
+                snackbarShown = true;
+            }
+        }
+    }
+
     // Adapted from https://android.jlelse.eu/google-maps-directions-api-5b2e11dee9b0
+    // Gets direction between markers on the map
     private GeoApiContext getGeoContext() {
         GeoApiContext geoApiContext = new GeoApiContext();
         return geoApiContext.setQueryRateLimit(3)
@@ -95,52 +202,203 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback {
                 .setWriteTimeout(1, TimeUnit.SECONDS);
     }
 
-    LatLng o = new LatLng(53.34, -6.25);
-    LatLng d = new LatLng(53.3498, -6.2603);
-
-    private void getDirections(LatLng o, LatLng destination) {
-        DateTime now = new DateTime();
-        DirectionsResult result = null;
-        try {
-            result = DirectionsApi.newRequest(getGeoContext()).mode(TravelMode.WALKING).origin(o.toString()).destination(destination.toString())
-                    .await();
-        } catch (ApiException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+    // Get directions between all litter waypoints and back to user location
+    private void getDirections(LatLng o) throws ApiException, IOException, InterruptedException {
+        // If location is null, only show route for markers
+        if(o==null){
+            o = mLitterArray.get(0).getPosition();
+            Toast.makeText(getApplicationContext(), "User location no detected. Try again.",
+                    Toast.LENGTH_SHORT).show();
         }
-        addPolyline(result, mMap);
+        String origin = o.latitude+", "+o.longitude;
+
+        // Ensure there are litter points to include in the route
+        if(mLitterArray.isEmpty()){
+            Toast.makeText(getApplicationContext(), "There are no litter spots recorded",
+                    Toast.LENGTH_SHORT).show();
+        }
+        else {
+
+            int i=0;
+            ArrayList<Marker> include = new ArrayList<Marker>(mLitterArray);
+            for(Marker z: mLitterArray){
+                if(exclude.contains(z)){
+                    include.remove(z);
+                }
+            }
+
+            String[] waypoints = new String[include.size()];
+            for (Marker x : include) {
+                LatLng y = x.getPosition();
+                waypoints[i]=y.latitude + ", " + y.longitude;
+                i++;
+            }
+
+            DirectionsResult result = null;
+
+            result = DirectionsApi.newRequest(getGeoContext()).mode(TravelMode.WALKING).origin(origin)
+                    .destination(origin)
+                    .optimizeWaypoints(true)
+                    .waypoints(waypoints)
+                    .await();
+            addPolyline(result, mMap);
+        }
 //Now we can call the await method on the DirectionsApiRequest. This will make a synchronous call to the web service and return us a DirectionsResult object.
     }
 
-    private void addMarkersToMap(DirectionsResult results, GoogleMap mMap) {
-        mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(results.routes[0].legs[0].startLocation.lat,results.routes[0].legs[0].startLocation.lng)).title(results.routes[0].legs[0].startAddress));
-        mMap.addMarker(new MarkerOptions().position(new LatLng(results.routes[0].legs[0].endLocation.lat,results.routes[0].legs[0].endLocation.lng)).title(results.routes[0].legs[0].startAddress).snippet(getEndLocationTitle(results)));
-    }
-
+    // Draw route on map with info marker.
     private void addPolyline(DirectionsResult results, GoogleMap mMap) {
-        List<LatLng> decodedPath = PolyUtil.decode(results.routes[0].overviewPolyline.getEncodedPath());
-        mMap.addPolyline(new PolylineOptions().addAll(decodedPath));
+
+        // Display route
+        if(results.routes.length >0 ){
+            List<LatLng> decodedPath = PolyUtil.decode(results.routes[0].overviewPolyline.getEncodedPath());
+            polyline = mMap.addPolyline(new PolylineOptions().color(Color.GREEN).addAll(decodedPath));
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Cannot get directions right now",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+        // Display litter markers
+        showMarkers(mLitterArray);
+
+        // Display distance of route
+
+
+        IconGenerator iconFactory = new IconGenerator(this);
+        plogLabel = mMap.addMarker(new MarkerOptions().position(new LatLng(results.routes[0].legs[0]
+                .endLocation.lat, results.routes[0].legs[0].endLocation.lng))
+                .icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(" Distance: " +
+                        results.routes[0].legs[0].distance.humanReadable+
+                        "\n Walking time: "+results.routes[0].legs[0].duration.humanReadable)))
+                .anchor(iconFactory.getAnchorU(), iconFactory.getAnchorV()));
+        polyShowing = true;
+    }
+
+    ///// EXPERIMENTAL CODE
+
+
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        if (polyShowing) {
+            if (exclude.contains(marker)) {
+                exclude.remove(marker);
+            }
+            else {
+                exclude.add(marker);
+            }
+            polyline.remove();
+            plogLabel.remove();
+            try {
+
+                getDirections(currentLocation);
+            } catch (ApiException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return true;
+        }
+        return false;
     }
 
 
-    private String getEndLocationTitle(DirectionsResult results){
-        return  "Time :"+ results.routes[0].legs[0].duration.humanReadable + " Distance :" + results.routes[0].legs[0].distance.humanReadable;
+
+
+    ///////////////////////////////////////////////////////////////////////////
+   // Location stuff
+
+    private static LatLng currentLocation;
+    private LocationRequest mLocationRequest;
+    private long UPDATE_INTERVAL = 5000;  /* 5 secs */
+    private long FASTEST_INTERVAL = 2000; /* 2 secs */
+    protected static final int REQUEST_CHECK_SETTINGS = 0x1;
+
+    // Location request adapted from
+    // https://github.com/codepath/android_guides/wiki/Retrieving-Location-with-LocationServices-API
+    @SuppressLint("MissingPermission")
+    protected void startLocationUpdates() {
+
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(UPDATE_INTERVAL);
+        mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
+        builder.addLocationRequest(mLocationRequest);
+        LocationSettingsRequest locationSettingsRequest = builder.build();
+
+        SettingsClient client = LocationServices.getSettingsClient(this);
+        Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
+
+        task.addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
+            @Override
+            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+            }
+        });
+
+        task.addOnFailureListener(this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                if (e instanceof ResolvableApiException) {
+                    // Location settings are not satisfied, but this can be fixed
+                    // by showing the user a dialog.
+                    try {
+                        // Show the dialog by calling startResolutionForResult(),
+                        // and check the result in onActivityResult().
+                        ResolvableApiException resolvable = (ResolvableApiException) e;
+                        resolvable.startResolutionForResult(Plogging.this,
+                                REQUEST_CHECK_SETTINGS);
+                    } catch (IntentSender.SendIntentException sendEx) {
+
+                    }
+                }
+            }
+        });
+
+        SettingsClient settingsClient = LocationServices.getSettingsClient(this);
+        settingsClient.checkLocationSettings(locationSettingsRequest);
+
+        getFusedLocationProviderClient(this).requestLocationUpdates(mLocationRequest,
+                new LocationCallback() {
+                    // Store new location when location changes
+                    @Override
+                    public void onLocationResult(LocationResult locationResult) {
+                        onLocationChanged(locationResult.getLastLocation());
+                    }
+                },
+                Looper.myLooper());
     }
 
-    /*
-    // Adapted from https://github.com/akexorcist/Android-GoogleDirectionLibrary/blob/master/app/src/main/java/com/akexorcist/googledirection/sample/WaypointsDirectionActivity.java
-    public void requestDirection(){
-        GoogleDirectionConfiguration.getInstance().setLogEnabled(true);
-        GoogleDirection.withServerKey(serverKey)
-                .from(park)
-                .and(shopping)
-                .and(dinner)
-                .to(gallery)
-                .transportMode(TransportMode.DRIVING)
-                .execute(this);
-    }*/
+    // Check that permission to use location is enabled. If not this will open settings.
+    public void checkLocationPermission() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat
+                .checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            Toast.makeText(getApplicationContext(), "Requires location permission...",
+                    Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent();
+            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            Uri uri = Uri.fromParts("package", getPackageName(), null);
+            intent.setData(uri);
+            startActivity(intent);
+        }
+        return;
+    }
+
+    // Function that stores new location on update
+    public void onLocationChanged(Location location) {
+        currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+    }
+
 }
+
+

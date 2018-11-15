@@ -34,8 +34,8 @@
             android:id="@+id/recyBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="goToPlogging"
-            android:text="Plogging" />
+            android:onClick="showRecycling"
+            android:text="Recycling centers" />
     </LinearLayout>
 
     <LinearLayout
@@ -66,6 +66,13 @@
         android:layout_height="wrap_content"
         android:onClick="openShowReportDialog"
         android:text="Show/Hide Reports" />
+
+    <Button
+        android:id="@+id/toPlogging"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="toPlogging"
+        android:text="Button" />
 
 </LinearLayout>
 
