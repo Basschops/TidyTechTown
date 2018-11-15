@@ -51,6 +51,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
     private GoogleMap mMap;
     private boolean showing = true;
+    private boolean snackbarShown = false;
+    private boolean showingRecycling = false;
     private static LatLng currentLocation;
     private LocationRequest mLocationRequest;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
@@ -80,6 +82,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
         startLocationUpdates();
+
     }
 
     // Set up google map
@@ -141,7 +144,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                 }
 
         } while (markers.moveToNext());
-       /* markers = db.getCenters();
+        // Load recycling centres
+        markers = db.getCenters();
         do {
             temp = new LatLng(markers.getDouble(1), markers.getDouble(2));
             name = markers.getString(3);
@@ -150,7 +154,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                             .HUE_MAGENTA)).visible(false));
             mRecyclingArray.add(marker);
         } while (markers.moveToNext());
-*/
+
         db.close();
     }
 
@@ -175,14 +179,14 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
          */
         public void showRecycling(View view) {
             Button button = (Button) findViewById(R.id.recyBtn);
-            if (showing) {
+            if (showingRecycling) {
                 hideMarkers(mRecyclingArray);
                 button.setText("Show centers");
-                showing = false;
+                showingRecycling = false;
             } else {
                 showMarkers(mRecyclingArray);
                 button.setText("Hide centers");
-                showing = true;
+                showingRecycling = true;
             }
         }
 
@@ -190,6 +194,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
      * Connected to report issue button. Reports issue and adds marker to map at user location
      */
     public void reportIssue(View view) {
+
         // If no location permission
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat

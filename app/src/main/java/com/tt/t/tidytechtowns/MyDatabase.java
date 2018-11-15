@@ -87,8 +87,8 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
-        String [] sqlSelect = {"_id", "Lat", "Lon","Name"};
-        String sqlTables = "recyleCenters";
+        String [] sqlSelect = {"id", "lat", "lon","Name"};
+        String sqlTables = "recyclingCenters";
 
         qb.setTables(sqlTables);
         Cursor c = qb.query(db, sqlSelect, null, null, null, null, null);

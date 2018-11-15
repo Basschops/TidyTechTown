@@ -67,12 +67,5 @@
         android:onClick="openShowReportDialog"
         android:text="Show/Hide Reports" />
 
-    <Button
-        android:id="@+id/toPlogging"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="toPlogging"
-        android:text="Button" />
-
 </LinearLayout>
 

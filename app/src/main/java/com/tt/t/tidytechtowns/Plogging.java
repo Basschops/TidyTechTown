@@ -2,6 +2,8 @@ package com.tt.t.tidytechtowns;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -84,6 +86,17 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         startLocationUpdates();
+
+        AlertDialog alertDialog = new AlertDialog.Builder(Plogging.this).create();
+        alertDialog.setTitle("What is Ploging?");
+        alertDialog.setMessage("Plogging is... \n\nPicking up \nLitter while\nJogging.\n\nClick 'Go Plogging' to find a route that has reported litter.");
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
     }
 
     @Override
@@ -204,10 +217,17 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
 
     // Get directions between all litter waypoints and back to user location
     private void getDirections(LatLng o) throws ApiException, IOException, InterruptedException {
+
+        ArrayList<Marker> include = new ArrayList<Marker>(mLitterArray);
+        for(Marker z: mLitterArray){
+            if(exclude.contains(z)){
+                include.remove(z);
+            }
+        }
         // If location is null, only show route for markers
         if(o==null){
-            o = mLitterArray.get(0).getPosition();
-            Toast.makeText(getApplicationContext(), "User location no detected. Try again.",
+            o = include.get(0).getPosition();
+            Toast.makeText(getApplicationContext(), "User location not detected. Try again.",
                     Toast.LENGTH_SHORT).show();
         }
         String origin = o.latitude+", "+o.longitude;
@@ -218,15 +238,7 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
                     Toast.LENGTH_SHORT).show();
         }
         else {
-
             int i=0;
-            ArrayList<Marker> include = new ArrayList<Marker>(mLitterArray);
-            for(Marker z: mLitterArray){
-                if(exclude.contains(z)){
-                    include.remove(z);
-                }
-            }
-
             String[] waypoints = new String[include.size()];
             for (Marker x : include) {
                 LatLng y = x.getPosition();
@@ -241,7 +253,28 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
                     .optimizeWaypoints(true)
                     .waypoints(waypoints)
                     .await();
+            double distance=0;
+            double time=0;
+            for(int j=0; j<result.routes[0].legs.length;j++){
+                distance+= result.routes[0].legs[0].distance.inMeters;
+                time += result.routes[0].legs[0].duration.inSeconds;
+            }
+            distance= Math.round(distance/100)/10; //convert to km with one d.p.
+            int timeI = (int) time/60; // convert to minutes
+            // Convert time to human readable
+            String timeS;
+            if (timeI>60){timeS = Integer.toString(timeI/60)+"hrs"+Integer.toString(timeI%60)+"min";}
+            else {timeS = Integer.toString(timeI/60)+"min";}
+
+            String details =  " Distance: " + distance+ "km\n " +
+                    "Walking time: "+timeS;;
+            IconGenerator iconFactory = new IconGenerator(this);
+            plogLabel = mMap.addMarker(new MarkerOptions().position(o).zIndex(1)
+                    .icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(details)))
+                    .anchor(iconFactory.getAnchorU(), iconFactory.getAnchorV()));
             addPolyline(result, mMap);
+            //new LatLng(result.routes[0].legs[0]
+             //       .endLocation.lat, result.routes[0].legs[0].endLocation.lng
         }
 //Now we can call the await method on the DirectionsApiRequest. This will make a synchronous call to the web service and return us a DirectionsResult object.
     }
@@ -249,6 +282,8 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
     // Draw route on map with info marker.
     private void addPolyline(DirectionsResult results, GoogleMap mMap) {
 
+
+        //Toast.makeText(getApplicationContext(), details, Toast.LENGTH_SHORT).show();
         // Display route
         if(results.routes.length >0 ){
             List<LatLng> decodedPath = PolyUtil.decode(results.routes[0].overviewPolyline.getEncodedPath());
@@ -259,30 +294,19 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
                     Toast.LENGTH_SHORT).show();
             return;
         }
-
-
         // Display litter markers
         showMarkers(mLitterArray);
 
         // Display distance of route
 
-
-        IconGenerator iconFactory = new IconGenerator(this);
-        plogLabel = mMap.addMarker(new MarkerOptions().position(new LatLng(results.routes[0].legs[0]
-                .endLocation.lat, results.routes[0].legs[0].endLocation.lng))
-                .icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(" Distance: " +
-                        results.routes[0].legs[0].distance.humanReadable+
-                        "\n Walking time: "+results.routes[0].legs[0].duration.humanReadable)))
-                .anchor(iconFactory.getAnchorU(), iconFactory.getAnchorV()));
         polyShowing = true;
     }
 
     ///// EXPERIMENTAL CODE
 
-
-
     @Override
     public boolean onMarkerClick(Marker marker) {
+        // Only do this if plogging is on
         if (polyShowing) {
             if (exclude.contains(marker)) {
                 exclude.remove(marker);
