@@ -41,8 +41,8 @@ public class Tab1 extends Fragment implements View.OnClickListener {
 
         EditText elec = (EditText) getView().findViewById(R.id.electricity);
         int electricity = Integer.parseInt(elec.getText().toString());
-        Float x = parseFloat(String.valueOf(electricity));
-        String tt = resources.getString(R.string.total, x);
+        Float p = parseFloat(String.valueOf(electricity));
+        String tt = resources.getString(R.string.total, p);
         plses.setText(tt);
 
     }
