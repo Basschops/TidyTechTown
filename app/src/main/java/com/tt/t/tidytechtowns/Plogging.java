@@ -15,9 +15,13 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -76,6 +80,10 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
     private boolean snackbarShown = false;
     private boolean showing = false;
 
+    private DrawerLayout dl;
+    private ActionBarDrawerToggle t;
+    private NavigationView nv;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +105,41 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
                     }
                 });
         alertDialog.show();
+
+        dl = (DrawerLayout) findViewById(R.id.activity_main);
+        t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
+
+        dl.addDrawerListener(t);
+        t.syncState();
+
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        nv = (NavigationView) findViewById(R.id.nv);
+        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+
+                switch (id) {
+                    case R.id.ratings: startScores(nv);
+                        break;
+                    case R.id.map: startMaps(nv);
+                        break;
+                    case R.id.events: startEventCalendar(nv);
+                        break;
+                    case R.id.carbon: startCarbon(nv);
+                        break;
+                    case R.id.carbonfootprint: startCarbonFootPrintCalculator(nv);
+                        break;
+                    case R.id.plogging: dl.closeDrawers();
+                        break;
+
+                    default:
+                        return true;
+                }
+                return true;
+
+            }
+        });
     }
 
     @Override
@@ -259,7 +302,7 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
                 distance+= result.routes[0].legs[0].distance.inMeters;
                 time += result.routes[0].legs[0].duration.inSeconds;
             }
-            distance= Math.round(distance/100)/10; //convert to km with one d.p.
+            distance= ((double) Math.round(distance/100))/10; //convert to km with one d.p.
             int timeI = (int) time/60; // convert to minutes
             // Convert time to human readable
             String timeS;
@@ -421,6 +464,29 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
     // Function that stores new location on update
     public void onLocationChanged(Location location) {
         currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+    }
+
+
+    // NAVIGATION FUNCTIONS
+    public void startScores(View v) {
+        Intent intent = new Intent(getBaseContext(), ScoresActivity.class);
+        startActivity(intent);
+    }
+    public void startEventCalendar(View v) {
+        Intent intent = new Intent(getBaseContext(), EventActivity.class);
+        startActivity(intent);
+    }
+    public void startCarbon(View v) {
+        Intent intent = new Intent(getBaseContext(), Carbon.class);
+        startActivity(intent);
+    }
+    public void startMaps(View v) {
+        Intent i = new Intent(getBaseContext(), MapsActivity.class);
+        startActivity(i);
+    }
+    public void startCarbonFootPrintCalculator(View v) {
+        Intent intent = new Intent(getBaseContext(), CarbonFootprint.class);
+        startActivity(intent);
     }
 
 }

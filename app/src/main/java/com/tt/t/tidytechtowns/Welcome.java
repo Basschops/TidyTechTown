@@ -1,7 +1,6 @@
 package com.tt.t.tidytechtowns;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -12,14 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 public class Welcome extends AppCompatActivity {
-
-
-    private Cursor bins;
-    private boolean lastBin = false;
-    private Cursor centers;
-    private Cursor communities;
-    private MyDatabase db;
-
 
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;

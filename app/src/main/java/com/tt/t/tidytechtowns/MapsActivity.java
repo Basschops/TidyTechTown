@@ -14,8 +14,12 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -70,6 +74,10 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     private MyDatabase db;
     private Cursor markers;
 
+    private DrawerLayout dl;
+    private ActionBarDrawerToggle t;
+    private NavigationView nv;
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -82,6 +90,43 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
         startLocationUpdates();
+
+        dl = (DrawerLayout) findViewById(R.id.activity_main);
+        t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
+
+        dl.addDrawerListener(t);
+        t.syncState();
+
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        nv = (NavigationView) findViewById(R.id.nv);
+        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+
+                switch (id) {
+                    case R.id.ratings: startScores(nv);
+                        break;
+                    case R.id.map: dl.closeDrawers();
+                        break;
+                    case R.id.events: startEventCalendar(nv);
+                        break;
+                    case R.id.carbon: startCarbon(nv);
+                        break;
+                    case R.id.carbonfootprint: startCarbonFootPrintCalculator(nv);
+                        break;
+                    case R.id.plogging: startPlogging(nv);
+                        break;
+
+                    default:
+                        return true;
+                }
+
+                return true;
+
+            }
+        });
 
     }
 
@@ -554,6 +599,26 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         return;
     }
 
-
+    // NAVIGATION FUNCTIONS
+    public void startScores(View v) {
+        Intent intent = new Intent(MapsActivity.this, ScoresActivity.class);
+        startActivity(intent);
+    }
+    public void startEventCalendar(View v) {
+        Intent intent = new Intent(MapsActivity.this, EventActivity.class);
+        startActivity(intent);
+    }
+    public void startCarbon(View v) {
+        Intent intent = new Intent(MapsActivity.this, Carbon.class);
+        startActivity(intent);
+    }
+    public void startCarbonFootPrintCalculator(View v) {
+        Intent intent = new Intent(MapsActivity.this, CarbonFootprint.class);
+        startActivity(intent);
+    }
+    public void startPlogging(View v) {
+        Intent intent = new Intent(MapsActivity.this, Plogging.class);
+        startActivity(intent);
+    }
 
 }
