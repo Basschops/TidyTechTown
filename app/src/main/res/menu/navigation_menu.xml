@@ -12,8 +12,6 @@
     android:title="Events Calendar"/>
     <item android:id="@+id/carbon"
         android:title="Carbon"/>
-    <item android:id="@+id/carbonfootprint"
-        android:title="Carbon Footprint"/>
     <item android:id="@+id/plogging"
         android:title="Plogging"/>
 </menu>

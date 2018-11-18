@@ -6,6 +6,7 @@ package com.tt.t.tidytechtowns;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -49,6 +50,11 @@ public class EventActivity extends AppCompatActivity {
     private NavigationView nv;
 
 
+    private ArrayAdapter<String> mScoresAdapter;
+
+    private MyDatabase db;
+    private Cursor eventCursor;
+
     private SimpleDateFormat dateFormatMonth = new SimpleDateFormat("MMMM- yyyy", Locale.getDefault());
     Date d = new Date();
 
@@ -68,19 +74,25 @@ public class EventActivity extends AppCompatActivity {
         calendar = (CompactCalendarView) findViewById(R.id.compactcalendar_view);
         calendar.setUseThreeLetterAbbreviation(true);
 
+        db = new MyDatabase(this);
+        eventCursor = db.getEvents();
+
+        List<String> outputArray = new ArrayList<String>();
 
 
+        eventCursor.moveToFirst();
+        while (eventCursor.isAfterLast() == false)  {
 
-        Event event = new Event(Color.YELLOW, 1540944000000L, "Oct 31 event");
-        Event event2 = new Event(Color.YELLOW, 1541116800000L, "Nov 2 event");
-        Event event3 = new Event(Color.YELLOW, 1541289600000L, "Nov 4 event");
-
-
-        calendar.addEvent(event, true);
-        calendar.addEvent(event2, true);
-        calendar.addEvent(event3, true);
+            String anEvent = eventCursor.getString(1);
+            long date = eventCursor.getLong(2);
 
 
+            Event e1 = new Event(Color.YELLOW, date, anEvent);
+            calendar.addEvent(e1, true);
+
+
+            eventCursor.moveToNext();
+        };
 
 
 
@@ -92,28 +104,32 @@ public class EventActivity extends AppCompatActivity {
             public void onDayClick(Date dateClicked) {
                 Context context = getApplicationContext();
 
-                Log.i("Tag", "Value " + dateClicked);
-                System.out.println("date " + dateClicked);
+                long millisecond = dateClicked.getTime();
+
+                List <Event> monthEvents = calendar.getEventsForMonth(millisecond);
 
 
+                for (int i = 0; i <= monthEvents.size()-1; i++) {
+
+                    Event ev = monthEvents.get(i);
+                    Long thisdate = ev.getTimeInMillis();
+
+                    if (millisecond == thisdate) {
+
+                        String thisevent = ev.getData().toString();
+
+                        Toast.makeText(context, thisevent, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Nothing on today", Toast.LENGTH_SHORT).show();
 
 
-                if (dateClicked.toString().compareTo("Wed Oct 31 00:00:00 GMT+00:00 2018") == 0) {
-                    Toast.makeText(context, "Eco awards", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
-                if (dateClicked.toString().compareTo("Fri Nov 02 00:00:00 GMT+00:00 2018") == 0) {
-                    Toast.makeText(context, "Recycle your toaster day", Toast.LENGTH_SHORT).show();
-                }
 
-                if (dateClicked.toString().compareTo("Sun Nov 04 00:00:00 GMT+00:00 2018") == 0) {
-                    Toast.makeText(context, "Reuse your dishwater event", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(context, "Nothing on today", Toast.LENGTH_SHORT).show();
 
-                }
 
-            }
+            } // end onDayClick
 
             @Override
             public void onMonthScroll(Date firstDayOfNewMonth) {
@@ -147,8 +163,6 @@ public class EventActivity extends AppCompatActivity {
                     case R.id.events: startEventCalendar(nv);
                         break;
                     case R.id.carbon: startCarbon(nv);
-                        break;
-                    case R.id.carbonfootprint: startCarbonFootPrintCalculator(nv);
                         break;
 
                     default:
@@ -201,10 +215,6 @@ public class EventActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void startCarbonFootPrintCalculator(View v) {
-        Intent intent = new Intent(EventActivity.this, CarbonFootprint.class);
-        startActivity(intent);
-    }
 
 
     public void startEventCalendar(View v) {

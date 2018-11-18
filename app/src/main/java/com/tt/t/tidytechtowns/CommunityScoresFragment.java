@@ -66,7 +66,7 @@ import android.database.Cursor;
 
 
             db = new MyDatabase(getActivity());
-            results = db.getCommunities();
+            results = db.getCommunityTotals();
             int number = results.getCount();
 
             List<String> outputArray = new ArrayList<String>();
@@ -78,18 +78,18 @@ import android.database.Cursor;
 
                 String output = "";
 
-                String id = results.getString(0);
-                String community = results.getString(1);
-                int score = results.getInt(2);
+                String community = results.getString(0);
+                int score = results.getInt(1);
                 String stringscore = Integer.toString(score);
-                String creator = results.getString(3);
 
                 output +=  community + ":  ";
-                output +=  stringscore + " ";
-                //output +=  creator + " ";
+                output +=  stringscore;
                 outputArray.add(output);
+
                 results.moveToNext();
             };
+
+            db.close();
 
 
             mScoresAdapter =

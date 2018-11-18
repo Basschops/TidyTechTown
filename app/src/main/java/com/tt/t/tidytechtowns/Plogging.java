@@ -128,8 +128,6 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
                         break;
                     case R.id.carbon: startCarbon(nv);
                         break;
-                    case R.id.carbonfootprint: startCarbonFootPrintCalculator(nv);
-                        break;
                     case R.id.plogging: dl.closeDrawers();
                         break;
 
@@ -377,8 +375,7 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
 
 
 
-    ///////////////////////////////////////////////////////////////////////////
-   // Location stuff
+
 
     private static LatLng currentLocation;
     private LocationRequest mLocationRequest;
@@ -484,10 +481,7 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
         Intent i = new Intent(getBaseContext(), MapsActivity.class);
         startActivity(i);
     }
-    public void startCarbonFootPrintCalculator(View v) {
-        Intent intent = new Intent(getBaseContext(), CarbonFootprint.class);
-        startActivity(intent);
-    }
+
 
 }
 

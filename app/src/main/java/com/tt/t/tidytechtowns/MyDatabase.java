@@ -123,7 +123,30 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
 
     }
 
+    public Cursor getEvents()
+    {
+        SQLiteDatabase db = getReadableDatabase();
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
+        Cursor resultSet = db.rawQuery("Select * from events",null);
+        //resultSet.moveToFirst();
+
+
+        return resultSet;
+    }
+
+
+    public Cursor getCommunityTotals()
+    {
+        SQLiteDatabase db = getReadableDatabase();
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+
+        Cursor resultSet = db.rawQuery("SELECT  community, SUM(personal_score) personal_score FROM individual GROUP BY community",null);
+        resultSet.moveToFirst();
+        db.close();
+
+        return resultSet;
+    }
 
 
 }

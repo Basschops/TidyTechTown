@@ -50,8 +50,6 @@ public class Welcome extends AppCompatActivity {
                         break;
                     case R.id.carbon: startCarbon(nv);
                         break;
-                    case R.id.carbonfootprint: startCarbonFootPrintCalculator(nv);
-                        break;
                     case R.id.plogging: startPlogging(nv);
                         break;
 
@@ -108,10 +106,6 @@ public class Welcome extends AppCompatActivity {
     }
 
 
-    public void startCarbonFootPrintCalculator(View v) {
-        Intent intent = new Intent(Welcome.this, CarbonFootprint.class);
-        startActivity(intent);
-    }
 
     public void startPlogging(View v) {
         Intent intent = new Intent(Welcome.this, Plogging.class);

@@ -99,6 +99,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         nv = (NavigationView) findViewById(R.id.nv);
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -113,8 +114,6 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                     case R.id.events: startEventCalendar(nv);
                         break;
                     case R.id.carbon: startCarbon(nv);
-                        break;
-                    case R.id.carbonfootprint: startCarbonFootPrintCalculator(nv);
                         break;
                     case R.id.plogging: startPlogging(nv);
                         break;
@@ -612,10 +611,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         Intent intent = new Intent(MapsActivity.this, Carbon.class);
         startActivity(intent);
     }
-    public void startCarbonFootPrintCalculator(View v) {
-        Intent intent = new Intent(MapsActivity.this, CarbonFootprint.class);
-        startActivity(intent);
-    }
+
     public void startPlogging(View v) {
         Intent intent = new Intent(MapsActivity.this, Plogging.class);
         startActivity(intent);

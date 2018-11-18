@@ -57,8 +57,6 @@ public class ScoresActivity extends AppCompatActivity {
                         break;
                     case R.id.carbon: startCarbon(nv);
                         break;
-                    case R.id.carbonfootprint: startCarbonFootPrintCalculator(nv);
-                        break;
 
                     default:
                         return true;
@@ -105,10 +103,6 @@ public class ScoresActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void startCarbonFootPrintCalculator(View v) {
-        Intent intent = new Intent(ScoresActivity.this, CarbonFootprint.class);
-        startActivity(intent);
-    }
 
 
     public void startEventCalendar(View v) {
