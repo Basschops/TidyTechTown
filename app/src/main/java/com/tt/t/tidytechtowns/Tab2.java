@@ -14,7 +14,8 @@ public class Tab2  extends Fragment implements View.OnClickListener {
 
     public static float number;
     public static float f;
-    public static String plses;
+    public static float ftype;
+    public static float vtype;
     public static String tt;
 
     @Override
@@ -43,13 +44,6 @@ public class Tab2  extends Fragment implements View.OnClickListener {
         return rootView;
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState){
-
-        super.onSaveInstanceState(outState);
-        outState.putFloat("num", number);
-
-    }
 
     @Override
     public void onClick(View v) {
@@ -90,50 +84,88 @@ public class Tab2  extends Fragment implements View.OnClickListener {
         Spinner vehicle_t = (Spinner) getView().findViewById(R.id.vehicle_type);
         String veh = vehicle_t.getSelectedItem().toString();
 
+        if (veh.equals("Car")) {
 
+            vtype = (float) 6.0 ;//kgs
+        }
+
+        else if (veh.equals("Van")){
+
+            vtype = (float) 7.5; //kgs
+
+        }
+
+        else if (veh.equals("Jeep")){
+
+            vtype = (float) 9.0;
+
+        }
+
+        else if (veh.equals("Motorbike")){
+
+            vtype = (float) 7.0;
+
+        }
 
         Spinner fuel_t = (Spinner) getView().findViewById(R.id.fuel_type);
         String ft = vehicle_t.getSelectedItem().toString();
 
         if (ft.equals("Diesel")) {
 
-            f = (float) 2640;
+            ftype = (float) 2.640 ;//kgs
         }
 
         else if (ft.equals("Petrol")){
 
-            f = (float) 2392;
+            ftype = (float) 2.392; //kgs
 
         }
 
         else if (ft.equals("Hybrid")){
 
-            f = (float) 330;
+            ftype = (float) 0.330;
 
         }
 
         else if (ft.equals("Electric")){
 
-            f = (float) 55;
+            ftype = (float) 0.055;
 
         }
 
         EditText milage = (EditText) getView().findViewById(R.id.milage);
+        int kms = Integer.parseInt(milage.getText().toString());
 
-        //FORMULA - LITRE PER 1KM X GRAMMES PER GALLON AND DIVIDED BY 100KM.
+        //FORMULA - (milaeg x consumption / 100) x fuel type.
+        //https://comcar.co.uk/emissions/footprint/
+
+        float Vehicle = (kms * vtype / 100) * ftype;
+
+        calculate_Cf(Vehicle);
 
         //FOR PUBLIC TRANSPORT
-
         //https://www.theguardian.com/environment/datablog/2009/sep/02/carbon-emissions-per-transport-type
 
+        //Bus Travel
         EditText bus = (EditText) getView().findViewById(R.id.bus);
+        int bus_travel = Integer.parseInt(bus.getText().toString());
+        int  bus_c02 = bus_travel / 10000;
+        calculate_Cf(bus_c02);
+
+
+        //Rail Travel
         EditText rail = (EditText) getView().findViewById(R.id.rail);
+        int rail_travel = Integer.parseInt(rail.getText().toString());
+        int  rail_c02 = rail_travel / 10000;
+        calculate_Cf(rail_c02);
+
+        //Luas Travel
         EditText luas = (EditText) getView().findViewById(R.id.luas);
-//
-//        TextView plses = (TextView) getView().findViewById(R.id.pls);
-//        Resources resources = getResources();
-//        String tt = resources.getString(R.string.total, 0.1);
-//        plses.setText(tt);
+        int luas_travel = Integer.parseInt(luas.getText().toString());
+        int  luas_c02 = luas_travel/ 10000;
+        calculate_Cf(luas_c02);
+        
+
     }
 
     public void calculate_Cf(float num) {
@@ -150,14 +182,11 @@ public class Tab2  extends Fragment implements View.OnClickListener {
 
         } else {
 
-             tt = resources.getString(R.string.total, num);
+            tt = resources.getString(R.string.total, num);
             plses.setText(tt);
             number = num;
 
         }
 
     }
-
-
-
 }
