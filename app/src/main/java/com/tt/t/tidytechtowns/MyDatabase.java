@@ -19,7 +19,7 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    
+
     public Cursor readDatabase(String argument){
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
