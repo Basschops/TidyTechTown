@@ -105,6 +105,7 @@ public class EventActivity extends AppCompatActivity {
                 Context context = getApplicationContext();
 
                 long millisecond = dateClicked.getTime();
+                boolean nothingOn = true;
 
                 List <Event> monthEvents = calendar.getEventsForMonth(millisecond);
 
@@ -117,13 +118,17 @@ public class EventActivity extends AppCompatActivity {
                     if (millisecond == thisdate) {
 
                         String thisevent = ev.getData().toString();
-
                         Toast.makeText(context, thisevent, Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(context, "Nothing on today", Toast.LENGTH_SHORT).show();
-
-
+                        nothingOn = false;
                     }
+
+
+
+                }
+
+                if (nothingOn==true) {
+
+                    Toast.makeText(context, "Nothing on today", Toast.LENGTH_SHORT).show();
                 }
 
 
