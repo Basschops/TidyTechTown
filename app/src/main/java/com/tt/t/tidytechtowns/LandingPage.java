@@ -1,20 +1,27 @@
 package com.tt.t.tidytechtowns;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 public class LandingPage extends AppCompatActivity {
+
+    private MyDatabase mdb;// = new MyDatabase(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing_page);
 
+        // Check if details have already been entered in database
+        mdb = new MyDatabase(this);
+        boolean loaded = mdb.loggedIn();
+        if(loaded){
+            goToHome();
+        }
     }
 
 
@@ -25,6 +32,7 @@ public class LandingPage extends AppCompatActivity {
 
         if (password.getText().toString().equals("abc123")) {
 
+            mdb.saveLogIn(password.getText().toString());
             Intent intent = new Intent(LandingPage.this, Welcome.class);
             startActivity(intent);
         } else {
@@ -36,12 +44,14 @@ public class LandingPage extends AppCompatActivity {
         }
 
     public void SignUp(View view) {
-
-
         Intent reg = new Intent(LandingPage.this, Resgistration.class);
         startActivity(reg);
+    }
 
+    public void goToHome() {
+        Intent reg = new Intent(LandingPage.this, Welcome.class);
+        startActivity(reg);
     }
-    }
+}
 
 

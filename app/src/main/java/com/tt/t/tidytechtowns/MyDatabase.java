@@ -19,9 +19,7 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-
-
-
+    
     public Cursor readDatabase(String argument){
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
@@ -95,6 +93,35 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
 
         c.moveToFirst();
         return c;
+    }
+
+    public void saveLogIn(String code) {
+        SQLiteDatabase db = getReadableDatabase();
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+
+        db.execSQL(" CREATE TABLE IF NOT EXISTS LOGIN_DETAILS " +
+                "(code text PRIMARY KEY, community text)");
+
+        ContentValues values = new ContentValues();
+
+        values.put("code", code);
+        values.put("community", "Dublin");
+
+        db.insert("LOGIN_DETAILS", null, values);
+        db.close();
+    }
+
+    public boolean loggedIn(){
+        SQLiteDatabase db = getReadableDatabase();
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        boolean verify = false;
+        Cursor cursor = db.rawQuery("SELECT count(*) FROM sqlite_master WHERE type = 'table' AND name = 'LOGIN_DETAILS'", null);
+        cursor.moveToFirst();
+        if ( cursor.getInt(0) >0 ) {
+                verify = true;
+        }
+        db.close();
+        return verify;
     }
 
     public Cursor getCommunities()

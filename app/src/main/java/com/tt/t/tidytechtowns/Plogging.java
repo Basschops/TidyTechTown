@@ -296,6 +296,7 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
                     .await();
             double distance=0;
             double time=0;
+            //Put check in here.
             for(int j=0; j<result.routes[0].legs.length;j++){
                 distance+= result.routes[0].legs[0].distance.inMeters;
                 time += result.routes[0].legs[0].duration.inSeconds;
