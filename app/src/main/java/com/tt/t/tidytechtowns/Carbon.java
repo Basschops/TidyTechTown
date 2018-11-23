@@ -15,7 +15,6 @@ import android.view.MenuItem;
 public class Carbon extends AppCompatActivity
 {
 
-
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -30,7 +29,6 @@ public class Carbon extends AppCompatActivity
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
@@ -81,6 +79,7 @@ public class Carbon extends AppCompatActivity
     }
 
 
+
     //Deleted Placeholder fragment class.
 
     /**
@@ -117,6 +116,13 @@ public class Carbon extends AppCompatActivity
             // Show 4 total pages.
             return 2;
         }
+    }
+
+    //need this to stop the app from crashing when it its turned sideways.
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
 }
