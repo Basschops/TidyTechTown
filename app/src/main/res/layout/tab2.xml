@@ -2,9 +2,11 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayout"
+    android:id="@+id/second_frag"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:tag="unique_tag"
+
   >
 
     <TextView
@@ -281,6 +283,48 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textView24"
         app:layout_constraintTop_toBottomOf="@+id/fuel_type" />
+
+    <Button
+        android:id="@+id/calculate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="38dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="33dp"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/pls"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/luas" />
+
+    <TextView
+        android:id="@+id/pls"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="45dp"
+        android:layout_marginEnd="56dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="54dp"
+        android:text="@string/total"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/calculate"
+        app:layout_constraintTop_toBottomOf="@+id/luas" />
+
+    <TextView
+        android:id="@+id/communicationaaa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="229dp"
+        android:layout_marginStart="97dp"
+        android:layout_marginTop="11dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pls" />
 
 
 </android.support.constraint.ConstraintLayout>
