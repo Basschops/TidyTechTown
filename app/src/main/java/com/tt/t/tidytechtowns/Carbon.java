@@ -1,19 +1,32 @@
 package com.tt.t.tidytechtowns;
+
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-public class Carbon extends AppCompatActivity
-{
+import android.view.View;
+import android.view.ViewGroup;
+
+import android.widget.TextView;
+
+public class Carbon extends AppCompatActivity {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -29,6 +42,8 @@ public class Carbon extends AppCompatActivity
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+
+
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
@@ -53,8 +68,43 @@ public class Carbon extends AppCompatActivity
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
+        dl = (DrawerLayout) findViewById(R.id.activity_main);
+        t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
 
-    }
+        dl.addDrawerListener(t);
+        t.syncState();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        nv = (NavigationView) findViewById(R.id.nv);
+        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+
+                switch (id) {
+                    case R.id.ratings: startScores(nv);
+                        break;
+                    case R.id.map: startMaps(nv);
+                        break;
+                    case R.id.events: startEventCalendar(nv);
+                        break;
+                    case R.id.carbon: startCarbon(nv);
+                        break;
+
+                    default:
+                        return true;
+                }
+
+                return true;
+
+            }
+        });
+
+
+    } // end onCreate
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -75,17 +125,39 @@ public class Carbon extends AppCompatActivity
             return true;
         }
 
+        if(t.onOptionsItemSelected(item))
+            return true;
+
+
         return super.onOptionsItemSelected(item);
     }
 
 
 
     //Deleted Placeholder fragment class.
+    public void startScores(View v) {
+        Intent intent = new Intent(Carbon.this, ScoresActivity.class);
+        startActivity(intent);
+    }
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
+
+
+    public void startEventCalendar(View v) {
+        Intent intent = new Intent(Carbon.this, EventActivity.class);
+        startActivity(intent);
+    }
+
+    public void startCarbon(View v) {
+        Intent intent = new Intent(Carbon.this, Carbon.class);
+        startActivity(intent);
+    }
+
+
+    public void startMaps(View v) {
+        Intent i = new Intent(getBaseContext(), MapsActivity.class);
+        startActivity(i);
+    }
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
