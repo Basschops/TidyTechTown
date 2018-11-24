@@ -52,6 +52,9 @@
         <activity
             android:name=".Carbon"
             android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label="@string/title_activity_maps" />
+        <activity android:name=".showRandomCode" />
             android:theme="@style/AppTheme.NoActionBar" />
         android:label="@string/title_activity_maps" />
         <activity android:name=".CarbonFootprint" />

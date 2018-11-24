@@ -19,23 +19,7 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-
-    public Cursor readDatabase(String argument){
-        SQLiteDatabase db = getReadableDatabase();
-        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-
-        // Need to explicitly name columns to select here
-        String [] sqlSelect = {"", "", "", "", ""};
-        // Table name
-        String sqlTables = "";
-
-        qb.setTables(sqlTables);
-        Cursor c = qb.query(db, sqlSelect, null, null, null, null, null);
-
-        c.moveToFirst();
-        return c;
-    }
-
+    // Writes new marker info to database
     public void writeDatabase(Double lat,Double lon, String type) {
         // Gets the data repository in write mode
         SQLiteDatabase db = getWritableDatabase();
@@ -50,6 +34,7 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
         db.close();
     }
 
+    // Retrieves marker info from database
     public Cursor getBins()
     {
         SQLiteDatabase db = getReadableDatabase();
@@ -65,6 +50,7 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
         return c;
     }
 
+    // Get info for plogging page from site
     public Cursor getPloggingInfo()
     {
         SQLiteDatabase db = getReadableDatabase();
@@ -80,6 +66,7 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
         return c;
     }
 
+    // retrieve recycling centre information from database
     public Cursor getCenters()
     {
         SQLiteDatabase db = getReadableDatabase();
@@ -95,6 +82,7 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
         return c;
     }
 
+    // Save new valid log in credentials
     public void saveLogIn(String code) {
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
@@ -111,6 +99,7 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
         db.close();
     }
 
+    // Check if user is already logged in
     public boolean loggedIn(){
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();

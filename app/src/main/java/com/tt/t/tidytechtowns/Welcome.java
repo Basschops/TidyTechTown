@@ -89,6 +89,10 @@ public class Welcome extends AppCompatActivity {
 
 
 
+
+
+
+
     public void startEventCalendar(View v) {
         Intent intent = new Intent(Welcome.this, EventActivity.class);
         startActivity(intent);
