@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Used in tab1 -->
+    <string-array name="household_count" >
+            <item>1</item>
+            <item>2</item>
+            <item>3</item>
+            <item>4</item>
+            <item>5</item>
+            <item>6</item>
+            <item>7</item>
+            <item>8</item>
+            <item>9</item>
+            <item>10</item>
+    </string-array>
+
+    <!--Used in tab2 -->
+
+    <string-array name="flights_types">
+
+    <item>Domestic</item>
+    <item>Short Hall</item>
+    <item>Long Hall</item>
+    </string-array>
+
+    <string-array name="vehicle_types">
+
+        <item>Car</item>
+        <item>Van</item>
+        <item>Motorbike</item>
+
+    </string-array>
+
+    <string-array name="fuel_types">
+
+        <item>Petrol</item>
+        <item>Diesel</item>
+        <item>Hybrid</item>
+        <item>Electric</item>
+
+    </string-array>
+
+
+
+</resources>

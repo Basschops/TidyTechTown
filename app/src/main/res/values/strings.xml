@@ -25,16 +25,14 @@
     <!--ShowRandomCode Strings-->
     <string name="thankYou">Thank you for registering your Community</string>
     <string name="description">To have others join and contribute to your community, please distribute this unique community code. The other members of your community can use thos unique string on the login page under "Join a Community"</string>
-
     <string name="yourRank"> Your Rankings </string>
     <string name="commRank"> Community Rankings </string>
-    <string name="title_activity_carbon">Carbon</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
-    <string name="tab_text_3">Tab 3</string>
+    <string name="tab_text_1">Home</string>
+    <string name="tab_text_2">Travel</string>
+    <string name="tab_text_3">Lifestyle</string>
 
     <!--Dialog strings-->
     <string name="ok">OK</string>
@@ -53,6 +51,44 @@
         <item>Chemical spill</item>
     </string-array>
     <string name="title_activity_plogging">Map</string>
+
+    <!--Carbon Calculator strings-->
+
+    <!--Tab1 strings-->
+    <string name="how_many">How Many People Currently Live in your home?</string>
+    <string name="electricity">Electricity</string>
+    <string name="heating">Heating</string>
+    <string name="coal">Coal</string>
+    <string name="LPG">LPG</string>
+    <string name="propane">Propane</string>
+    <string name="woord">Wood</string>
+    <string name="total">Total Co2 Emissions are: %1$f</string>
+
+    <!--Tab2 strings-->
+
+    <string name="flights">Flights</string>
+    <string name="flight_type">Please Select the flight type</string>
+    <string name="vehicle_type">Please Select the Vehicle type</string>
+    <string name="fuel_type">Please Select the fuel type</string>
+
+    <string name="trips">Trips</string>
+    <string name="vehicle">Vehicle</string>
+    <string name="milage">Milage</string>
+    <string name="pt">Public Transport</string>
+    <string name="bus">Bus</string>
+    <string name="rail">Rail</string>
+    <string name="tram">Luas/Tram</string>
+    <string name="hint" />
+
+
+    <!--Tab3 strings-->
+
+    <string name="phone">Phone Expenses</string>
+    <string name="Fand">Food and Drink Expenses</string>
+    <string name="recreation">Recreational Expenses</string>
+
+
+
 
 
 </resources>

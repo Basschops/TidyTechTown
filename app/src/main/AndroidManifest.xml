@@ -15,6 +15,7 @@
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -52,9 +53,10 @@
         <activity
             android:name=".Carbon"
             android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label="@string/title_activity_maps" />
             android:theme="@style/AppTheme.NoActionBar" />
         android:label="@string/title_activity_maps" />
-        <activity android:name=".CarbonFootprint" />
         <activity
             android:name=".Plogging"
             android:label="@string/title_activity_plogging"></activity>

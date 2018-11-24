@@ -1,6 +1,12 @@
 package com.tt.t.tidytechtowns;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -9,12 +15,22 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.Toast;
 
 public class Welcome extends AppCompatActivity {
 
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
+
 
 
     @Override
@@ -62,11 +78,6 @@ public class Welcome extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
     }
 
     @Override
@@ -77,11 +88,6 @@ public class Welcome extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
-
-
-
     public void startScores(View v) {
         Intent intent = new Intent(Welcome.this, ScoresActivity.class);
         startActivity(intent);
@@ -98,7 +104,6 @@ public class Welcome extends AppCompatActivity {
         Intent intent = new Intent(Welcome.this, Carbon.class);
         startActivity(intent);
     }
-
 
     public void startMaps(View v) {
         Intent i = new Intent(getBaseContext(), MapsActivity.class);
