@@ -58,6 +58,8 @@ public class EventActivity extends AppCompatActivity {
     private SimpleDateFormat dateFormatMonth = new SimpleDateFormat("MMMM- yyyy", Locale.getDefault());
     Date d = new Date();
 
+    private String eventClicked;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,13 +122,14 @@ public class EventActivity extends AppCompatActivity {
                         String thisevent = ev.getData().toString();
                         Toast.makeText(context, thisevent, Toast.LENGTH_SHORT).show();
                         nothingOn = false;
+                        eventClicked = thisevent;
                     }
 
 
 
                 }
 
-                if (nothingOn==true) {
+                if (nothingOn) {
 
                     Toast.makeText(context, "Nothing on today", Toast.LENGTH_SHORT).show();
                 }
@@ -197,20 +200,25 @@ public class EventActivity extends AppCompatActivity {
 
     public void notifyAttending(View v) {
 
+        if (eventClicked!=null) {
 
-        Intent email = new Intent(Intent.ACTION_SEND);
-        email.setData(Uri.parse("mailto:"));
-        //email.setType("text/plain");
-        email.setType("message/rfc822");
-        email.putExtra(Intent.EXTRA_EMAIL, new String[]{"sheena.davitt@ucdconnect.ie"});
-        email.putExtra(Intent.EXTRA_SUBJECT, "I wish to attend your event");
-        email.putExtra(Intent.EXTRA_TEXT, "I will be attending");
-        try {
-            startActivity(Intent.createChooser(email, "Send mail..."));
-        } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(EventActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+            Intent email = new Intent(Intent.ACTION_SEND);
+            email.setData(Uri.parse("mailto:"));
+            //email.setType("text/plain");
+            email.setType("message/rfc822");
+            email.putExtra(Intent.EXTRA_EMAIL, new String[]{"sheena.davitt@ucdconnect.ie"});
+            email.putExtra(Intent.EXTRA_SUBJECT, "I wish to attend the " + eventClicked);
+            email.putExtra(Intent.EXTRA_TEXT, "Dear organiser, I will be attending " + eventClicked);
+            try {
+                startActivity(Intent.createChooser(email, "Send mail..."));
+            } catch (android.content.ActivityNotFoundException ex) {
+                Toast.makeText(EventActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+            }
+
+            eventClicked=null;
         }
 
+        else Toast.makeText(EventActivity.this, "You have not selected an event", Toast.LENGTH_SHORT).show();
     }
 
 
