@@ -1,4 +1,6 @@
 package com.tt.t.tidytechtowns;
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +14,8 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
 public class Carbon extends AppCompatActivity
 {
     /**
@@ -53,6 +57,46 @@ public class Carbon extends AppCompatActivity
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
 
+        dl = (DrawerLayout) findViewById(R.id.activity_main);
+        t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
+
+        dl.addDrawerListener(t);
+        t.syncState();
+
+
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        nv = (NavigationView) findViewById(R.id.nv);
+        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+
+                switch (id) {
+                    case R.id.ratings: startScores(nv);
+                        break;
+                    case R.id.map: startMaps(nv);
+                        break;
+                    case R.id.events: startEventCalendar(nv);
+                        break;
+                    case R.id.carbon: startCarbon(nv);
+                        break;
+                    case R.id.plogging: startPlogging(nv);
+                        break;
+
+                    default:
+                        return true;
+                }
+
+                return true;
+
+            }
+        });
+
+
+
     }
 
     @Override
@@ -68,6 +112,9 @@ public class Carbon extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        if(t.onOptionsItemSelected(item))
+            return true;
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
@@ -124,4 +171,35 @@ public class Carbon extends AppCompatActivity
         super.onDestroy();
     }
 
-}
+
+
+    public void startScores(View v) {
+        Intent intent = new Intent(Carbon.this, ScoresActivity.class);
+        startActivity(intent);
+    }
+
+
+
+    public void startEventCalendar(View v) {
+        Intent intent = new Intent(Carbon.this, EventActivity.class);
+        startActivity(intent);
+    }
+
+    public void startCarbon(View v) {
+        Intent intent = new Intent(Carbon.this, Carbon.class);
+        startActivity(intent);
+    }
+
+    public void startMaps(View v) {
+        Intent i = new Intent(getBaseContext(), MapsActivity.class);
+        startActivity(i);
+    }
+
+
+
+    public void startPlogging(View v) {
+        Intent intent = new Intent(Carbon.this, Plogging.class);
+        startActivity(intent);
+    }
+
+} // end outer class
