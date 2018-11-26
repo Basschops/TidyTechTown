@@ -70,6 +70,7 @@ public class Tab2  extends Fragment implements View.OnClickListener {
     }
 
 
+
     @Override
     public void onClick(View v) {
         double carbon_number = 0;

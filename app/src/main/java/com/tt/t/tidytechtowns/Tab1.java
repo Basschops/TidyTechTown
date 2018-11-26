@@ -114,16 +114,16 @@ public class Tab1 extends Fragment implements View.OnClickListener {
             carbon_number+=re_amt;
         }
 
-        Toast.makeText(getContext(), ""+carbon_number,
-                Toast.LENGTH_SHORT).show();
+
         // Return new value in text view if greater than zero
         if(carbon_number>0) {
+            mListener.writeHomeScore(carbon_number);
             Resources resources = getResources();
             TextView plses = getView().findViewById(R.id.pls1);
-            mListener.writeHomeScore(carbon_number);
+
             double total_cc_score = mListener.dbaccess();
-            //Toast.makeText(getContext(), ""+total_cc_score,
-              //      Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), ""+total_cc_score+" "+carbon_number,
+                    Toast.LENGTH_SHORT).show();
             String tt = resources.getString(R.string.total, total_cc_score);
             plses.setText(tt);
         }

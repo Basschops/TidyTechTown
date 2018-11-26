@@ -108,7 +108,7 @@ public class Carbon extends AppCompatActivity implements Tab1.t1dbListener, Tab2
     public double dbaccess2(){
         MyDatabase db = new MyDatabase(this);
         Cursor cursor = db.getCarbonScore();
-        db.close();
+        //db.close();
         cursor.moveToFirst();
         if (cursor.getCount() == 0) {
             return 0;
