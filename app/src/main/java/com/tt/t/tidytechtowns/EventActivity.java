@@ -45,6 +45,7 @@ import java.util.Locale;
 
 public class EventActivity extends AppCompatActivity {
 
+    // variables needed for navigation drawer
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
@@ -60,28 +61,41 @@ public class EventActivity extends AppCompatActivity {
 
     private String eventClicked;
 
+
+    // initialises activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
 
 
-
+        // create calendar
         final CompactCalendarView calendar;
-        final ActionBar actionbar = getSupportActionBar();
-        actionbar.setDisplayHomeAsUpEnabled(false);
 
+        // create actionbar
+        final ActionBar actionbar = getSupportActionBar();
+
+        // enable 'up' navigation and put month name in actionbar
+        actionbar.setDisplayHomeAsUpEnabled(false);
         actionbar.setTitle(dateFormatMonth.format(d));
 
+        // finish creating calendar object
         calendar = (CompactCalendarView) findViewById(R.id.compactcalendar_view);
         calendar.setUseThreeLetterAbbreviation(true);
 
+
+        // create db connection
         db = new MyDatabase(this);
+
+        // get events from db table 'events'
         eventCursor = db.getEvents();
 
         List<String> outputArray = new ArrayList<String>();
 
 
+        // iterate over results from call to 'events' table
+        // and create an event object for each event. Then
+        // add each object to calendar
         eventCursor.moveToFirst();
         while (eventCursor.isAfterLast() == false)  {
 
@@ -101,6 +115,9 @@ public class EventActivity extends AppCompatActivity {
 
 
         // define a listener to receive callbacks when certain events happen.
+        // In this case, when user clicks on day, get date and check if it matches
+        // any events in db for that month. If so, display event info in toast, if not
+        // toast says 'nothing on today'
         calendar.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
             public void onDayClick(Date dateClicked) {
@@ -109,36 +126,33 @@ public class EventActivity extends AppCompatActivity {
                 long millisecond = dateClicked.getTime();
                 boolean nothingOn = true;
 
+                // list of events for selected month
                 List <Event> monthEvents = calendar.getEventsForMonth(millisecond);
 
-
+                // check if day selected matches date of any event in month events list
                 for (int i = 0; i <= monthEvents.size()-1; i++) {
 
                     Event ev = monthEvents.get(i);
                     Long thisdate = ev.getTimeInMillis();
 
                     if (millisecond == thisdate) {
-
+                        // print event description in toast
                         String thisevent = ev.getData().toString();
                         Toast.makeText(context, thisevent, Toast.LENGTH_SHORT).show();
                         nothingOn = false;
                         eventClicked = thisevent;
                     }
-
-
-
                 }
 
                 if (nothingOn) {
-
                     Toast.makeText(context, "Nothing on today", Toast.LENGTH_SHORT).show();
                 }
 
-
-
+                
 
             } // end onDayClick
 
+            // highlight first day of month when user moves to new month
             @Override
             public void onMonthScroll(Date firstDayOfNewMonth) {
                 actionbar.setTitle(dateFormatMonth.format(firstDayOfNewMonth));
@@ -146,18 +160,15 @@ public class EventActivity extends AppCompatActivity {
         });
 
 
+        // create DrawerLayout object for navigation menu
         dl = (DrawerLayout) findViewById(R.id.activity_main);
         t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
-
         dl.addDrawerListener(t);
         t.syncState();
-
-
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
         nv = (NavigationView) findViewById(R.id.nv);
+
+        // set options for navigation drawer - each item will trigger an activity if selected
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -189,6 +200,7 @@ public class EventActivity extends AppCompatActivity {
     } // end onCreate
 
 
+    // respond to items chosen in navigation drawer
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -199,14 +211,16 @@ public class EventActivity extends AppCompatActivity {
     }
 
 
-
+    // create email activity - will generate email to organiser with header/subject/body filled out
+    // name of event held on day selected will appear in email title and body.
     public void notifyAttending(View v) {
+
 
         if (eventClicked!=null) {
 
+            // create new email and fill out fields
             Intent email = new Intent(Intent.ACTION_SEND);
             email.setData(Uri.parse("mailto:"));
-            //email.setType("text/plain");
             email.setType("message/rfc822");
             email.putExtra(Intent.EXTRA_EMAIL, new String[]{"sheena.davitt@ucdconnect.ie"});
             email.putExtra(Intent.EXTRA_SUBJECT, "I wish to attend the " + eventClicked);
@@ -220,35 +234,37 @@ public class EventActivity extends AppCompatActivity {
             eventClicked=null;
         }
 
+        // if user has not actually chosen event, display toast to notify them of this
         else Toast.makeText(EventActivity.this, "You have not selected an event", Toast.LENGTH_SHORT).show();
     }
 
 
-
+    // start Scores activity
     public void startScores(View v) {
         Intent intent = new Intent(EventActivity.this, ScoresActivity.class);
         startActivity(intent);
     }
 
 
-
+    // start Event activity
     public void startEventCalendar(View v) {
         Intent intent = new Intent(EventActivity.this, EventActivity.class);
         startActivity(intent);
     }
 
+    // start Carbon activity
     public void startCarbon(View v) {
         Intent intent = new Intent(EventActivity.this, Carbon.class);
         startActivity(intent);
     }
 
-
+    // start Maps activity
     public void startMaps(View v) {
         Intent i = new Intent(getBaseContext(), MapsActivity.class);
         startActivity(i);
     }
 
-
+    // start plogging activity
     public void startPlogging(View v) {
         Intent intent = new Intent(EventActivity.this, Plogging.class);
         startActivity(intent);

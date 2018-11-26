@@ -18,31 +18,28 @@ import android.view.View;
 
 public class ScoresActivity extends AppCompatActivity {
 
-
+    // variables needed for navigation drawer
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
 
-
+    // initialises activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scores);
 
 
-
+        // create DrawerLayout object for navigation menu
         dl = (DrawerLayout) findViewById(R.id.activity_main);
         t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
-
         dl.addDrawerListener(t);
         t.syncState();
-
-
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
         nv = (NavigationView) findViewById(R.id.nv);
+
+
+        // set options for navigation drawer - each item will trigger an activity if selected
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -81,14 +78,12 @@ public class ScoresActivity extends AppCompatActivity {
         return true;
     }
 
+    // respond to items chosen in navigation drawer
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        // Handle action bar item clicks.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -99,31 +94,31 @@ public class ScoresActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+    // start score activity
     public void startScores(View v) {
         Intent intent = new Intent(ScoresActivity.this, ScoresActivity.class);
         startActivity(intent);
     }
 
-
-
+    // start event activity
     public void startEventCalendar(View v) {
         Intent intent = new Intent(ScoresActivity.this, EventActivity.class);
         startActivity(intent);
     }
 
+    // start Carbon activity
     public void startCarbon(View v) {
         Intent intent = new Intent(ScoresActivity.this, Carbon.class);
         startActivity(intent);
     }
 
-
+    // start maps activity
     public void startMaps(View v) {
         Intent i = new Intent(getBaseContext(), MapsActivity.class);
         startActivity(i);
     }
 
-
+    // start plogging activity
     public void startPlogging(View v) {
         Intent intent = new Intent(ScoresActivity.this, Plogging.class);
         startActivity(intent);
