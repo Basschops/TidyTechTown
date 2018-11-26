@@ -172,6 +172,8 @@ public class EventActivity extends AppCompatActivity {
                         break;
                     case R.id.carbon: startCarbon(nv);
                         break;
+                    case R.id.plogging: startPlogging(nv);
+                        break;
 
                     default:
                         return true;
@@ -244,6 +246,12 @@ public class EventActivity extends AppCompatActivity {
     public void startMaps(View v) {
         Intent i = new Intent(getBaseContext(), MapsActivity.class);
         startActivity(i);
+    }
+
+
+    public void startPlogging(View v) {
+        Intent intent = new Intent(EventActivity.this, Plogging.class);
+        startActivity(intent);
     }
 
 }// end class
