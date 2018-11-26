@@ -56,24 +56,18 @@ public class Carbon extends AppCompatActivity
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-
         dl = (DrawerLayout) findViewById(R.id.activity_main);
         t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
-
         dl.addDrawerListener(t);
         t.syncState();
 
-
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
         nv = (NavigationView) findViewById(R.id.nv);
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
-
                 switch (id) {
                     case R.id.ratings: startScores(nv);
                         break;
@@ -85,18 +79,12 @@ public class Carbon extends AppCompatActivity
                         break;
                     case R.id.plogging: startPlogging(nv);
                         break;
-
                     default:
                         return true;
                 }
-
                 return true;
-
             }
         });
-
-
-
     }
 
     @Override
@@ -124,10 +112,6 @@ public class Carbon extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-
-
-    //Deleted Placeholder fragment class.
-
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -142,43 +126,35 @@ public class Carbon extends AppCompatActivity
         public Fragment getItem(int position) {
 
             switch (position){
-
                 case 0:
                     Tab1 tab1 = new Tab1();
                     return tab1;
-
                 case 1:
                     Tab2 tab2 = new Tab2();
                     return tab2;
-
-                    default:
-                        return null;
+                default:
+                    return null;
             }
         }
 
-
+        // Show 2 total pages.
         @Override
         public int getCount() {
-            // Show 4 total pages.
             return 2;
         }
     }
 
-    //need this to stop the app from crashing when it its turned sideways.
-
+    // Required stop the app from crashing when it its turned sideways.
     @Override
     protected void onDestroy() {
         super.onDestroy();
     }
 
-
-
+    // Navigation functions
     public void startScores(View v) {
         Intent intent = new Intent(Carbon.this, ScoresActivity.class);
         startActivity(intent);
     }
-
-
 
     public void startEventCalendar(View v) {
         Intent intent = new Intent(Carbon.this, EventActivity.class);
@@ -195,11 +171,9 @@ public class Carbon extends AppCompatActivity
         startActivity(i);
     }
 
-
-
     public void startPlogging(View v) {
         Intent intent = new Intent(Carbon.this, Plogging.class);
         startActivity(intent);
     }
 
-} // end outer class
+}

@@ -1,31 +1,17 @@
 package com.tt.t.tidytechtowns;
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.nfc.Tag;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import static android.content.ContentValues.TAG;
-import static java.lang.Float.floatToIntBits;
-import static java.lang.Float.parseFloat;
-
 public class Tab1 extends Fragment implements View.OnClickListener {
+
     public static float number;
-
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,30 +19,25 @@ public class Tab1 extends Fragment implements View.OnClickListener {
 
         View rootView = inflater.inflate(R.layout.tab1, container, false);
 
-
         TextView plses = rootView.findViewById(R.id.pls);
         Resources resources = getResources();
 
-            if (number == 0.0f) {
+        if (number == 0.0f) {
+            String tt = resources.getString(R.string.total, 0.0);
+            plses.setText(tt);
+        }
+        else {
+            String tt = resources.getString(R.string.total, number);
+            plses.setText(tt);
+        }
 
-                String tt = resources.getString(R.string.total, 0.0);
-                plses.setText(tt);
- }
-            else {
-
-                  String tt = resources.getString(R.string.total, number);
-                     plses.setText(tt);
-
- }
-
-        Button b = rootView.findViewById(R.id.button5);
+        Button b = rootView.findViewById(R.id.carbon1Btn);
         b.setOnClickListener(this);
 
-
         return rootView;
-
     }
 
+    // Function for calculate button
     @Override
     public void onClick(View v) {
 
@@ -68,6 +49,7 @@ public class Tab1 extends Fragment implements View.OnClickListener {
         EditText food = getView().findViewById(R.id.food);
         EditText rec = getView().findViewById(R.id.recreational);
 
+        // Booleans to check if values have been entered/changed
         boolean electiricity_used = false;
         boolean heating_used = false;
         boolean coal_used = false;
@@ -75,18 +57,13 @@ public class Tab1 extends Fragment implements View.OnClickListener {
         boolean food_used = false;
         boolean rec_used = false;
 
-
         if (!(elec.getText().toString().matches("")) && !electiricity_used){
-
            int electricity = Integer.parseInt(elec.getText().toString());
             //calculations coming from carbon calculator.com
            float e = (float) ((electricity * .442 )/1000);
            calculate_Cf(e);
            electiricity_used = true;
-
-
         }
-
 
         if (!(heat.getText().toString().matches("")) && !heating_used) {
 
@@ -111,9 +88,8 @@ public class Tab1 extends Fragment implements View.OnClickListener {
             float p_amt = (float)(phone_amt / 1666.00);
 
             calculate_Cf(p_amt);
-
-
         }
+
         if (!(food.getText().toString().matches("")) && !food_used) {
 
             int food_amt = Integer.parseInt(food.getText().toString());
@@ -130,34 +106,23 @@ public class Tab1 extends Fragment implements View.OnClickListener {
             rec_used = true;
         }
 
+    }
+
+    // Function that refreshes results
+    public void calculate_Cf(float num) {
+        TextView plses = getView().findViewById(R.id.pls);
+        Resources resources = getResources();
+
+        if (number != 0.0f){
+            number = number + num;
+            String tt = resources.getString(R.string.total, number);
+            plses.setText(tt);
         }
-
-        public void calculate_Cf(float num) {
-
-            TextView plses = getView().findViewById(R.id.pls);
-            Resources resources = getResources();
-
-            if (number != 0.0f){
-
-                number = number + num;
-                String tt = resources.getString(R.string.total, number);
-                plses.setText(tt);
-
-
-            }
-            else {
-
-                String tt = resources.getString(R.string.total, num);
-                plses.setText(tt);
-
-
-            }
-
-
-
+        else {
+            String tt = resources.getString(R.string.total, num);
+            plses.setText(tt);
+        }
    }
-
-
 }
 
 
