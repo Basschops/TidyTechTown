@@ -32,7 +32,7 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="tab_text_1">Home</string>
     <string name="tab_text_2">Travel</string>
-    <string name="tab_text_3">Lifestyle</string>
+
 
     <!--Dialog strings-->
     <string name="ok">OK</string>
