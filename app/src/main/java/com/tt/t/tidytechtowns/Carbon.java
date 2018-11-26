@@ -1,23 +1,26 @@
 package com.tt.t.tidytechtowns;
+
 import android.content.Intent;
+import android.database.Cursor;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.TabLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-public class Carbon extends AppCompatActivity
+public class Carbon extends AppCompatActivity implements Tab1.t1dbListener, Tab2.t2dbListener
 {
+
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -86,6 +89,49 @@ public class Carbon extends AppCompatActivity
             }
         });
     }
+
+    @Override
+    public double dbaccess(){
+        MyDatabase db = new MyDatabase(this);
+        Cursor cursor = db.getCarbonScore();
+        db.close();
+        cursor.moveToFirst();
+        if (cursor.getCount() == 0) {
+            return 0;
+        }
+        else {
+            return cursor.getDouble(0);
+        }
+    }
+
+    @Override
+    public double dbaccess2(){
+        MyDatabase db = new MyDatabase(this);
+        Cursor cursor = db.getCarbonScore();
+        db.close();
+        cursor.moveToFirst();
+        if (cursor.getCount() == 0) {
+            return 0;
+        }
+        else {
+            return cursor.getDouble(0);
+        }
+    }
+
+    @Override
+    public void writeHomeScore(double home){
+        MyDatabase db = new MyDatabase(this);
+        db.writeHomeCarbon(home);
+        db.close();
+    }
+
+    @Override
+    public void writeTravelScore(double travel){
+        MyDatabase db = new MyDatabase(this);
+        db.writeTravelCarbon(travel);
+        db.close();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -117,16 +117,12 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                         break;
                     case R.id.plogging: startPlogging(nv);
                         break;
-
                     default:
                         return true;
                 }
-
                 return true;
-
             }
         });
-
     }
 
     // Set up google map

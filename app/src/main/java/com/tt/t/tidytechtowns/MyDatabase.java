@@ -20,22 +20,6 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
     }
 
 
-    public Cursor readDatabase(String argument){
-        SQLiteDatabase db = getReadableDatabase();
-        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-
-        // Need to explicitly name columns to select here
-        String [] sqlSelect = {"", "", "", "", ""};
-        // Table name
-        String sqlTables = "";
-
-        qb.setTables(sqlTables);
-        Cursor c = qb.query(db, sqlSelect, null, null, null, null, null);
-
-        c.moveToFirst();
-        return c;
-    }
-
     public void writeDatabase(Double lat,Double lon, String type) {
         // Gets the data repository in write mode
         SQLiteDatabase db = getWritableDatabase();
@@ -175,5 +159,69 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
         return resultSet;
     }
 
+    public Cursor getCarbonScore()
+    {
+        SQLiteDatabase db = getReadableDatabase();
 
+
+        db.execSQL(" CREATE TABLE IF NOT EXISTS CarbonScore " +
+                "(home NUMBER DEFAULT 0, travel NUMBER DEFAULT 0, total NUMBER DEFAULT 0)");
+        db.rawQuery("DELETE FROM CarbonScore",null);
+        ContentValues values = new ContentValues();
+        values.put("home", 0);
+        values.put("travel", 0);
+        values.put("total", 0);
+
+        db.insert("CarbonScore", null, values);
+
+        Cursor resultSet = db.rawQuery("SELECT  total FROM CarbonScore",null);
+        resultSet.moveToFirst();
+        db.close();
+
+        return resultSet;
+    }
+
+    public void writeHomeCarbon(double home_score){
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        double travel;
+        Cursor cursor = db.rawQuery("SELECT  travel FROM CarbonScore",null);
+        cursor.moveToFirst();
+        if (cursor.getCount()>0){
+            travel = cursor.getDouble(0) ;
+        }
+        else{  travel = 0; }
+        values.put("home", home_score);
+        values.put("travel", travel);
+        values.put("total", home_score+travel);
+
+        db.rawQuery("DELETE FROM CarbonScore",null);
+
+        db.insert("CarbonScore", null, values);
+        db.close();
+    }
+
+    public void writeTravelCarbon(double travel_score){
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        double home;
+        Cursor cursor = db.rawQuery("SELECT  home FROM CarbonScore",null);
+        cursor.moveToFirst();
+        if (cursor.getCount()>0){
+            home = cursor.getDouble(0) ;
+        }
+        else{  home = 0; }
+        values.put("travel", travel_score);
+        values.put("home", home);
+        values.put("total", travel_score+home);
+
+        db.rawQuery("DELETE FROM CarbonScore",null);
+
+        db.insert("CarbonScore", null, values);
+        db.close();
+    }
 }

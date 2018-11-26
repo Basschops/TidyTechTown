@@ -1,4 +1,6 @@
 package com.tt.t.tidytechtowns;
+
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,10 +10,32 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Tab1 extends Fragment implements View.OnClickListener {
 
+    public interface t1dbListener {
+        double dbaccess();
+        void writeHomeScore(double home);
+    }
+
+    t1dbListener mListener;
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        // Verify that the host activity implements the callback interface
+        try {
+            // Instantiate the NoticeDialogListener so we can send events to the host
+            mListener = (t1dbListener) context;
+        } catch (ClassCastException e) {
+            // The activity doesn't implement the interface, throw exception
+            throw new ClassCastException(getActivity().toString()
+                    + " must implement reportDialogListener");
+        }
+    }
+
     public static float number;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -19,18 +43,17 @@ public class Tab1 extends Fragment implements View.OnClickListener {
 
         View rootView = inflater.inflate(R.layout.tab1, container, false);
 
-        TextView plses = rootView.findViewById(R.id.pls);
+        TextView plses = rootView.findViewById(R.id.pls1);
         Resources resources = getResources();
-
-        if (number == 0.0f) {
-            String tt = resources.getString(R.string.total, 0.0);
+        double cc_score = mListener.dbaccess();
+        if (cc_score == 0.0f) {
+            String tt = "Enter details";
             plses.setText(tt);
         }
         else {
-            String tt = resources.getString(R.string.total, number);
+            String tt = resources.getString(R.string.total, cc_score);
             plses.setText(tt);
         }
-
         Button b = rootView.findViewById(R.id.carbon1Btn);
         b.setOnClickListener(this);
 
@@ -49,80 +72,62 @@ public class Tab1 extends Fragment implements View.OnClickListener {
         EditText food = getView().findViewById(R.id.food);
         EditText rec = getView().findViewById(R.id.recreational);
 
-        // Booleans to check if values have been entered/changed
-        boolean electiricity_used = false;
-        boolean heating_used = false;
-        boolean coal_used = false;
-        boolean phone_used = false;
-        boolean food_used = false;
-        boolean rec_used = false;
+        double carbon_number = 0;
 
-        if (!(elec.getText().toString().matches("")) && !electiricity_used){
+        if (!(elec.getText().toString().matches(""))){
            int electricity = Integer.parseInt(elec.getText().toString());
             //calculations coming from carbon calculator.com
-           float e = (float) ((electricity * .442 )/1000);
-           calculate_Cf(e);
-           electiricity_used = true;
+           float e = (float) ((electricity * 0.442 )/1000);
+           carbon_number+=e;
         }
 
-        if (!(heat.getText().toString().matches("")) && !heating_used) {
+        if (!(heat.getText().toString().matches(""))) {
 
             int heating = Integer.parseInt(heat.getText().toString());
             //calculations coming from carbon calculator.com
             float h = (float) (heating/ 315.0);
-            calculate_Cf(h);
-            heating_used = true;
+            carbon_number+=h;
         }
 
-        if (!(coal.getText().toString().equals("")) && !coal_used){
+        if (!(coal.getText().toString().equals(""))){
             int coaleen = Integer.parseInt(coal.getText().toString());
-           float c = (float) (coaleen * 2.88166667);
-            calculate_Cf(c);
-            coal_used = true;
+            float c = (float) (coaleen * 2.88166667);
+            carbon_number+=c;
         }
 
         //based on calculations from https://www.carbonfootprint.com/calculator.aspx
-        if (!(phone.getText().toString().matches("")) && !phone_used){
-
+        if (!(phone.getText().toString().matches("")) ){
             int phone_amt = Integer.parseInt(phone.getText().toString());
             float p_amt = (float)(phone_amt / 1666.00);
-
-            calculate_Cf(p_amt);
+            carbon_number+=p_amt;
         }
 
-        if (!(food.getText().toString().matches("")) && !food_used) {
-
+        if (!(food.getText().toString().matches(""))) {
             int food_amt = Integer.parseInt(food.getText().toString());
             float amt = (float) (food_amt / 1831.00);
-            calculate_Cf(amt);
-            phone_used = true;
-
+            carbon_number+=amt;
         }
 
-        if (!(rec.getText().toString().matches("")) && !rec_used){
+        if (!(rec.getText().toString().matches(""))){
             int rec_amt = Integer.parseInt(rec.getText().toString());
             float re_amt = (float)(rec_amt /3571.00);
-            calculate_Cf(re_amt);
-            rec_used = true;
+            carbon_number+=re_amt;
         }
 
+        Toast.makeText(getContext(), ""+carbon_number,
+                Toast.LENGTH_SHORT).show();
+        // Return new value in text view if greater than zero
+        if(carbon_number>0) {
+            Resources resources = getResources();
+            TextView plses = getView().findViewById(R.id.pls1);
+            mListener.writeHomeScore(carbon_number);
+            double total_cc_score = mListener.dbaccess();
+            //Toast.makeText(getContext(), ""+total_cc_score,
+              //      Toast.LENGTH_SHORT).show();
+            String tt = resources.getString(R.string.total, total_cc_score);
+            plses.setText(tt);
+        }
     }
-
-    // Function that refreshes results
-    public void calculate_Cf(float num) {
-        TextView plses = getView().findViewById(R.id.pls);
-        Resources resources = getResources();
-
-        if (number != 0.0f){
-            number = number + num;
-            String tt = resources.getString(R.string.total, number);
-            plses.setText(tt);
-        }
-        else {
-            String tt = resources.getString(R.string.total, num);
-            plses.setText(tt);
-        }
-   }
 }
 
 

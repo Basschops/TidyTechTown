@@ -124,7 +124,7 @@
 
 
     <TextView
-        android:id="@+id/pls"
+        android:id="@+id/pls1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="84dp"
@@ -212,7 +212,7 @@
         android:layout_marginStart="1dp"
         android:ems="5"
         android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/pls"
+        app:layout_constraintBottom_toTopOf="@+id/pls1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textView9"
@@ -229,7 +229,7 @@
         android:layout_marginTop="28dp"
         android:ems="5"
         android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/pls"
+        app:layout_constraintBottom_toTopOf="@+id/pls1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView15"
