@@ -334,7 +334,9 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         mMarkerArray.add(marker);
         db.writeDatabase(currentLocation.latitude, currentLocation.longitude, "Bin");
+        db.addScore("Bin");
         db.close();
+
     }
 
 
@@ -514,29 +516,30 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                         .defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
                 mLitterArray.add(marker);
                 db.writeDatabase(currentLocation.latitude, currentLocation.longitude, type);
+                db.addScore(type);
                 break;
             case "Dumping":
                 marker = mMap.addMarker(new MarkerOptions().position(you).title(type).icon(BitmapDescriptorFactory
                         .defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
                 mDumpingArray.add(marker);
                 db.writeDatabase(currentLocation.latitude, currentLocation.longitude, type);
+                db.addScore(type);
                 break;
             case "Graffiti":
                 marker = mMap.addMarker(new MarkerOptions().position(you).title(type).icon(BitmapDescriptorFactory
                         .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
                 mGraffitiArray.add(marker);
                 db.writeDatabase(currentLocation.latitude, currentLocation.longitude, type);
+                db.addScore(type);
                 break;
             case "Chemical spill":
                 marker = mMap.addMarker(new MarkerOptions().position(you).title(type).icon(BitmapDescriptorFactory
                         .defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
                 mSpillArray.add(marker);
                 db.writeDatabase(currentLocation.latitude, currentLocation.longitude, type);
+                db.addScore(type);
                 break;
-
-
         }
-
     }
 
     // Connected to 'show/hide report' button.

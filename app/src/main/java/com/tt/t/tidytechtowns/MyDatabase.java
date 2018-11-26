@@ -8,17 +8,57 @@ import android.database.sqlite.SQLiteQueryBuilder;
 
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
+import org.joda.time.LocalDateTime;
+
 public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
 {
 
     private static final String DATABASE_NAME = "tidytechtowndb.db";
     private static final int DATABASE_VERSION = 1;
+    private static final double MARKER_WEIGHT = 20;
+    private static final double CARBON_WEIGHT = 2000;
+
 
     public MyDatabase(Context context)
     {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    // Keeps track of the markers that the user places, for scoring purposes
+    public void addScore(String type){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(" CREATE TABLE IF NOT EXISTS markerScore " +
+                "(type STRING , date DATETIME )");
+        ContentValues values = new ContentValues();
+        values.put("type", type);
+        values.put("date", String.valueOf(LocalDateTime.now()));
+        db.insert("markerScore", null, values);
+        db.close();
+    }
+
+    // Calculates users score based on markers placed and carbon calculator.
+    public double returnScore(){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(" CREATE TABLE IF NOT EXISTS markerScore " +
+                "(type STRING , date DATETIME )");
+
+        db.execSQL(" CREATE TABLE IF NOT EXISTS CarbonScores " +
+                "(id integer PRIMARY KEY DEFAULT 1, home NUMBER DEFAULT 0, travel NUMBER DEFAULT 0, total NUMBER DEFAULT 0)");
+
+        Cursor cursor1 = db.rawQuery("SELECT  count(*) FROM markerScore",null);
+        cursor1.moveToFirst();
+
+        Cursor cursor2 = db.rawQuery("SELECT total FROM CarbonScores",null);
+        cursor2.moveToFirst();
+        double carbonScore;
+        if(cursor2.getCount()>0){
+            carbonScore = (1/cursor2.getDouble(0));
+        }
+        else {carbonScore=0;}
+
+        double totalScore = cursor1.getDouble(0)*MARKER_WEIGHT + carbonScore*CARBON_WEIGHT;
+        return totalScore;
+    }
 
     public void writeDatabase(Double lat,Double lon, String type) {
         // Gets the data repository in write mode
