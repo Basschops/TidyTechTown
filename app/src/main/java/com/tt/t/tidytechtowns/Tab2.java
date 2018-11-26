@@ -53,7 +53,7 @@ public class Tab2  extends Fragment implements View.OnClickListener {
         TextView plses = (TextView) rootView.findViewById(R.id.pls1);
         Resources resources = getResources();
 
-        double cc_score = mListener.dbaccess2();
+        int cc_score = (int) Math.round(mListener.dbaccess2());
         if (cc_score == 0.0f) {
             String tt = "Enter details";
             plses.setText(tt);
@@ -180,7 +180,7 @@ public class Tab2  extends Fragment implements View.OnClickListener {
             TextView plses = (TextView) getView().findViewById(R.id.pls1);
             Resources resources = getResources();
             mListener.writeTravelScore(carbon_number);
-            double total_cc_score = mListener.dbaccess2();
+            int total_cc_score = (int) Math.round(mListener.dbaccess2());
             tt = resources.getString(R.string.total, total_cc_score);
             plses.setText(tt);
         }

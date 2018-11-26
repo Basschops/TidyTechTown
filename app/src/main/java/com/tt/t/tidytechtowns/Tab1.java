@@ -45,7 +45,7 @@ public class Tab1 extends Fragment implements View.OnClickListener {
 
         TextView plses = rootView.findViewById(R.id.pls1);
         Resources resources = getResources();
-        double cc_score = mListener.dbaccess();
+        int cc_score = (int) Math.round(mListener.dbaccess());
         if (cc_score == 0.0f) {
             String tt = "Enter details";
             plses.setText(tt);
@@ -121,7 +121,7 @@ public class Tab1 extends Fragment implements View.OnClickListener {
             Resources resources = getResources();
             TextView plses = getView().findViewById(R.id.pls1);
 
-            double total_cc_score = mListener.dbaccess();
+            int total_cc_score = (int) Math.round(mListener.dbaccess());
             Toast.makeText(getContext(), ""+total_cc_score+" "+carbon_number,
                     Toast.LENGTH_SHORT).show();
             String tt = resources.getString(R.string.total, total_cc_score);
