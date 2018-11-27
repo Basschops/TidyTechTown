@@ -90,11 +90,11 @@ public class Carbon extends AppCompatActivity implements Tab1.t1dbListener, Tab2
         });
     }
 
+    // DB access through interface for Tab1
     @Override
     public double dbaccess(){
         MyDatabase db = new MyDatabase(this);
         Cursor cursor = db.getCarbonScore();
-        db.close();
         cursor.moveToFirst();
         if (cursor.getCount() == 0) {
             return 0;
@@ -104,11 +104,11 @@ public class Carbon extends AppCompatActivity implements Tab1.t1dbListener, Tab2
         }
     }
 
+    // DB access through interface for Tab2
     @Override
     public double dbaccess2(){
         MyDatabase db = new MyDatabase(this);
         Cursor cursor = db.getCarbonScore();
-        //db.close();
         cursor.moveToFirst();
         if (cursor.getCount() == 0) {
             return 0;
@@ -118,6 +118,7 @@ public class Carbon extends AppCompatActivity implements Tab1.t1dbListener, Tab2
         }
     }
 
+    // Write home carbon score from Tab1
     @Override
     public void writeHomeScore(double home){
         MyDatabase db = new MyDatabase(this);
@@ -125,13 +126,13 @@ public class Carbon extends AppCompatActivity implements Tab1.t1dbListener, Tab2
         db.close();
     }
 
+    // Write travel carbon score from Tab2
     @Override
     public void writeTravelScore(double travel){
         MyDatabase db = new MyDatabase(this);
         db.writeTravelCarbon(travel);
         db.close();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -154,7 +155,6 @@ public class Carbon extends AppCompatActivity implements Tab1.t1dbListener, Tab2
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

@@ -44,20 +44,13 @@ public class Welcome extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-
-
-
-
         dl = findViewById(R.id.activity_main);
         t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
 
         dl.addDrawerListener(t);
         t.syncState();
 
-
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
         nv = findViewById(R.id.nv);
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -100,10 +93,6 @@ public class Welcome extends AppCompatActivity {
 
         JSONWeatherTask task = new JSONWeatherTask();
         task.execute(city);
-
-
-
-
     }
 
     @Override
@@ -115,16 +104,10 @@ public class Welcome extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-
-
-
     public void startScores(View v) {
         Intent intent = new Intent(Welcome.this, ScoresActivity.class);
         startActivity(intent);
     }
-
-
 
     public void startEventCalendar(View v) {
         Intent intent = new Intent(Welcome.this, EventActivity.class);
@@ -135,7 +118,6 @@ public class Welcome extends AppCompatActivity {
         Intent intent = new Intent(Welcome.this, Carbon.class);
         startActivity(intent);
     }
-
 
     public void startMaps(View v) {
         Intent i = new Intent(getBaseContext(), MapsActivity.class);
@@ -164,10 +146,7 @@ public class Welcome extends AppCompatActivity {
                 e.printStackTrace();
             }
             return weather;
-
         }
-
-
 
         @Override
         protected void onPostExecute(Weather weather) {

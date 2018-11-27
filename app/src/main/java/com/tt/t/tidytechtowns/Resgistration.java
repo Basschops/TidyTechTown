@@ -1,10 +1,8 @@
 package com.tt.t.tidytechtowns;
 
-import android.content.Context;
 import android.content.Intent;
-import android.support.v4.widget.TextViewCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -37,9 +35,10 @@ public class Resgistration extends AppCompatActivity {
             return;
         }
 
+        // Code to randomly generate code for new community
         int leftLimit = 97; // letter 'a'
         int rightLimit = 122; // letter 'z'
-        int targetStringLength = 10;
+        int targetStringLength = 6;
         Random random = new Random();
         StringBuilder buffer = new StringBuilder(targetStringLength);
         for (int i = 0; i < targetStringLength; i++) {

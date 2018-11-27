@@ -12,19 +12,20 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-
+// Calculates carbon footprint due to travel
 public class Tab2  extends Fragment implements View.OnClickListener {
 
-    public static float number2;
     public static float f;
     public static float ftype;
     public static float vtype;
     public static String tt;
 
+    // Interface listener to pass data to database
     public interface t2dbListener {
         double dbaccess2();
         void writeTravelScore(double home);
     }
+
     t2dbListener mListener;
 
     @Override
@@ -32,7 +33,6 @@ public class Tab2  extends Fragment implements View.OnClickListener {
         super.onAttach(context);
         // Verify that the host activity implements the callback interface
         try {
-            // Instantiate the NoticeDialogListener so we can send events to the host
             mListener = (Tab2.t2dbListener) context;
         } catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
@@ -41,11 +41,9 @@ public class Tab2  extends Fragment implements View.OnClickListener {
         }
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
 
         // Use the same key you used before to retrieve the data.
         View rootView = inflater.inflate(R.layout.tab2, container, false);
@@ -69,13 +67,11 @@ public class Tab2  extends Fragment implements View.OnClickListener {
         return rootView;
     }
 
-
-
     @Override
     public void onClick(View v) {
         double carbon_number = 0;
 
-        //dealing with values from the spinners first and they can be used with other values.
+        // dealing with values from the spinners first and they can be used with other values.
         Spinner flight_t = (Spinner) getView().findViewById(R.id.flight_type);
         String text = flight_t.getSelectedItem().toString();
 

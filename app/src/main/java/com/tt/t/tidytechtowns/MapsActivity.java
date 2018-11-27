@@ -55,7 +55,6 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
     private GoogleMap mMap;
     private boolean showing = true;
-    private boolean snackbarShown = false;
     private boolean showingRecycling = false;
     private static LatLng currentLocation;
     private LocationRequest mLocationRequest;
@@ -70,10 +69,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     private ArrayList<Marker> mGraffitiArray = new ArrayList<Marker>();
     private ArrayList<Marker> mRecyclingArray = new ArrayList<Marker>();
 
-
     private MyDatabase db;
     private Cursor markers;
-
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
@@ -93,12 +90,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
         dl = (DrawerLayout) findViewById(R.id.activity_main);
         t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
-
         dl.addDrawerListener(t);
         t.syncState();
-
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
         nv = (NavigationView) findViewById(R.id.nv);
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -136,9 +129,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         loadMarkers();
     }
 
-    /**
-     * Load all markers from database memory and store in appropriate arrays
-     */
+
+    // Load all markers from database memory and store in appropriate arrays
     public void loadMarkers(){
         db = new MyDatabase(this);
         markers = db.getBins();
@@ -194,13 +186,11 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                             .HUE_MAGENTA)).visible(false));
             mRecyclingArray.add(marker);
         } while (markers.moveToNext());
-
         db.close();
     }
 
-    /**
-     * Connected to show/hide bins button to show bins on map.
-     */
+
+    //Connected to show/hide bins button to show bins on map.
     public void showBins(View view) {
         Button button = (Button) findViewById(R.id.binBtn);
         if (showing) {
@@ -214,34 +204,23 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         }
     }
 
-        /**
-         * Connected to show/hide recycling center button to show bins on map.
-         */
-        public void showRecycling(View view) {
-            Button button = (Button) findViewById(R.id.recyBtn);
-            if (showingRecycling) {
-                hideMarkers(mRecyclingArray);
-                button.setText("Show centers");
-                showingRecycling = false;
-            } else {
-                showMarkers(mRecyclingArray);
-                button.setText("Hide centers");
-                showingRecycling = true;
-            }
-        }
 
-    /**
-     * Connected to report issue button. Reports issue and adds marker to map at user location
-     */
+    //Connected to show/hide recycling center button to show centres on map.
+    public void showRecycling(View view) {
+        Button button = (Button) findViewById(R.id.recyBtn);
+        if (showingRecycling) {
+            hideMarkers(mRecyclingArray);
+            button.setText("Show centers");
+            showingRecycling = false;
+        } else {
+            showMarkers(mRecyclingArray);
+            button.setText("Hide centers");
+            showingRecycling = true;
+        }
+    }
+
+    //Connected to report issue button. Reports issue and adds marker to map at user location
     public void reportIssue(View view) {
-
-        // If no location permission
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat
-                .checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED)  {
-            checkLocationPermission();
-        }
         if (currentLocation == null) {
             Toast.makeText(getApplicationContext(), "Acquiring location ... Please try again",
                     Toast.LENGTH_SHORT).show();
@@ -253,9 +232,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         }
     }
 
-    /**
-     * Adds bin marker to map at user location
-     */
+
+     //Adds bin marker to map at user location
     public void addBinMarker(View view) {
         // If no location permission
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -318,7 +296,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
             if (loc1.distanceTo(loc2) < 50) {
                 near = true;
-                // If close to one that is enough to break
+                // If close to one that is enough to break loop
                 break;
             }
         }
@@ -336,9 +314,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         db.writeDatabase(currentLocation.latitude, currentLocation.longitude, "Bin");
         db.addScore("Bin");
         db.close();
-
     }
-
 
     // opens dialog box if location is near an existing marker
     public void openBinDialog() {
@@ -349,9 +325,6 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     // uses interface to dialog box positive button after clicking 'add bin'
     @Override
     public void proximityPositiveClick(proximityDialog dialog) {
-        // Need to figure out how to put the function in here.
-        // Variable to switch function.....?
-        //LatLng you = new LatLng(currentLocation.latitude, currentLocation.longitude);
         addMarker(currentLocation);
     }
 
@@ -505,6 +478,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
     /**
      * Adds marker depending on selection in report dialog
+     * Also records in database for scoring points
      * @param type of marker (report)
      * @param you position of user
      */
@@ -512,28 +486,32 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         Marker marker;
         switch (type) {
             case "Litter":
-                marker = mMap.addMarker(new MarkerOptions().position(you).title(type).icon(BitmapDescriptorFactory
+                marker = mMap.addMarker(new MarkerOptions().position(you).title(type)
+                        .icon(BitmapDescriptorFactory
                         .defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
                 mLitterArray.add(marker);
                 db.writeDatabase(currentLocation.latitude, currentLocation.longitude, type);
                 db.addScore(type);
                 break;
             case "Dumping":
-                marker = mMap.addMarker(new MarkerOptions().position(you).title(type).icon(BitmapDescriptorFactory
+                marker = mMap.addMarker(new MarkerOptions().position(you).title(type)
+                        .icon(BitmapDescriptorFactory
                         .defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
                 mDumpingArray.add(marker);
                 db.writeDatabase(currentLocation.latitude, currentLocation.longitude, type);
                 db.addScore(type);
                 break;
             case "Graffiti":
-                marker = mMap.addMarker(new MarkerOptions().position(you).title(type).icon(BitmapDescriptorFactory
+                marker = mMap.addMarker(new MarkerOptions().position(you).title(type)
+                        .icon(BitmapDescriptorFactory
                         .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
                 mGraffitiArray.add(marker);
                 db.writeDatabase(currentLocation.latitude, currentLocation.longitude, type);
                 db.addScore(type);
                 break;
             case "Chemical spill":
-                marker = mMap.addMarker(new MarkerOptions().position(you).title(type).icon(BitmapDescriptorFactory
+                marker = mMap.addMarker(new MarkerOptions().position(you).title(type)
+                        .icon(BitmapDescriptorFactory
                         .defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
                 mSpillArray.add(marker);
                 db.writeDatabase(currentLocation.latitude, currentLocation.longitude, type);
@@ -591,7 +569,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
     }
 
-    // In 'cancel' is pressed in showHideDialog
+    // If 'cancel' is pressed in showHideDialog
     @Override
     public void reportShowHideNegative(showHideReports dialog) {
         return;

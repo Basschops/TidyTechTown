@@ -60,6 +60,7 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
         return totalScore;
     }
 
+    // Used for writing markers to database
     public void writeDatabase(Double lat,Double lon, String type) {
         // Gets the data repository in write mode
         SQLiteDatabase db = getWritableDatabase();
@@ -74,6 +75,7 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
         db.close();
     }
 
+    // Retrieve marker information from database
     public Cursor getBins()
     {
         SQLiteDatabase db = getReadableDatabase();
@@ -89,6 +91,7 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
         return c;
     }
 
+    // Get information for plogging page
     public Cursor getPloggingInfo()
     {
         SQLiteDatabase db = getReadableDatabase();
@@ -104,6 +107,7 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
         return c;
     }
 
+    // Retrieve recycling center information from database
     public Cursor getCenters()
     {
         SQLiteDatabase db = getReadableDatabase();
@@ -119,6 +123,7 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
         return c;
     }
 
+    // Save log in details
     public void saveLogIn(String code) {
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
@@ -135,6 +140,7 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
         db.close();
     }
 
+    // Returns boolean if user log in details are saved
     public boolean loggedIn(){
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
@@ -156,37 +162,33 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
         Cursor resultSet = db.rawQuery("Select * from communities",null);
         resultSet.moveToFirst();
 
-
-
         return resultSet;
     }
 
+    // Retrieves scores of individuals
     public Cursor getIndScores()
     {
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
-
         Cursor resultSet = db.rawQuery("Select * from individual",null);
         resultSet.moveToFirst();
 
         return resultSet;
-
     }
 
+    // Retrieves event information
     public Cursor getEvents()
     {
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
         Cursor resultSet = db.rawQuery("Select * from events",null);
-        //resultSet.moveToFirst();
-
 
         return resultSet;
     }
 
-
+    // Retrieves community scores
     public Cursor getCommunityTotals()
     {
         SQLiteDatabase db = getReadableDatabase();
@@ -199,6 +201,7 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
         return resultSet;
     }
 
+    // Retrieves user carbon score. Creates table if not already made.
     public Cursor getCarbonScore()
     {
         SQLiteDatabase db = getReadableDatabase();
@@ -211,7 +214,7 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
             ContentValues values = new ContentValues();
             values.put("home", 0);
             values.put("travel", 0);
-            values.put("total", 9);
+            values.put("total", 0);
             db.insert("CarbonScores", null, values);
         }
 
@@ -222,6 +225,7 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
         return resultSet;
     }
 
+    // Write home carbon score to database and update total
     public void writeHomeCarbon(double home_score){
         SQLiteDatabase db = getWritableDatabase();
 
@@ -240,11 +244,11 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
         values.put("travel", travel);
         values.put("total", total);
 
-        //db.rawQuery("REPLACE INTO CarbonScore ()",null);
         db.replace("CarbonScores", null, values);
         db.close();
     }
 
+    // Write travel carbon score to database and update total
     public void writeTravelCarbon(double travel_score){
         SQLiteDatabase db = getWritableDatabase();
 
