@@ -48,12 +48,17 @@ public class CommunityScoresFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+
+    // assign view variables and return view... ALSO
+    // this function fetches the updated community totals and then
+    // adds them to the fragments for them to be displayed
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_scores, container, false);
 
+        // get community scores from database and place them in arraylist
         db = new MyDatabase(getActivity());
         results = db.getCommunityTotals();
         int number = results.getCount();
@@ -78,6 +83,7 @@ public class CommunityScoresFragment extends Fragment {
 
         db.close();
 
+        // add scores to list
         mScoresAdapter =
                 new ArrayAdapter<String>(
                         getActivity(), // The current context (this activity)
