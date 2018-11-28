@@ -6,11 +6,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -31,12 +33,8 @@ public class Welcome extends AppCompatActivity {
     private TextView temp;
     private TextView tempMin;
     private TextView tempMax;
-    private TextView direct;
-    private TextView speed;
-    private TextView progress;
-    private TextView appTemp;
 
-    private ProgressBar humid;
+    private ImageView splash;
 
 
     @Override
@@ -92,11 +90,7 @@ public class Welcome extends AppCompatActivity {
         temp = findViewById(R.id.temp);
         tempMin = findViewById(R.id.tempMin);
         tempMax = findViewById(R.id.tempMax);
-        direct = findViewById(R.id.direct);
-        speed = findViewById(R.id.speed);
-        humid = findViewById(R.id.progressBar);
-        progress = findViewById(R.id.progress);
-        appTemp = findViewById(R.id.appTemp);
+        splash = findViewById(R.id.imageView);
 
         JSONWeatherTask task = new JSONWeatherTask();
         task.execute(city);
@@ -183,48 +177,27 @@ public class Welcome extends AppCompatActivity {
             temp.setText(format("%d\u00b0", Math.round(weather.temperature.getTemp() - 273.15)));
             tempMin.setText(format("%d\u00b0", Math.round(weather.temperature.getMinTemp() - 273.15)));
             tempMax.setText(format("%d\u00b0", Math.round(weather.temperature.getMaxTemp() - 273.15)));
-            speed.setText(format("%1.2f m/s", weather.wind.getSpeed()));
-            float humidity = weather.currentCondition.getHumidity();
-            humid.setProgress(Integer.parseInt(format("%d", Math.round(humidity))));
-            progress.setText(format("%1.0f%%", humidity));
-            if (humidity >= 55f){
-                progress.setTextColor(Color.parseColor("#FFFFFF"));
-            }
-            float windAngle = weather.wind.getDeg();
-            if (windAngle > 337.5f || windAngle <= 22.5f){
-                direct.setText("North");
-            } else if (windAngle > 22.5f || windAngle <= 67.5f){
-                direct.setText("North East");
-            } else if (windAngle > 67.5f || windAngle <= 112.5f){
-                direct.setText("East");
-            } else if (windAngle > 112.5f || windAngle <= 157.5f){
-                direct.setText("South East");
-            } else if (windAngle > 157.5f || windAngle <= 202.5f){
-                direct.setText("South");
-            } else if (windAngle > 202.5f || windAngle <= 247.5){
-                direct.setText("South West");
-            } else if (windAngle > 247.5f || windAngle <= 292.5f){
-                direct.setText("West");
-            } else if (windAngle > 292.5f || windAngle <= 337.5f){
-                direct.setText("North West");
+            String condition = weather.currentCondition.getCondition();
+            switch (condition){
+                case "Rain":
+                case "Drizzle":
+                case "Thunderstorm":
+                    splash.setImageResource(R.drawable.rain);
+                    break;
+                case "Snow":
+                    splash.setImageResource(R.drawable.snow);
+                    break;
+                case "Clouds":
+                    splash.setImageResource(R.drawable.clouds);
+                    break;
+                case "Clear":
+                    splash.setImageResource(R.drawable.sun);
+                    break;
+                default:
+                    splash.setImageResource(R.drawable.clouds);
+                    break;
             }
 
-//            float tempC = weather.temperature.getTemp() - 273.15f;
-//            float wSpeed = weather.wind.getSpeed();
-//            float appTempC = tempC;
-//            if (tempC <= 10.5d){
-//                appTempC = (float) (13.12f + 0.6215f*tempC - 11.37f*(Math.pow(wSpeed, 0.16f))+0.3965f*tempC*(Math.pow(wSpeed, 0.16f)));
-//            } else if (tempC >= 26.66d){
-//                float tempF = tempC*1.8f + 32;
-//                float appTempF = (float) (42.38 + (2.05*tempF) + (10.14*humidity) - (0.22*tempF*humidity)
-//                        - (6.83*Math.pow(10, -3)*Math.pow(tempF, 2))
-//                        - (5.48*Math.pow(10, -2)*Math.pow(humidity, 2))
-//                        + (1.23*Math.pow(10d, -3)*Math.pow(tempF, 2)*humidity)
-//                        + (8.53*Math.pow(10d, -4)*tempF*Math.pow(humidity, 2))
-//                        - (1.99*Math.pow(10d, -6)*Math.pow(tempF, 2)*Math.pow(humidity, 2)));
-//                appTempC = 0.5556f*(appTempF-32f);
-//            }
-//            appTemp.setText(format("%1.2f\u00b0", appTempC));
         }
     }
 

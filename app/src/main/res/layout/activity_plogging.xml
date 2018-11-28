@@ -20,7 +20,7 @@
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="438dp"
+        android:layout_height="650dp"
         tools:context=".Plogging" />
 
     <LinearLayout

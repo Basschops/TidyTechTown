@@ -9,322 +9,258 @@
 
   >
 
-    <TextView
-        android:id="@+id/flights"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/firstContainer"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="63dp"
-        android:layout_marginEnd="326dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="3dp"
-        android:text="@string/flights"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/Vehicle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/Vehicle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="320dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/vehicle"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView20" />
-
-    <TextView
-        android:id="@+id/pt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="265dp"
-        android:layout_marginEnd="245dp"
-        android:layout_marginStart="5dp"
-        android:text="@string/pt"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Spinner
-        android:id="@+id/flight_type"
-        android:layout_width="145dp"
-        android:layout_height="28dp"
-        android:layout_marginBottom="72dp"
-        android:layout_marginEnd="48dp"
-        android:layout_marginStart="17dp"
-        android:layout_marginTop="29dp"
-        android:entries="@array/flights_types"
-        app:layout_constraintBottom_toTopOf="@+id/vehicle_type"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textView21"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <Spinner
-        android:id="@+id/vehicle_type"
-        android:layout_width="130dp"
-        android:layout_height="25dp"
-        android:layout_marginEnd="28dp"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="28dp"
-        android:entries="@array/vehicle_types"
-        app:layout_constraintBottom_toTopOf="@+id/fuel_type"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView25"
-        app:layout_constraintTop_toBottomOf="@+id/trips" />
-
-    <Spinner
-        android:id="@+id/fuel_type"
-        android:layout_width="131dp"
-        android:layout_height="25dp"
         android:layout_marginEnd="32dp"
-        android:entries="@array/fuel_types"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/vehicle_type" />
-
-    <TextView
-        android:id="@+id/textView17"
-        android:layout_width="33dp"
-        android:layout_height="20dp"
-        android:layout_marginBottom="36dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="24dp"
-        android:text="@string/bus"
-        app:layout_constraintBottom_toTopOf="@+id/textView18"
-        app:layout_constraintEnd_toStartOf="@+id/rail"
-        app:layout_constraintHorizontal_bias="0.193"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pt" />
-
-    <TextView
-        android:id="@+id/textView18"
-        android:layout_width="37dp"
-        android:layout_height="20dp"
-        android:layout_marginBottom="23dp"
-        android:layout_marginEnd="46dp"
-        android:layout_marginStart="16dp"
-        android:text="@string/rail"
-        app:layout_constraintBottom_toTopOf="@+id/textView19"
-        app:layout_constraintEnd_toStartOf="@+id/luas"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView17" />
-
-    <TextView
-        android:id="@+id/textView19"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="124dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="27dp"
-        android:text="@string/tram"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/luas"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rail"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <TextView
-        android:id="@+id/textView20"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="6dp"
-        android:text="@string/trips"
-        app:layout_constraintBottom_toTopOf="@+id/Vehicle"
-        app:layout_constraintEnd_toStartOf="@+id/trips"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView21" />
-
-    <EditText
-        android:id="@+id/trips"
-        android:layout_width="215dp"
-        android:layout_height="35dp"
-        android:layout_marginBottom="31dp"
-        android:layout_marginEnd="108dp"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="14dp"
-        android:ems="10"
-        android:hint="@string/hint"
-        android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/textView25"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_border"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/Vehicle"
-        app:layout_constraintTop_toBottomOf="@+id/flight_type"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <EditText
-        android:id="@+id/bus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:ems="10"
-        android:hint="@string/hint"
-        android:inputType="number"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView17"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.531" />
+        <TextView
+            android:id="@+id/flights"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/flights"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/rail"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/textView21"
+            android:layout_width="188dp"
+            android:layout_height="22dp"
+            android:layout_below="@id/flights"
+            android:layout_marginStart="32dp"
+            android:text="@string/flight_type" />
+
+        <Spinner
+            android:id="@+id/flight_type"
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@id/textView21"
+            android:layout_below="@id/flights"
+            android:layout_marginEnd="32dp"
+            android:entries="@array/flights_types" />
+
+        <TextView
+            android:id="@+id/textView20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/trips"
+            android:layout_below="@id/textView21"
+            android:layout_marginStart="32dp"
+            android:text="@string/trips" />
+
+        <EditText
+            android:id="@+id/trips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/flight_type"
+            android:layout_below="@id/textView21"
+            android:ems="10"
+            android:hint="@string/hint"
+            android:inputType="number" />
+
+        <TextView
+            android:id="@+id/Vehicle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textView20"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/vehicle"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/vehicle_type"
+            android:layout_below="@id/Vehicle"
+            android:layout_marginStart="32dp"
+            android:text="@string/vehicle_type" />
+
+        <Spinner
+            android:id="@+id/vehicle_type"
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/Vehicle"
+            android:layout_marginEnd="32dp"
+            android:entries="@array/vehicle_types" />
+
+        <TextView
+            android:id="@+id/textView23"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/fuel_type"
+            android:layout_below="@id/textView25"
+            android:layout_marginStart="32dp"
+            android:text="@string/fuel_type" />
+
+        <Spinner
+            android:id="@+id/fuel_type"
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/vehicle_type"
+            android:layout_below="@id/vehicle_type"
+            android:entries="@array/fuel_types" />
+
+        <TextView
+            android:id="@+id/textView24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/milage"
+            android:layout_below="@id/textView23"
+            android:layout_marginStart="32dp"
+            android:text="@string/milage" />
+
+        <EditText
+            android:id="@+id/milage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/fuel_type"
+            android:layout_below="@id/fuel_type"
+            android:layout_marginBottom="8dp"
+            android:ems="10"
+            android:inputType="number" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/secondContainer"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="76dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="17dp"
-        android:ems="10"
-        android:hint="@string/hint"
-        android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/luas"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_border"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView18"
-        app:layout_constraintTop_toBottomOf="@+id/bus" />
-
-    <EditText
-        android:id="@+id/luas"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="124dp"
-        android:layout_marginTop="1dp"
-        android:ems="10"
-        android:hint="@string/hint"
-        android:inputType="number"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.585"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rail" />
+        app:layout_constraintTop_toBottomOf="@id/firstContainer">
 
-    <TextView
-        android:id="@+id/textView21"
-        android:layout_width="188dp"
-        android:layout_height="22dp"
-        android:layout_marginBottom="6dp"
-        android:layout_marginEnd="9dp"
-        android:layout_marginStart="16dp"
-        android:text="@string/flight_type"
-        app:layout_constraintBottom_toTopOf="@+id/textView20"
-        app:layout_constraintEnd_toStartOf="@+id/trips"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/flights"
-        app:layout_constraintVertical_bias="1.0" />
 
-    <TextView
-        android:id="@+id/textView23"
-        android:layout_width="167dp"
-        android:layout_height="23dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginStart="6dp"
-        android:layout_marginTop="4dp"
-        android:text="@string/fuel_type"
-        app:layout_constraintEnd_toStartOf="@+id/fuel_type"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView25" />
+        <TextView
+            android:id="@+id/pt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/pt"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/textView24"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:layout_marginEnd="336dp"
-        android:layout_marginStart="7dp"
-        android:layout_marginTop="17dp"
-        android:text="@string/milage"
-        app:layout_constraintBottom_toTopOf="@+id/pt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView23" />
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/bus"
+            android:layout_below="@id/pt"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/bus" />
 
-    <TextView
-        android:id="@+id/textView25"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        <EditText
+            android:id="@+id/bus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/pt"
+            android:layout_marginEnd="32dp"
+            android:ems="10"
+            android:hint="@string/hint"
+            android:inputType="number" />
+
+        <TextView
+            android:id="@+id/textView18"
+            android:layout_width="37dp"
+            android:layout_height="20dp"
+            android:layout_alignBaseline="@id/rail"
+            android:layout_below="@id/textView17"
+            android:layout_marginStart="32dp"
+            android:text="@string/rail" />
+
+        <EditText
+            android:id="@+id/rail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/bus"
+            android:layout_below="@id/bus"
+            android:ems="10"
+            android:hint="@string/hint"
+            android:inputType="number" />
+
+        <TextView
+            android:id="@+id/textView19"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/textView18"
+            android:layout_alignTop="@id/luas"
+            android:layout_marginStart="32dp"
+            android:text="@string/tram" />
+
+        <EditText
+            android:id="@+id/luas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/rail"
+            android:layout_below="@id/rail"
+            android:layout_marginBottom="8dp"
+            android:ems="10"
+            android:hint="@string/hint"
+            android:inputType="number" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/thirdContainer"
+        android:layout_width="0dp"
+        android:layout_height="66dp"
         android:layout_marginBottom="16dp"
-        android:layout_marginEnd="34dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="2dp"
-        android:text="@string/vehicle_type"
-        app:layout_constraintBottom_toTopOf="@+id/textView23"
-        app:layout_constraintEnd_toStartOf="@+id/vehicle_type"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Vehicle" />
-
-    <EditText
-        android:id="@+id/milage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="120dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="11dp"
-        android:ems="10"
-        android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/pt"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="7dp"
+        android:background="@drawable/bg_border"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textView24"
-        app:layout_constraintTop_toBottomOf="@+id/fuel_type" />
-
-    <Button
-        android:id="@+id/calculate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="38dp"
-        android:layout_marginEnd="36dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="33dp"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/pls1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/luas" />
+        app:layout_constraintTop_toBottomOf="@+id/secondContainer">
 
-    <TextView
-        android:id="@+id/pls1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="45dp"
-        android:layout_marginEnd="56dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="54dp"
-        android:text="@string/total"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/calculate"
-        app:layout_constraintTop_toBottomOf="@+id/luas" />
+        <TextView
+            android:id="@+id/pls1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/calculate"
+            android:text="@string/total" />
 
-    <TextView
-        android:id="@+id/communicationaaa"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="229dp"
-        android:layout_marginStart="97dp"
-        android:layout_marginTop="11dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pls1" />
+        <Button
+            android:id="@+id/calculate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="8dp"
+            android:text="Button" />
+
+    </RelativeLayout>
 
 
 </android.support.constraint.ConstraintLayout>

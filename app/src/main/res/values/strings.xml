@@ -15,12 +15,12 @@
     <!--Registration Page Strings-->
     <string name="regMe">Register</string>
     <string name="regHeading"> Register Your Community </string>
-    <string name="comName"> Community Name</string>
+    <string name="comName"> <![CDATA[Community \nName]]></string>
     <string name="townName"> Town</string>
     <string name="county"> County</string>
     <string name="Registrar"> Registrar Details</string>
-    <string name="fname"> First name</string>
-    <string name="sname"> Second name</string>
+    <string name="fname"> <![CDATA[First \nname]]></string>
+    <string name="sname"> <![CDATA[Second \nname]]></string>
 
     <!--ShowRandomCode Strings-->
     <string name="thankYou">Thank you for registering your Community</string>
@@ -64,7 +64,7 @@
     <!--Carbon Calculator strings-->
 
     <!--Tab1 strings-->
-    <string name="how_many">How Many People Currently Live in your home?</string>
+    <string name="how_many"><![CDATA[#People living at \nyour residence?]]></string>
     <string name="electricity">Electricity</string>
     <string name="heating">Heating</string>
     <string name="coal">Coal</string>
@@ -76,9 +76,9 @@
     <!--Tab2 strings-->
 
     <string name="flights">Flights</string>
-    <string name="flight_type">Please Select the flight type</string>
-    <string name="vehicle_type">Please Select the Vehicle type</string>
-    <string name="fuel_type">Please Select the fuel type</string>
+    <string name="flight_type">Flight type</string>
+    <string name="vehicle_type">Vehicle type</string>
+    <string name="fuel_type">Fuel type</string>
 
     <string name="trips">Trips</string>
     <string name="vehicle">Vehicle</string>
@@ -93,8 +93,8 @@
     <!--Tab3 strings-->
 
     <string name="phone">Phone Expenses</string>
-    <string name="Fand">Food and Drink Expenses</string>
-    <string name="recreation">Recreational Expenses</string>
+    <string name="Fand"><![CDATA[Food and Drink \nExpenses]]></string>
+    <string name="recreation"><![CDATA[Recreational \nExpenses]]></string>
 
 
 

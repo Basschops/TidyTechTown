@@ -49,7 +49,6 @@ public class Tab2  extends Fragment implements View.OnClickListener {
 
         // Use the same key you used before to retrieve the data.
         View rootView = inflater.inflate(R.layout.tab2, container, false);
-        TextView textview = rootView.findViewById(R.id.communicationaaa);
         TextView plses = (TextView) rootView.findViewById(R.id.pls1);
         Resources resources = getResources();
 
