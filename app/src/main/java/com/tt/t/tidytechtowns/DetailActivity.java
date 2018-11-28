@@ -1,5 +1,3 @@
-
-
 package com.tt.t.tidytechtowns;
 
 import android.os.Bundle;
@@ -25,7 +23,6 @@ public class DetailActivity extends AppCompatActivity {
                     .commit();
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -11,6 +11,7 @@
     <string name="enter">Enter</string>
     <string name="JJjoin"> Join</string>
     <string name="title_activity_maps">Map</string>
+    <string name="loginError">Invalid code. Please try again.</string>
 
     <!--Registration Page Strings-->
     <string name="regMe">Register</string>

@@ -2,11 +2,8 @@
 
 package com.tt.t.tidytechtowns;
 
-import android.location.Location;
-
-import com.tt.t.tidytechtowns.weatherModels.Weather;
 import com.tt.t.tidytechtowns.weatherModels.LocationWeatherClass;
-
+import com.tt.t.tidytechtowns.weatherModels.Weather;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,8 +56,6 @@ public class JSONWeatherParser {
         weather.clouds.setPerc(getInt("all", cObj));
 
         // We download the icon to show
-
-
         return weather;
     }
 

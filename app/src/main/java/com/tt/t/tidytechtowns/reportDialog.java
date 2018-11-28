@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatDialogFragment;
 
 import java.util.ArrayList;
 
+// Dialog box that checks what type of event to report
 public class reportDialog extends AppCompatDialogFragment {
 
     public interface reportDialogListener {
@@ -19,6 +20,7 @@ public class reportDialog extends AppCompatDialogFragment {
     // Use this instance of the interface to deliver action events
     reportDialogListener mListener;
 
+    // Adapted from https://developer.android.com/guide/topics/ui/dialogs
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

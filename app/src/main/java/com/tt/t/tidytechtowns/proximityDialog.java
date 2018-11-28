@@ -9,16 +9,18 @@ import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 
+// If user is within 20m of another similar report, this dialog confirms action
 public class proximityDialog extends AppCompatDialogFragment {
 
+    // Interface for passing data
     mapDialogListener mListener;
 
+    // Adapted from https://developer.android.com/guide/topics/ui/dialogs
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         // Verify that the host activity implements the callback interface
         try {
-            // Instantiate the NoticeDialogListener so we can send events to the host
             mListener = (mapDialogListener) context;
         } catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception

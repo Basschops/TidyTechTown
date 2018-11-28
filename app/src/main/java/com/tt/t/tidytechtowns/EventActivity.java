@@ -3,42 +3,28 @@ package com.tt.t.tidytechtowns;
 // NB the code in this module is adapted from the android calendar
 // library at https://github.com/SundeepK/CompactCalendarView
 
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.CalendarContract;
-import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewTreeObserver;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-
+import android.view.View;
+import android.widget.Toast;
 
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -49,16 +35,10 @@ public class EventActivity extends AppCompatActivity {
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
-
-
-    private ArrayAdapter<String> mScoresAdapter;
-
     private MyDatabase db;
     private Cursor eventCursor;
-
     private SimpleDateFormat dateFormatMonth = new SimpleDateFormat("MMMM- yyyy", Locale.getDefault());
     Date d = new Date();
-
     private String eventClicked;
 
 
@@ -67,7 +47,6 @@ public class EventActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
-
 
         // create calendar
         final CompactCalendarView calendar;
@@ -83,7 +62,6 @@ public class EventActivity extends AppCompatActivity {
         calendar = (CompactCalendarView) findViewById(R.id.compactcalendar_view);
         calendar.setUseThreeLetterAbbreviation(true);
 
-
         // create db connection
         db = new MyDatabase(this);
 
@@ -91,7 +69,6 @@ public class EventActivity extends AppCompatActivity {
         eventCursor = db.getEvents();
 
         List<String> outputArray = new ArrayList<String>();
-
 
         // iterate over results from call to 'events' table
         // and create an event object for each event. Then
@@ -102,17 +79,10 @@ public class EventActivity extends AppCompatActivity {
             String anEvent = eventCursor.getString(1);
             long date = eventCursor.getLong(2);
 
-
             Event e1 = new Event(Color.YELLOW, date, anEvent);
             calendar.addEvent(e1, true);
-
-
             eventCursor.moveToNext();
-        };
-
-
-
-
+        }
 
         // define a listener to receive callbacks when certain events happen.
         // In this case, when user clicks on day, get date and check if it matches
@@ -147,9 +117,6 @@ public class EventActivity extends AppCompatActivity {
                 if (nothingOn) {
                     Toast.makeText(context, "Nothing on today", Toast.LENGTH_SHORT).show();
                 }
-
-                
-
             } // end onDayClick
 
             // highlight first day of month when user moves to new month
@@ -158,7 +125,6 @@ public class EventActivity extends AppCompatActivity {
                 actionbar.setTitle(dateFormatMonth.format(firstDayOfNewMonth));
             }
         });
-
 
         // create DrawerLayout object for navigation menu
         dl = (DrawerLayout) findViewById(R.id.activity_main);
@@ -189,16 +155,10 @@ public class EventActivity extends AppCompatActivity {
                     default:
                         return true;
                 }
-
                 return true;
-
             }
         });
-
-
-
     } // end onCreate
-
 
     // respond to items chosen in navigation drawer
     @Override
@@ -210,14 +170,10 @@ public class EventActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
     // create email activity - will generate email to organiser with header/subject/body filled out
     // name of event held on day selected will appear in email title and body.
     public void notifyAttending(View v) {
-
-
         if (eventClicked!=null) {
-
             // create new email and fill out fields
             Intent email = new Intent(Intent.ACTION_SEND);
             email.setData(Uri.parse("mailto:"));
@@ -225,15 +181,16 @@ public class EventActivity extends AppCompatActivity {
             email.putExtra(Intent.EXTRA_EMAIL, new String[]{"sheena.davitt@ucdconnect.ie"});
             email.putExtra(Intent.EXTRA_SUBJECT, "I wish to attend the " + eventClicked);
             email.putExtra(Intent.EXTRA_TEXT, "Dear organiser, I will be attending " + eventClicked);
+
             try {
                 startActivity(Intent.createChooser(email, "Send mail..."));
-            } catch (android.content.ActivityNotFoundException ex) {
+            }
+            catch (android.content.ActivityNotFoundException ex) {
                 Toast.makeText(EventActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
             }
 
             eventClicked=null;
         }
-
         // if user has not actually chosen event, display toast to notify them of this
         else Toast.makeText(EventActivity.this, "You have not selected an event", Toast.LENGTH_SHORT).show();
     }
@@ -244,7 +201,6 @@ public class EventActivity extends AppCompatActivity {
         Intent intent = new Intent(EventActivity.this, ScoresActivity.class);
         startActivity(intent);
     }
-
 
     // start Event activity
     public void startEventCalendar(View v) {

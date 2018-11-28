@@ -1,16 +1,12 @@
 package com.tt.t.tidytechtowns;
 
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,8 +14,6 @@ import android.view.View;
 
 public class ScoresActivity extends AppCompatActivity {
 
-    // variables needed for navigation drawer
-    private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
 
@@ -29,15 +23,14 @@ public class ScoresActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scores);
 
-
         // create DrawerLayout object for navigation menu
-        dl = (DrawerLayout) findViewById(R.id.activity_main);
+        // variables needed for navigation drawer
+        DrawerLayout dl = (DrawerLayout) findViewById(R.id.activity_main);
         t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
         dl.addDrawerListener(t);
         t.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         nv = (NavigationView) findViewById(R.id.nv);
-
 
         // set options for navigation drawer - each item will trigger an activity if selected
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -60,16 +53,10 @@ public class ScoresActivity extends AppCompatActivity {
                     default:
                         return true;
                 }
-
                 return true;
-
             }
         });
-
-
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -84,9 +71,7 @@ public class ScoresActivity extends AppCompatActivity {
         // Handle action bar item clicks.
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        if (id == R.id.action_settings) { return true;  }
 
         if(t.onOptionsItemSelected(item))
             return true;

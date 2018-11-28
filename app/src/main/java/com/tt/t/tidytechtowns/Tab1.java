@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+// Calculates carbon footprint due to life at home
 public class Tab1 extends Fragment implements View.OnClickListener {
 
     public interface t1dbListener {
@@ -19,11 +20,11 @@ public class Tab1 extends Fragment implements View.OnClickListener {
         void writeHomeScore(double home);
     }
 
+    // Interface listener to pass info from fragment to database
     t1dbListener mListener;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        // Verify that the host activity implements the callback interface
         try {
             // Instantiate the NoticeDialogListener so we can send events to the host
             mListener = (t1dbListener) context;
@@ -33,9 +34,6 @@ public class Tab1 extends Fragment implements View.OnClickListener {
                     + " must implement reportDialogListener");
         }
     }
-
-    public static float number;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -113,7 +111,6 @@ public class Tab1 extends Fragment implements View.OnClickListener {
             float re_amt = (float)(rec_amt /3571.00);
             carbon_number+=re_amt;
         }
-
 
         // Return new value in text view if greater than zero
         if(carbon_number>0) {
