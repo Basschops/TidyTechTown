@@ -71,11 +71,13 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
     private MyDatabase db;
     private Cursor markers;
+
+    // variables needed for navigation drawer
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
 
-
+    // initialises activity
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,11 +90,13 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
         startLocationUpdates();
 
+        // create DrawerLayout object for navigation menu
         dl = (DrawerLayout) findViewById(R.id.activity_main);
         t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
         dl.addDrawerListener(t);
         t.syncState();
 
+        // set options for navigation drawer - each item will trigger an activity if selected
         nv = (NavigationView) findViewById(R.id.nv);
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -576,19 +580,26 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     }
 
     // NAVIGATION FUNCTIONS
+
+    // start Scores activity
     public void startScores(View v) {
         Intent intent = new Intent(MapsActivity.this, ScoresActivity.class);
         startActivity(intent);
     }
+
+    // start Event activity
     public void startEventCalendar(View v) {
         Intent intent = new Intent(MapsActivity.this, EventActivity.class);
         startActivity(intent);
     }
+
+    // start carbon activity
     public void startCarbon(View v) {
         Intent intent = new Intent(MapsActivity.this, Carbon.class);
         startActivity(intent);
     }
 
+    // start plogging activity
     public void startPlogging(View v) {
         Intent intent = new Intent(MapsActivity.this, Plogging.class);
         startActivity(intent);
