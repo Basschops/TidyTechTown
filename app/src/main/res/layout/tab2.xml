@@ -48,7 +48,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignTop="@id/textView21"
             android:layout_below="@id/flights"
-            android:layout_marginEnd="32dp"
+            android:layout_marginEnd="36dp"
             android:entries="@array/flights_types" />
 
         <TextView
@@ -66,9 +66,20 @@
             android:layout_height="wrap_content"
             android:layout_alignEnd="@id/flight_type"
             android:layout_below="@id/textView21"
-            android:ems="10"
+            android:ems="8"
             android:hint="@string/hint"
             android:inputType="number" />
+
+        <TextView
+            android:id="@+id/km1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/trips"
+            android:layout_below="@id/flight_type"
+            android:layout_toRightOf="@id/trips"
+            android:text="@string/distance"
+            android:textSize="20sp"
+            />
 
         <TextView
             android:id="@+id/Vehicle"
@@ -96,7 +107,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_below="@id/Vehicle"
-            android:layout_marginEnd="32dp"
+            android:layout_marginEnd="36dp"
             android:entries="@array/vehicle_types" />
 
         <TextView
@@ -132,8 +143,19 @@
             android:layout_alignEnd="@id/fuel_type"
             android:layout_below="@id/fuel_type"
             android:layout_marginBottom="8dp"
-            android:ems="10"
+            android:ems="8"
             android:inputType="number" />
+
+        <TextView
+            android:id="@+id/km2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/milage"
+            android:layout_below="@id/fuel_type"
+            android:layout_toRightOf="@id/milage"
+            android:text="@string/distance"
+            android:textSize="20sp"
+            />
 
 
     </RelativeLayout>
@@ -179,10 +201,20 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_below="@id/pt"
-            android:layout_marginEnd="32dp"
-            android:ems="10"
+            android:layout_marginEnd="36dp"
+            android:ems="8"
             android:hint="@string/hint"
             android:inputType="number" />
+
+        <TextView
+            android:id="@+id/km3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/bus"
+            android:layout_marginStart="-36dp"
+            android:layout_toEndOf="@+id/bus"
+            android:text="@string/distance"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/textView18"
@@ -199,9 +231,20 @@
             android:layout_height="wrap_content"
             android:layout_alignEnd="@id/bus"
             android:layout_below="@id/bus"
-            android:ems="10"
+            android:ems="8"
             android:hint="@string/hint"
             android:inputType="number" />
+
+        <TextView
+            android:id="@+id/km4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/rail"
+            android:layout_below="@id/km3"
+            android:layout_toRightOf="@id/rail"
+            android:text="@string/distance"
+            android:textSize="20sp"
+            />
 
         <TextView
             android:id="@+id/textView19"
@@ -219,9 +262,20 @@
             android:layout_alignEnd="@id/rail"
             android:layout_below="@id/rail"
             android:layout_marginBottom="8dp"
-            android:ems="10"
+            android:ems="8"
             android:hint="@string/hint"
             android:inputType="number" />
+
+        <TextView
+            android:id="@+id/km5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/luas"
+            android:layout_below="@id/km4"
+            android:layout_toRightOf="@id/luas"
+            android:text="@string/distance"
+            android:textSize="20sp"
+            />
 
 
     </RelativeLayout>

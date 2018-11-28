@@ -74,6 +74,13 @@
     <string name="woord">Wood</string>
     <string name="total">Total Co2 Emissions are: %d</string>
 
+    <!--Tab Units-->
+    <string name="elecU">kW/h</string>
+    <string name="heatU">L Oil</string>
+    <string name="coalU">tonnes</string>
+    <string name="money">&#8364;</string>
+    <string name="distance">km</string>
+
     <!--Tab2 strings-->
 
     <string name="flights">Flights</string>
@@ -93,7 +100,7 @@
 
     <!--Tab3 strings-->
 
-    <string name="phone">Phone Expenses</string>
+    <string name="phone"><![CDATA[Phone \nExpenses]]></string>
     <string name="Fand"><![CDATA[Food and Drink \nExpenses]]></string>
     <string name="recreation"><![CDATA[Recreational \nExpenses]]></string>
 
