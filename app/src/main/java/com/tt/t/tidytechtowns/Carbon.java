@@ -35,10 +35,14 @@ public class Carbon extends AppCompatActivity implements Tab1.t1dbListener, Tab2
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+
+    // variables needed for navigation drawer
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
 
+
+    // initialises activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +63,7 @@ public class Carbon extends AppCompatActivity implements Tab1.t1dbListener, Tab2
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
+        // create DrawerLayout object for navigation menu
         dl = (DrawerLayout) findViewById(R.id.activity_main);
         t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
         dl.addDrawerListener(t);
@@ -66,6 +71,8 @@ public class Carbon extends AppCompatActivity implements Tab1.t1dbListener, Tab2
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
+        // set options for navigation drawer - each item will trigger an activity if selected
         nv = (NavigationView) findViewById(R.id.nv);
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -141,6 +148,7 @@ public class Carbon extends AppCompatActivity implements Tab1.t1dbListener, Tab2
         return true;
     }
 
+    // respond to items chosen in navigation drawer
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -197,29 +205,36 @@ public class Carbon extends AppCompatActivity implements Tab1.t1dbListener, Tab2
     }
 
     // Navigation functions
+
+    // start Scores activity
     public void startScores(View v) {
         Intent intent = new Intent(Carbon.this, ScoresActivity.class);
         startActivity(intent);
     }
 
+    // start Event activity
     public void startEventCalendar(View v) {
         Intent intent = new Intent(Carbon.this, EventActivity.class);
         startActivity(intent);
     }
 
+    // start Carbon activity
     public void startCarbon(View v) {
         Intent intent = new Intent(Carbon.this, Carbon.class);
         startActivity(intent);
     }
 
+    // start maps activity
     public void startMaps(View v) {
         Intent i = new Intent(getBaseContext(), MapsActivity.class);
         startActivity(i);
     }
 
+
+    // start plogging activity
     public void startPlogging(View v) {
         Intent intent = new Intent(Carbon.this, Plogging.class);
         startActivity(intent);
     }
 
-}
+} // end activity
