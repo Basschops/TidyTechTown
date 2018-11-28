@@ -51,6 +51,8 @@ public class EventActivity extends AppCompatActivity {
     private NavigationView nv;
 
 
+
+
     private ArrayAdapter<String> mScoresAdapter;
 
     private MyDatabase db;
@@ -148,7 +150,7 @@ public class EventActivity extends AppCompatActivity {
                     Toast.makeText(context, "Nothing on today", Toast.LENGTH_SHORT).show();
                 }
 
-                
+
 
             } // end onDayClick
 
