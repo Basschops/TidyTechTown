@@ -46,7 +46,7 @@
     <string name="yourScore">Your Score is:</string>
     <!--Weather strings-->
     <string name="comfort">Comfort Level</string>
-    <string name="dummy">DUMMY</string>
+    <string name="dummy"></string>
     <string name="wind">Speed:</string>
     <string name="windLab">Wind</string>
     <string name="windAng">Direction:</string>
