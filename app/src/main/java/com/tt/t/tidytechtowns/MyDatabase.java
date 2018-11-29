@@ -91,22 +91,6 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
         return c;
     }
 
-    // Get information for plogging page
-    public Cursor getPloggingInfo()
-    {
-        SQLiteDatabase db = getReadableDatabase();
-        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-
-        String[] sqlSelect = {"_id", "Lat", "Long", "Type"};
-        String sqlTables = "mapMarkers";
-
-        qb.setTables(sqlTables);
-        Cursor c = qb.query(db, sqlSelect, null, null, null, null, null);
-
-        c.moveToFirst();
-        return c;
-    }
-
     // Retrieve recycling center information from database
     public Cursor getCenters()
     {
@@ -136,7 +120,7 @@ public class MyDatabase extends SQLiteAssetHelper //SQLiteOpenHelper??
         values.put("code", code);
         values.put("community", "Dublin");
 
-        db.insert("LOGIN_DETAILS", null, values);
+        db.replace("LOGIN_DETAILS", null, values);
         db.close();
     }
 

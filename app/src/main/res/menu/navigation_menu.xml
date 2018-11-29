@@ -14,4 +14,6 @@
         android:title="Carbon Calculator"/>
     <item android:id="@+id/plogging"
         android:title="Go Plogging"/>
+    <item android:id="@+id/logIn"
+        android:title="Log out"/>
 </menu>

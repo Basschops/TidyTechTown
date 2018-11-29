@@ -10,6 +10,7 @@ import android.widget.Toast;
 public class LandingPage extends AppCompatActivity {
 
     private MyDatabase mdb;
+    private static boolean opened = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,11 +19,15 @@ public class LandingPage extends AppCompatActivity {
 
         // Check if details have already been entered in database
         // If so proceed to home screen
+        // Only do this on app first opened.
         mdb = new MyDatabase(this);
-        boolean loaded = mdb.loggedIn();
-        if(loaded){
-            goToHome();
+        if(!opened) {
+            boolean loaded = mdb.loggedIn();
+            if (loaded) {
+                goToHome();
+            }
         }
+        opened = true;
     }
 
     // Receive log in details

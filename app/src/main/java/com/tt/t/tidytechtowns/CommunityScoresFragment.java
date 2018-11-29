@@ -79,7 +79,7 @@ public class CommunityScoresFragment extends Fragment {
             outputArray.add(output);
 
             results.moveToNext();
-        };
+        }
 
         db.close();
 

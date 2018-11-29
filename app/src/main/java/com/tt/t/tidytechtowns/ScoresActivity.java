@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 
 public class ScoresActivity extends AppCompatActivity {
@@ -25,7 +26,7 @@ public class ScoresActivity extends AppCompatActivity {
 
         // create DrawerLayout object for navigation menu
         // variables needed for navigation drawer
-        DrawerLayout dl = (DrawerLayout) findViewById(R.id.activity_main);
+        final DrawerLayout dl = (DrawerLayout) findViewById(R.id.activity_main);
         t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
         dl.addDrawerListener(t);
         t.syncState();
@@ -39,7 +40,7 @@ public class ScoresActivity extends AppCompatActivity {
                 int id = item.getItemId();
 
                 switch (id) {
-                    case R.id.ratings: startScores(nv);
+                    case R.id.ratings: dl.closeDrawers();
                         break;
                     case R.id.map: startMaps(nv);
                         break;
@@ -49,6 +50,7 @@ public class ScoresActivity extends AppCompatActivity {
                         break;
                     case R.id.plogging: startPlogging(nv);
                         break;
+                    case R.id.logIn: startLogin(nv);
 
                     default:
                         return true;
@@ -56,6 +58,12 @@ public class ScoresActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        // Retrieves user score from database
+        TextView uScore = findViewById(R.id.userScore);
+        MyDatabase db = new MyDatabase(this);
+        int score = (int) Math.round(db.returnScore());
+        uScore.setText("Your score it "+Integer.toString(score));
     }
 
     @Override
@@ -79,12 +87,6 @@ public class ScoresActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    // start score activity
-    public void startScores(View v) {
-        Intent intent = new Intent(ScoresActivity.this, ScoresActivity.class);
-        startActivity(intent);
-    }
-
     // start event activity
     public void startEventCalendar(View v) {
         Intent intent = new Intent(ScoresActivity.this, EventActivity.class);
@@ -106,6 +108,12 @@ public class ScoresActivity extends AppCompatActivity {
     // start plogging activity
     public void startPlogging(View v) {
         Intent intent = new Intent(ScoresActivity.this, Plogging.class);
+        startActivity(intent);
+    }
+
+    // Return to login
+    public void startLogin(View v) {
+        Intent intent = new Intent(ScoresActivity.this, LandingPage.class);
         startActivity(intent);
     }
 

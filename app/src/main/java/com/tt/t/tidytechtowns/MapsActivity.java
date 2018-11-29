@@ -114,6 +114,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                         break;
                     case R.id.plogging: startPlogging(nv);
                         break;
+                    case R.id.logIn: startLogin(nv);
                     default:
                         return true;
                 }
@@ -602,6 +603,12 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     // start plogging activity
     public void startPlogging(View v) {
         Intent intent = new Intent(MapsActivity.this, Plogging.class);
+        startActivity(intent);
+    }
+
+    // Return to login
+    public void startLogin(View v) {
+        Intent intent = new Intent(MapsActivity.this, LandingPage.class);
         startActivity(intent);
     }
 

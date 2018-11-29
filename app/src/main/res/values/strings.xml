@@ -2,7 +2,8 @@
     <string name="app_name">TidyTechTowns</string>
     <!--Welcome Page Strings-->
     <string name="welcome">Welcome to Tidy Tech Towns</string>
-    <string name="codeError">That code is incorrect, please try again. If you need to contact someone about your community code, please click here</string>
+    <string name="codeError">That code is incorrect, please try again. If you need to contact
+        someone about your community code, please click here</string>
     <string name="Signup">SignUp</string>
     <string name="signUpHeading">Register a Community</string>
     <string name="join">Join a Community</string>
@@ -25,7 +26,9 @@
 
     <!--ShowRandomCode Strings-->
     <string name="thankYou">Thank you for registering your Community</string>
-    <string name="description">To have others join and contribute to your community, please distribute this unique community code. The other members of your community can use thos unique string on the login page under "Join a Community"</string>
+    <string name="description">To have others join and contribute to your community, please
+        distribute this unique community code. The other members of your community can use those
+        unique string on the login page under "Join a Community"</string>
     <string name="yourRank"> Your Rankings </string>
     <string name="commRank"> Community Rankings </string>
     <string name="action_settings">Settings</string>
@@ -104,8 +107,7 @@
     <string name="Fand"><![CDATA[Food and Drink \nExpenses]]></string>
     <string name="recreation"><![CDATA[Recreational \nExpenses]]></string>
 
-
-
-
+    <!--PLogging info-->
+    <string name="plogTitle">What is Plogging?</string>
 
 </resources>

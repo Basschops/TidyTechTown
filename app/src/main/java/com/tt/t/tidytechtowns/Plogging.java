@@ -1,23 +1,18 @@
 package com.tt.t.tidytechtowns;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -65,15 +60,12 @@ import static com.google.android.gms.location.LocationServices.getFusedLocationP
 public class Plogging extends FragmentActivity implements OnMapReadyCallback,
         GoogleMap.OnMarkerClickListener {
 
-    private final String TAG = "daragh";
     private GoogleMap mMap;
     private MyDatabase db2;
     private Cursor markers;
     private ArrayList<Marker> mMarkerArray = new ArrayList<Marker>();
     private ArrayList<Marker> mLitterArray = new ArrayList<Marker>();
-
     private ArrayList<Marker> exclude = new ArrayList<Marker>();
-
     private Polyline polyline;
     private boolean polyShowing = false;
     private Marker plogLabel;
@@ -81,8 +73,14 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
     private boolean showing = false;
 
     private DrawerLayout dl;
-    private ActionBarDrawerToggle t;
     private NavigationView nv;
+
+    private static LatLng currentLocation;
+    private LocationRequest mLocationRequest;
+    private long UPDATE_INTERVAL = 5000;  /* 5 secs */
+    private long FASTEST_INTERVAL = 2000; /* 2 secs */
+    protected static final int REQUEST_CHECK_SETTINGS = 0x1;
+
 
 
     @Override
@@ -96,8 +94,9 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
         startLocationUpdates();
 
         AlertDialog alertDialog = new AlertDialog.Builder(Plogging.this).create();
-        alertDialog.setTitle("What is Ploging?");
-        alertDialog.setMessage("Plogging is... \n\nPicking up \nLitter while\nJogging.\n\nClick 'Go Plogging' to find a route that has reported litter.");
+        alertDialog.setTitle(R.string.plogTitle);
+        alertDialog.setMessage("Plogging is… \n\nPicking up \nLitter while\nJogging.\n\nClick\n" +
+                "        \'Go Plogging\' to find a route that has reported litter.");
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -107,7 +106,7 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
         alertDialog.show();
 
         dl = (DrawerLayout) findViewById(R.id.activity_main);
-        t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
+        ActionBarDrawerToggle t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
 
         dl.addDrawerListener(t);
         t.syncState();
@@ -130,12 +129,12 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
                         break;
                     case R.id.plogging: dl.closeDrawers();
                         break;
-
+                    case R.id.logIn: startLogin(nv);
+                        break;
                     default:
                         return true;
                 }
                 return true;
-
             }
         });
     }
@@ -183,7 +182,7 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
 
     public void loadMarkers(){
         db2 = new MyDatabase(this);
-        markers = db2.getPloggingInfo();
+        markers = db2.getBins();
         LatLng temp;
         String type;
         Marker marker;
@@ -199,12 +198,14 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
                 type = markers.getString(3);
                 switch (type) {
                     case "Litter":
-                        marker = mMap.addMarker(new MarkerOptions().position(temp).title(type).icon(BitmapDescriptorFactory
+                        marker = mMap.addMarker(new MarkerOptions().position(temp).title(type)
+                                .icon(BitmapDescriptorFactory
                                 .defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
                         mLitterArray.add(marker);
                         break;
                     case "Bin":
-                        marker = mMap.addMarker(new MarkerOptions().position(temp).title(type).icon(BitmapDescriptorFactory
+                        marker = mMap.addMarker(new MarkerOptions().position(temp).title(type)
+                                .icon(BitmapDescriptorFactory
                                 .defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).visible(false));
                         mMarkerArray.add(marker);
                         break;
@@ -216,7 +217,6 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
     // Connected to 'plogging' button. Shows route or hides it if already visible.
     public void refreshPlogging(View view) throws ApiException, IOException, InterruptedException {
         // Check location permissions
-        checkLocationPermission();
         Button button = (Button) findViewById(R.id.plogBut);
         if(polyShowing){
             polyline.remove();
@@ -315,17 +315,11 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
                     .icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(details)))
                     .anchor(iconFactory.getAnchorU(), iconFactory.getAnchorV()));
             addPolyline(result, mMap);
-            //new LatLng(result.routes[0].legs[0]
-             //       .endLocation.lat, result.routes[0].legs[0].endLocation.lng
         }
-//Now we can call the await method on the DirectionsApiRequest. This will make a synchronous call to the web service and return us a DirectionsResult object.
     }
 
     // Draw route on map with info marker.
     private void addPolyline(DirectionsResult results, GoogleMap mMap) {
-
-
-        //Toast.makeText(getApplicationContext(), details, Toast.LENGTH_SHORT).show();
         // Display route
         if(results.routes.length >0 ){
             List<LatLng> decodedPath = PolyUtil.decode(results.routes[0].overviewPolyline.getEncodedPath());
@@ -340,12 +334,10 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
         showMarkers(mLitterArray);
 
         // Display distance of route
-
         polyShowing = true;
     }
 
-    ///// EXPERIMENTAL CODE
-
+    // When marker is clicked, add/remove from route
     @Override
     public boolean onMarkerClick(Marker marker) {
         // Only do this if plogging is on
@@ -372,17 +364,6 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
         }
         return false;
     }
-
-
-
-
-
-
-    private static LatLng currentLocation;
-    private LocationRequest mLocationRequest;
-    private long UPDATE_INTERVAL = 5000;  /* 5 secs */
-    private long FASTEST_INTERVAL = 2000; /* 2 secs */
-    protected static final int REQUEST_CHECK_SETTINGS = 0x1;
 
     // Location request adapted from
     // https://github.com/codepath/android_guides/wiki/Retrieving-Location-with-LocationServices-API
@@ -440,30 +421,10 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
                 Looper.myLooper());
     }
 
-    // Check that permission to use location is enabled. If not this will open settings.
-    public void checkLocationPermission() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat
-                .checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            Toast.makeText(getApplicationContext(), "Requires location permission...",
-                    Toast.LENGTH_SHORT).show();
-
-            Intent intent = new Intent();
-            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-            Uri uri = Uri.fromParts("package", getPackageName(), null);
-            intent.setData(uri);
-            startActivity(intent);
-        }
-        return;
-    }
-
     // Function that stores new location on update
     public void onLocationChanged(Location location) {
         currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
     }
-
 
     // NAVIGATION FUNCTIONS
     public void startScores(View v) {
@@ -482,8 +443,11 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
         Intent i = new Intent(getBaseContext(), MapsActivity.class);
         startActivity(i);
     }
-
-
+    // Return to login
+    public void startLogin(View v) {
+        Intent intent = new Intent(Plogging.this, LandingPage.class);
+        startActivity(intent);
+    }
 }
 
 

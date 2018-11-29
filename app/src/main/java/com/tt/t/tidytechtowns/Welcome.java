@@ -1,19 +1,16 @@
 package com.tt.t.tidytechtowns;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.tt.t.tidytechtowns.weatherModels.Weather;
@@ -67,12 +64,12 @@ public class Welcome extends AppCompatActivity {
                         break;
                     case R.id.plogging: startPlogging(nv);
                         break;
+                    case R.id.logIn: startLogin(nv);
+                        break;
                     default:
                         return true;
                 }
-
                 return true;
-
             }
         });
 
@@ -117,8 +114,15 @@ public class Welcome extends AppCompatActivity {
         Intent i = new Intent(getBaseContext(), MapsActivity.class);
         startActivity(i);
     }
+
     public void startPlogging(View v) {
         Intent intent = new Intent(Welcome.this, Plogging.class);
+        startActivity(intent);
+    }
+
+    // Return to login
+    public void startLogin(View v) {
+        Intent intent = new Intent(Welcome.this, LandingPage.class);
         startActivity(intent);
     }
 

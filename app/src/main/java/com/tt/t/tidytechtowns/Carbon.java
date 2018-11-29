@@ -85,9 +85,11 @@ public class Carbon extends AppCompatActivity implements Tab1.t1dbListener, Tab2
                         break;
                     case R.id.events: startEventCalendar(nv);
                         break;
-                    case R.id.carbon: startCarbon(nv);
+                    case R.id.carbon: dl.closeDrawers();
                         break;
                     case R.id.plogging: startPlogging(nv);
+                        break;
+                    case R.id.logIn: startLogin(nv);
                         break;
                     default:
                         return true;
@@ -218,22 +220,21 @@ public class Carbon extends AppCompatActivity implements Tab1.t1dbListener, Tab2
         startActivity(intent);
     }
 
-    // start Carbon activity
-    public void startCarbon(View v) {
-        Intent intent = new Intent(Carbon.this, Carbon.class);
-        startActivity(intent);
-    }
-
     // start maps activity
     public void startMaps(View v) {
         Intent i = new Intent(getBaseContext(), MapsActivity.class);
         startActivity(i);
     }
 
-
     // start plogging activity
     public void startPlogging(View v) {
         Intent intent = new Intent(Carbon.this, Plogging.class);
+        startActivity(intent);
+    }
+
+    // Return to login
+    public void startLogin(View v) {
+        Intent intent = new Intent(Carbon.this, LandingPage.class);
         startActivity(intent);
     }
 
