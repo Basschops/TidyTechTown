@@ -86,10 +86,14 @@ public class Welcome extends AppCompatActivity {
         tempMin = findViewById(R.id.tempMin);
         tempMax = findViewById(R.id.tempMax);
         splash = findViewById(R.id.imageView);
-        yourScore = findViewById(R.id.yourScoreWel);
+        yourScore = findViewById(R.id.userScoreWel);
 
         JSONWeatherTask task = new JSONWeatherTask();
         task.execute(city);
+
+        db = new MyDatabase(this);
+        int score = (int) Math.round(db.returnScore());
+        yourScore.setText(Integer.toString(score));
     }
 
     @Override
@@ -186,9 +190,6 @@ public class Welcome extends AppCompatActivity {
                     splash.setImageResource(R.drawable.clouds);
                     break;
             }
-
-            int score = (int) Math.round(db.returnScore());
-            yourScore.setText(Integer.toString(score));
         }
     }
 }
