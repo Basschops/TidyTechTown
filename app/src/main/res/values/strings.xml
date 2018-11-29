@@ -43,7 +43,7 @@
     <string name="cancel">Cancel</string>
     <string name="reoprtHideTitle">Show/hide reports</string>
     <string name="reoprtTitle">What are you reporting?</string>
-
+    <string name="yourScore">Your Score is:</string>
     <!--Weather strings-->
     <string name="comfort">Comfort Level</string>
     <string name="dummy">DUMMY</string>
