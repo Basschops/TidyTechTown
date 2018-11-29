@@ -109,8 +109,8 @@
             android:layout_width="wrap_content"
             android:layout_height="45dp"
             android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
             android:layout_marginTop="2.5dp"
+            android:layout_marginEnd="5dp"
             android:layout_marginBottom="2.5dp"
             android:text="TextView"
             android:textSize="30sp"
@@ -119,7 +119,12 @@
             app:layout_constraintHorizontal_bias="0.813"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="1.0"
+            tools:layout_margin="5dp"
+            tools:padding="5dp"
+            tools:paddingLeft="5dp"
+            tools:paddingRight="5dp"
+            tools:paddingTop="5dp" />
 
     </RelativeLayout>
 

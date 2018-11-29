@@ -68,7 +68,7 @@
     <!--Carbon Calculator strings-->
 
     <!--Tab1 strings-->
-    <string name="how_many"><![CDATA[#People living at \nyour residence?]]></string>
+    <string name="how_many"><![CDATA[No. people living at \nyour residence?]]></string>
     <string name="electricity">Electricity</string>
     <string name="heating">Heating</string>
     <string name="coal">Coal</string>
@@ -76,6 +76,7 @@
     <string name="propane">Propane</string>
     <string name="woord">Wood</string>
     <string name="total">Total Co2 Emissions are: %d</string>
+    <string name="calculate">Calculate</string>
 
     <!--Tab Units-->
     <string name="elecU">kW/h</string>

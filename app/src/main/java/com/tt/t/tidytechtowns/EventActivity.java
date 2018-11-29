@@ -3,7 +3,9 @@ package com.tt.t.tidytechtowns;
 // NB the code in this module is adapted from the android calendar
 // library at https://github.com/SundeepK/CompactCalendarView
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -41,6 +43,7 @@ public class EventActivity extends AppCompatActivity {
     private SimpleDateFormat dateFormatMonth = new SimpleDateFormat("MMMM- yyyy", Locale.getDefault());
     Date d = new Date();
     private String eventClicked;
+
 
 
     // initialises activity
@@ -109,7 +112,19 @@ public class EventActivity extends AppCompatActivity {
                     if (millisecond == thisdate) {
                         // print event description in toast
                         String thisevent = ev.getData().toString();
-                        Toast.makeText(context, thisevent, Toast.LENGTH_SHORT).show();
+                        // Get date in readable format
+                        String[] date = dateClicked.toString().split(" ");
+
+                        AlertDialog alertDialog = new AlertDialog.Builder(EventActivity.this).create();
+                        alertDialog.setTitle(date[0]+" "+date[1]+" "+date[2]);
+                        alertDialog.setMessage(thisevent);
+                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alertDialog.show();
                         nothingOn = false;
                         eventClicked = thisevent;
                     }

@@ -146,14 +146,15 @@
         android:id="@+id/secondContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
         android:background="@drawable/bg_border"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/firstContainer">
+        app:layout_constraintTop_toBottomOf="@id/firstContainer"
+        tools:padding="5dp">
 
         <TextView
             android:id="@+id/textView8"
@@ -162,53 +163,47 @@
             android:layout_alignTop="@id/phone"
             android:layout_alignParentStart="true"
             android:layout_marginStart="32dp"
-            android:text="@string/phone"
-            />
+            android:text="@string/phone" />
 
         <EditText
             android:id="@+id/phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="67dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="67dp"
             android:ems="5"
-            android:inputType="number"
-             />
+            android:inputType="number" />
 
         <TextView
             android:id="@+id/euro1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_alignBaseline="@id/phone"
             android:layout_alignParentEnd="true"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="57dp"
             android:text="@string/money"
-            android:textSize="20sp"
-            />
-
+            android:textSize="20sp" />
 
 
         <TextView
             android:id="@+id/textView9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@id/food"
             android:layout_below="@id/textView8"
+            android:layout_alignTop="@id/food"
             android:layout_marginStart="32dp"
-            android:text="@string/Fand"
-             />
+            android:text="@string/Fand" />
 
         <EditText
             android:id="@+id/food"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@id/phone"
             android:layout_below="@id/phone"
+            android:layout_alignEnd="@id/phone"
             android:ems="5"
-            android:inputType="number"
-            />
+            android:inputType="number" />
 
         <TextView
             android:id="@+id/euro2"
@@ -218,29 +213,26 @@
             android:layout_alignBaseline="@id/food"
             android:layout_alignEnd="@id/euro1"
             android:text="@string/money"
-            android:textSize="20sp"
-            />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/textView15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@id/recreational"
             android:layout_below="@id/textView9"
+            android:layout_alignTop="@id/recreational"
             android:layout_marginStart="32dp"
-            android:text="@string/recreation"
-            />
+            android:text="@string/recreation" />
 
 
         <EditText
             android:id="@+id/recreational"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@id/food"
             android:layout_below="@id/food"
+            android:layout_alignEnd="@id/food"
             android:ems="5"
-            android:inputType="number"
-             />
+            android:inputType="number" />
 
         <TextView
             android:id="@+id/euro3"
@@ -250,8 +242,7 @@
             android:layout_alignBaseline="@id/recreational"
             android:layout_alignEnd="@id/euro2"
             android:text="@string/money"
-            android:textSize="20sp"
-            />
+            android:textSize="20sp" />
 
     </RelativeLayout>
 
@@ -284,10 +275,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_marginBottom="8dp"
             android:layout_marginStart="22dp"
             android:layout_marginTop="8dp"
-            android:text="Button" />
+            android:layout_marginBottom="8dp"
+            android:text="@string/calculate" />
 
     </RelativeLayout>
 

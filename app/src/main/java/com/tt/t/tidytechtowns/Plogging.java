@@ -95,7 +95,7 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
 
         AlertDialog alertDialog = new AlertDialog.Builder(Plogging.this).create();
         alertDialog.setTitle(R.string.plogTitle);
-        alertDialog.setMessage("Plogging is… \n\nPicking up \nLitter while\nJogging.\n\nClick\n" +
+        alertDialog.setMessage("Plogging is… \n\nPicking up \nLitter while\nJogging.\n\nClick" +
                 "        \'Go Plogging\' to find a route that has reported litter.");
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                 new DialogInterface.OnClickListener() {

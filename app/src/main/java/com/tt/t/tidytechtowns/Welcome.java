@@ -180,10 +180,8 @@ public class Welcome extends AppCompatActivity {
                     splash.setImageResource(R.drawable.clouds);
                     break;
             }
-
         }
     }
-
 }
 
 

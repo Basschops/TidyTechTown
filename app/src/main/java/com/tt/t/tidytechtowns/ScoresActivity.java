@@ -63,7 +63,7 @@ public class ScoresActivity extends AppCompatActivity {
         TextView uScore = findViewById(R.id.userScore);
         MyDatabase db = new MyDatabase(this);
         int score = (int) Math.round(db.returnScore());
-        uScore.setText("Your score it "+Integer.toString(score));
+        uScore.setText("Your score is "+Integer.toString(score));
     }
 
     @Override
