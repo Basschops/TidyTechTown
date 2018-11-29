@@ -14,9 +14,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-// nb this code was adapted from the code for the Android tutorial Weather app
+// this code was adapted from the code for the Android tutorial Weather app
 
 public class IndividualScoresFragment extends Fragment {
 
@@ -45,7 +47,6 @@ public class IndividualScoresFragment extends Fragment {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
         return super.onOptionsItemSelected(item);
     }
@@ -61,24 +62,27 @@ public class IndividualScoresFragment extends Fragment {
 
         db = new MyDatabase(getActivity());
         results = db.getIndScores();
-        int number = results.getCount();
 
         List<String> outputArray = new ArrayList<String>();
+        ArrayList<individual> individuals = new ArrayList<individual>();
 
         results.moveToFirst();
         while (results.isAfterLast() == false)  {
+            individuals.add(new individual(results.getInt(3),results.getString(1)));
 
-            String output = "";
-            String id = results.getString(0);
-            String name = results.getString(1);
-            String community = results.getString(2);
-            int score = results.getInt(3);
-            String stringscore = Integer.toString(score);
-
-            output +=  name + ":  ";
-            output +=  stringscore;
-            outputArray.add(output);
             results.moveToNext();
+        }
+
+        // Add user to the list
+        int userScore = (int) Math.round(db.returnScore());
+        db.close();
+        individual user = new individual(userScore, "You");
+        individuals.add(user);
+
+        Collections.sort(individuals, new SortIbyscore());
+
+        for(individual i:individuals){
+            outputArray.add(i.toString());
         }
 
         mScoresAdapter =
@@ -95,4 +99,29 @@ public class IndividualScoresFragment extends Fragment {
     }
 }
 
+// Class for storing individuals and scores
+class individual{
+    int score;
+    String name;
 
+    public individual(int score, String name)
+    {
+        this.score = score;
+        this.name = name;
+    }
+
+    public String toString()
+    {
+        return this.name + ":  " + this.score;
+    }
+}
+
+// Sorts individuals based on their score
+class SortIbyscore implements Comparator<individual>
+{
+    // Used for sorting in descending order of score
+    public int compare(individual a, individual b)
+    {
+        return b.score - a.score;
+    }
+}

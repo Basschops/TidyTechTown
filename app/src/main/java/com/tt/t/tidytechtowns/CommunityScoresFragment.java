@@ -11,8 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
 
 
     // nb this code was adapted from the code for the Android tutorial Weather app
@@ -61,27 +65,23 @@ public class CommunityScoresFragment extends Fragment {
         // get community scores from database and place them in arraylist
         db = new MyDatabase(getActivity());
         results = db.getCommunityTotals();
-        int number = results.getCount();
 
         List<String> outputArray = new ArrayList<String>();
 
+        ArrayList<community> communities = new ArrayList<community>();
+
         results.moveToFirst();
         while (results.isAfterLast() == false)  {
-
-            String output = "";
-
-            String community = results.getString(0);
-            int score = results.getInt(1);
-            String stringscore = Integer.toString(score);
-
-            output +=  community + ":  ";
-            output +=  stringscore;
-            outputArray.add(output);
+            communities.add(new community(results.getInt(1),results.getString(0)));
 
             results.moveToNext();
         }
-
         db.close();
+
+        Collections.sort(communities, new Sortbyscore());
+        for(community c:communities){
+            outputArray.add(c.toString());
+        }
 
         // add scores to list
         mScoresAdapter =
@@ -95,5 +95,32 @@ public class CommunityScoresFragment extends Fragment {
         listView.setAdapter(mScoresAdapter);
 
         return rootView;
+    }
+}
+
+// Class for storing communities and their scores
+class community{
+    int score;
+    String name;
+
+    public community(int score, String name)
+    {
+        this.score = score;
+        this.name = name;
+    }
+
+    public String toString()
+    {
+        return this.name + ":  " + this.score;
+    }
+}
+
+// For sorting comminities by score
+class Sortbyscore implements Comparator<community>
+{
+    // Used for sorting in descending order of score
+    public int compare(community a, community b)
+    {
+        return b.score - a.score;
     }
 }
