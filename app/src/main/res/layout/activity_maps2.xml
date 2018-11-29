@@ -21,30 +21,124 @@
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
-        tools:context=".MapsActivity" />
+        android:layout_height="match_parent"
+        tools:context=".MapsActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/binBtn"
-            android:layout_width="174dp"
+        <RelativeLayout
+            android:id="@+id/checkboxes"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="showBins"
-            android:text="Hide bins" />
+            android:background="#DDafafaf"
+            android:padding="2dp">
 
-        <Button
-            android:id="@+id/recyBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="showRecycling"
-            android:text="Recycling centers" />
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/imgBin"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignTop="@id/chkBin"
+                android:src="@drawable/bin"/>
 
-    <LinearLayout
+            <CheckBox
+                android:id="@+id/chkBin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/imgBin"
+                android:onClick="onCheckboxClicked"
+                android:checked="true"
+                />
+
+            <ImageView
+                android:id="@+id/imgRec"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_below="@id/imgBin"
+                android:layout_alignTop="@id/chkRec"
+                android:src="@drawable/recycle"/>
+
+            <CheckBox
+                android:id="@+id/chkRec"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/chkBin"
+                android:layout_alignEnd="@id/chkBin"
+                android:onClick="onCheckboxClicked"
+                />
+
+            <ImageView
+                android:id="@+id/imgLitter"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_below="@id/imgRec"
+                android:layout_alignTop="@id/chkLitter"
+                android:src="@drawable/litter"/>
+
+            <CheckBox
+                android:id="@+id/chkLitter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/chkRec"
+                android:layout_alignEnd="@id/chkBin"
+                android:onClick="onCheckboxClicked"
+                />
+
+            <ImageView
+                android:id="@+id/imgDump"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_below="@id/imgLitter"
+                android:layout_alignTop="@id/chkDump"
+                android:src="@drawable/dump"/>
+
+            <CheckBox
+                android:id="@+id/chkDump"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onCheckboxClicked"
+                android:layout_below="@id/chkLitter"
+                android:layout_alignEnd="@id/chkBin"
+                />
+
+            <ImageView
+                android:id="@+id/imgGraf"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_below="@id/imgDump"
+                android:layout_alignTop="@id/chkGraf"
+                android:src="@drawable/spray"/>
+
+            <CheckBox
+                android:id="@+id/chkGraf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onCheckboxClicked"
+                android:layout_alignEnd="@id/chkBin"
+                android:layout_below="@id/chkDump"
+                />
+
+            <ImageView
+                android:id="@+id/imgChem"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_below="@id/imgGraf"
+                android:layout_alignTop="@id/chkChem"
+                android:src="@drawable/biohaz"/>
+
+            <CheckBox
+                android:id="@+id/chkChem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onCheckboxClicked"
+                android:layout_alignEnd="@id/chkBin"
+                android:layout_below="@id/chkGraf"
+                />
+
+        </RelativeLayout>
+
+
+    </fragment>
+
+    <RelativeLayout
+        android:id="@+id/buttonBox"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:orientation="horizontal">
@@ -62,16 +156,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Add Bin"
-            android:onClick="addBinMarker"/>
-    </LinearLayout>
+            android:onClick="addBinMarker"
+            android:text="Add Bin" />
+    </RelativeLayout>
 
-    <Button
-        android:id="@+id/showHideReportBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="openShowReportDialog"
-        android:text="Show/Hide Reports" />
+
 
 </LinearLayout>
 

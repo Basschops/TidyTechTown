@@ -22,6 +22,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -54,8 +55,12 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     {
 
     private GoogleMap mMap;
-    private boolean showing = true;
-    private boolean showingRecycling = false;
+    private boolean showingBin = true;
+    private boolean showingRec = false;
+    private boolean showingLitt = false;
+    private boolean showingDump = false;
+    private boolean showingGraf = false;
+    private boolean showingSpill = false;
     private static LatLng currentLocation;
     private LocationRequest mLocationRequest;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
@@ -194,35 +199,100 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         db.close();
     }
 
+        public void onCheckboxClicked(View view) {
+            // Is the view now checked?
+            boolean checked = ((CheckBox) view).isChecked();
 
-    //Connected to show/hide bins button to show bins on map.
-    public void showBins(View view) {
-        Button button = (Button) findViewById(R.id.binBtn);
-        if (showing) {
-            hideMarkers(mMarkerArray);
-            button.setText("Show bins");
-            showing = false;
-        } else {
-            showMarkers(mMarkerArray);
-            button.setText("Hide bins");
-            showing = true;
+
+            // Check which checkbox was clicked
+            switch(view.getId()) {
+                case R.id.chkBin:
+                    if (checked) {
+                        if (!showingBin) {
+                            showMarkers(mMarkerArray);
+                            showingBin = true;
+                        }
+                    }
+                    else {
+                        if (showingBin) {
+                            hideMarkers(mMarkerArray);
+                            showingBin = false;
+                        }
+                    }
+                    break;
+                case R.id.chkRec:
+                    if (checked) {
+                        if (!showingRec) {
+                            showMarkers(mRecyclingArray);
+                            showingRec = true;
+                        }
+                    }
+                    else {
+                        if (showingRec) {
+                            hideMarkers(mRecyclingArray);
+                            showingRec = false;
+                        }
+                    }
+                    break;
+                case R.id.chkLitter:
+                    if (checked) {
+                        if (!showingLitt) {
+                            showMarkers(mLitterArray);
+                            showingLitt = true;
+                        }
+                    }
+                    else {
+                        if (showingLitt) {
+                            hideMarkers(mLitterArray);
+                            showingLitt = false;
+                        }
+                    }
+                    break;
+                case R.id.chkDump:
+                    if (checked) {
+                        if (!showingDump) {
+                            showMarkers(mDumpingArray);
+                            showingDump = true;
+                        }
+                    }
+                    else {
+                        if (showingDump) {
+                            hideMarkers(mDumpingArray);
+                            showingDump = false;
+                        }
+                    }
+                    break;
+                case R.id.chkGraf:
+                    if (checked) {
+                        if (!showingGraf) {
+                            showMarkers(mGraffitiArray);
+                            showingGraf = true;
+                        }
+                    }
+                    else {
+                        if (showingGraf) {
+                            hideMarkers(mGraffitiArray);
+                            showingGraf = false;
+                        }
+                    }
+                    break;
+                case R.id.chkChem:
+                    if (checked) {
+                        if (!showingSpill) {
+                            showMarkers(mSpillArray);
+                            showingSpill = true;
+                        }
+                    }
+                    else {
+                        if (showingSpill) {
+                            hideMarkers(mSpillArray);
+                            showingSpill = false;
+                        }
+                    }
+                    break;
+            }
         }
-    }
 
-
-    //Connected to show/hide recycling center button to show centres on map.
-    public void showRecycling(View view) {
-        Button button = (Button) findViewById(R.id.recyBtn);
-        if (showingRecycling) {
-            hideMarkers(mRecyclingArray);
-            button.setText("Show centers");
-            showingRecycling = false;
-        } else {
-            showMarkers(mRecyclingArray);
-            button.setText("Hide centers");
-            showingRecycling = true;
-        }
-    }
 
     //Connected to report issue button. Reports issue and adds marker to map at user location
     public void reportIssue(View view) {
