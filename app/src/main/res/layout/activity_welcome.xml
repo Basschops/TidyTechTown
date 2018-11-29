@@ -127,6 +127,41 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/secondContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/bg_border"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/firstContainer"
+        tools:padding="5dp">
+
+        <TextView
+            android:id="@+id/yourScoreWel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:text="@string/yourScore"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/userScoreWel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/yourScoreWel"
+            android:layout_marginBottom="8dp"
+            android:layout_centerHorizontal="true"
+            android:text="TextView"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
 
 
 

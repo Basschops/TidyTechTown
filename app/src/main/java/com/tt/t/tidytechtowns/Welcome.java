@@ -1,6 +1,7 @@
 package com.tt.t.tidytechtowns;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,11 +26,15 @@ public class Welcome extends AppCompatActivity {
     private ActionBarDrawerToggle t;
     private NavigationView nv;
 
+
+    private MyDatabase db;
+
     private TextView cityText;
     private TextView desc;
     private TextView temp;
     private TextView tempMin;
     private TextView tempMax;
+    private TextView yourScore;
 
     private ImageView splash;
 
@@ -81,6 +86,7 @@ public class Welcome extends AppCompatActivity {
         tempMin = findViewById(R.id.tempMin);
         tempMax = findViewById(R.id.tempMax);
         splash = findViewById(R.id.imageView);
+        yourScore = findViewById(R.id.yourScoreWel);
 
         JSONWeatherTask task = new JSONWeatherTask();
         task.execute(city);
@@ -180,6 +186,9 @@ public class Welcome extends AppCompatActivity {
                     splash.setImageResource(R.drawable.clouds);
                     break;
             }
+
+            int score = (int) Math.round(db.returnScore());
+            yourScore.setText(Integer.toString(score));
         }
     }
 }
