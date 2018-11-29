@@ -77,7 +77,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/flight_type"
             android:layout_alignBaseline="@id/trips"
-            android:layout_toRightOf="@id/trips"
+            android:layout_toEndOf="@id/trips"
             android:text="@string/distance"
             android:textSize="20sp" />
 
@@ -152,7 +152,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/fuel_type"
             android:layout_alignBaseline="@id/milage"
-            android:layout_toRightOf="@id/milage"
+            android:layout_toEndOf="@id/milage"
             android:text="@string/distance"
             android:textSize="20sp" />
 
@@ -241,7 +241,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/km3"
             android:layout_alignBaseline="@id/rail"
-            android:layout_toRightOf="@id/rail"
+            android:layout_toEndOf="@id/rail"
             android:text="@string/distance"
             android:textSize="20sp" />
 
@@ -271,7 +271,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/km4"
             android:layout_alignBaseline="@id/luas"
-            android:layout_toRightOf="@id/luas"
+            android:layout_toEndOf="@id/luas"
             android:text="@string/distance"
             android:textSize="20sp" />
 
@@ -282,16 +282,17 @@
         android:id="@+id/thirdContainer"
         android:layout_width="0dp"
         android:layout_height="66dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/bg_border"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/secondContainer">
+        app:layout_constraintTop_toBottomOf="@+id/secondContainer"
+        app:layout_constraintVertical_bias="0.06999999">
 
         <TextView
             android:id="@+id/pls1"

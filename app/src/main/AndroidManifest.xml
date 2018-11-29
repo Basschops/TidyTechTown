@@ -17,17 +17,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LandingPage">
+        <activity android:name=".LandingPage"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Welcome" />
-        <activity android:name=".Resgistration" />
+        <activity android:name=".Welcome"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Resgistration"
+            android:screenOrientation="portrait" />
         <activity android:name=".ScoresActivity" />
-        <activity android:name=".EventActivity" />
+        <activity android:name=".EventActivity"
+            android:screenOrientation="portrait"/>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -47,6 +51,7 @@
         <activity
             android:name=".Carbon"
             android:label="@string/title_activity_main"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
             android:label="@string/title_activity_maps" />
             android:theme="@style/AppTheme.NoActionBar" />

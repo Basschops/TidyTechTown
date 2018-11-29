@@ -16,7 +16,9 @@
         android:layout_height="35dp"
         android:text="@string/commRank"
         android:textAlignment="center"
-        android:visibility="visible" />
+        android:visibility="visible"
+        android:textStyle="bold"
+        android:textSize="9pt"/>
 
     <ListView
         android:id="@+id/listview_scores"

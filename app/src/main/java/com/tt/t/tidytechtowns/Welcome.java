@@ -1,7 +1,6 @@
 package com.tt.t.tidytechtowns;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -93,7 +92,10 @@ public class Welcome extends AppCompatActivity {
 
         db = new MyDatabase(this);
         int score = (int) Math.round(db.returnScore());
-        yourScore.setText(Integer.toString(score));
+        if(score >=0) {
+            yourScore.setText(Integer.toString(score));
+        }
+        else {yourScore.setText("0");}
     }
 
     @Override
@@ -134,6 +136,16 @@ public class Welcome extends AppCompatActivity {
     public void startLogin(View v) {
         Intent intent = new Intent(Welcome.this, LandingPage.class);
         startActivity(intent);
+    }
+
+    // Hides nav bar if back button pressed
+    @Override
+    public void onBackPressed() {
+        if (this.dl.isDrawerOpen(nv)) {
+            this.dl.closeDrawer(nv);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private class JSONWeatherTask extends AsyncTask<String, Void, Weather> {

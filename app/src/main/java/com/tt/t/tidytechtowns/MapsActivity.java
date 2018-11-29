@@ -21,7 +21,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
@@ -680,6 +679,16 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     public void startLogin(View v) {
         Intent intent = new Intent(MapsActivity.this, LandingPage.class);
         startActivity(intent);
+    }
+
+    // Hides nav bar if back button pressed
+    @Override
+    public void onBackPressed() {
+        if (this.dl.isDrawerOpen(nv)) {
+            this.dl.closeDrawer(nv);
+        } else {
+            super.onBackPressed();
+        }
     }
 
 }

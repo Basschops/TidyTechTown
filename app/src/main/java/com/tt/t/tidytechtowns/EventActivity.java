@@ -161,11 +161,13 @@ public class EventActivity extends AppCompatActivity {
                         break;
                     case R.id.map: startMaps(nv);
                         break;
-                    case R.id.events: startEventCalendar(nv);
+                    case R.id.events: dl.closeDrawer(nv);
                         break;
                     case R.id.carbon: startCarbon(nv);
                         break;
                     case R.id.plogging: startPlogging(nv);
+                        break;
+                    case R.id.logIn: startLogin(nv);
                         break;
 
                     default:
@@ -240,6 +242,22 @@ public class EventActivity extends AppCompatActivity {
     public void startPlogging(View v) {
         Intent intent = new Intent(EventActivity.this, Plogging.class);
         startActivity(intent);
+    }
+
+    // Return to login
+    public void startLogin(View v) {
+        Intent intent = new Intent(EventActivity.this, LandingPage.class);
+        startActivity(intent);
+    }
+
+    // Hides nav bar if back button pressed
+    @Override
+    public void onBackPressed() {
+        if (this.dl.isDrawerOpen(nv)) {
+            this.dl.closeDrawer(nv);
+        } else {
+            super.onBackPressed();
+        }
     }
 
 }// end class

@@ -48,39 +48,27 @@
         tools:layout_editor_absoluteY="0dp" />
 
 
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
+        android:layout_height="102dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="124dp"
+        android:layout_marginEnd="32dp"
         android:background="@drawable/bg_border"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/compactcalendar_view">
-
-        <EditText
-            android:id="@+id/editText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="16dp"
-            android:layout_centerHorizontal="true"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Your Sustainability Calendar" />
 
         <TextView
             android:id="@+id/editText2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/editText"
-            android:layout_marginTop="8dp"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Click day to find out event. To attend, click button below"
+            android:text="@string/instruction"
             android:textSize="14sp" />
 
         <Button
@@ -88,9 +76,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/editText2"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
-            android:layout_centerHorizontal="true"
             android:onClick="notifyAttending"
             android:text="Tell organisers I will attend" />
 

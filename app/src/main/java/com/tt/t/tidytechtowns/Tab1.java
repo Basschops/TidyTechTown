@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 // Calculates carbon footprint due to life at home
 public class Tab1 extends Fragment implements View.OnClickListener {
@@ -119,8 +118,6 @@ public class Tab1 extends Fragment implements View.OnClickListener {
             TextView plses = getView().findViewById(R.id.pls1);
 
             int total_cc_score = (int) Math.round(mListener.dbaccess());
-            Toast.makeText(getContext(), ""+total_cc_score+" "+carbon_number,
-                    Toast.LENGTH_SHORT).show();
             String tt = resources.getString(R.string.total, total_cc_score);
             plses.setText(tt);
         }

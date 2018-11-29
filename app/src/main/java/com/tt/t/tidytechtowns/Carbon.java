@@ -161,10 +161,6 @@ public class Carbon extends AppCompatActivity implements Tab1.t1dbListener, Tab2
         if(t.onOptionsItemSelected(item))
             return true;
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -236,6 +232,16 @@ public class Carbon extends AppCompatActivity implements Tab1.t1dbListener, Tab2
     public void startLogin(View v) {
         Intent intent = new Intent(Carbon.this, LandingPage.class);
         startActivity(intent);
+    }
+
+    // Hides nav bar if back button pressed
+    @Override
+    public void onBackPressed() {
+        if (this.dl.isDrawerOpen(nv)) {
+            this.dl.closeDrawer(nv);
+        } else {
+            super.onBackPressed();
+        }
     }
 
 } // end activity

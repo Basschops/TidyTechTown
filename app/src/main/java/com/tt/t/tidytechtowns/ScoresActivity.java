@@ -17,6 +17,7 @@ public class ScoresActivity extends AppCompatActivity {
 
     private ActionBarDrawerToggle t;
     private NavigationView nv;
+    private DrawerLayout dl;
 
     // initialises activity
     @Override
@@ -26,7 +27,8 @@ public class ScoresActivity extends AppCompatActivity {
 
         // create DrawerLayout object for navigation menu
         // variables needed for navigation drawer
-        final DrawerLayout dl = (DrawerLayout) findViewById(R.id.activity_main);
+
+        dl = (DrawerLayout) findViewById(R.id.activity_main);
         t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
         dl.addDrawerListener(t);
         t.syncState();
@@ -76,11 +78,6 @@ public class ScoresActivity extends AppCompatActivity {
     // respond to items chosen in navigation drawer
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks.
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) { return true;  }
-
         if(t.onOptionsItemSelected(item))
             return true;
 
@@ -115,6 +112,16 @@ public class ScoresActivity extends AppCompatActivity {
     public void startLogin(View v) {
         Intent intent = new Intent(ScoresActivity.this, LandingPage.class);
         startActivity(intent);
+    }
+
+    // Hides nav bar if back button pressed
+    @Override
+    public void onBackPressed() {
+        if (this.dl.isDrawerOpen(nv)) {
+            this.dl.closeDrawer(nv);
+        } else {
+            super.onBackPressed();
+        }
     }
 
 } // end class

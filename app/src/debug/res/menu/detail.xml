@@ -3,7 +3,5 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.tt.t.tidytechtowns.DetailActivity">
 
-    <item android:id="@+id/action_settings" android:title="title here"
-        android:orderInCategory="100" app:showAsAction="never" />
 
 </menu>

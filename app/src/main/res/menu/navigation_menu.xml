@@ -5,7 +5,7 @@
 
 
 <item android:id="@+id/ratings"
-    android:title="See scores"/>
+    android:title="See Scores"/>
 <item android:id="@+id/map"
     android:title="Community Map"/>
 <item android:id="@+id/events"
@@ -13,7 +13,7 @@
     <item android:id="@+id/carbon"
         android:title="Carbon Calculator"/>
     <item android:id="@+id/plogging"
-        android:title="Go Plogging"/>
+        android:title="Go Plogging!"/>
     <item android:id="@+id/logIn"
         android:title="Log out"/>
 </menu>

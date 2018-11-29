@@ -80,6 +80,7 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
     private long UPDATE_INTERVAL = 5000;  /* 5 secs */
     private long FASTEST_INTERVAL = 2000; /* 2 secs */
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
+    private static boolean infoShown = false;
 
 
 
@@ -93,18 +94,20 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
         mapFragment.getMapAsync(this);
         startLocationUpdates();
 
-        AlertDialog alertDialog = new AlertDialog.Builder(Plogging.this).create();
-        alertDialog.setTitle(R.string.plogTitle);
-        alertDialog.setMessage("Plogging is… \n\nPicking up \nLitter while\nJogging.\n\nClick" +
-                "        \'Go Plogging\' to find a route that has reported litter.");
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        alertDialog.show();
-
+        if(!infoShown) {
+            AlertDialog alertDialog = new AlertDialog.Builder(Plogging.this).create();
+            alertDialog.setTitle(R.string.plogTitle);
+            alertDialog.setMessage("Plogging is… \n\nPicking up \nLitter while\nJogging!\n\nClick"+
+                    "\'Go Plogging\' to find a route that has reported litter.");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+            infoShown = true;
+        }
         dl = (DrawerLayout) findViewById(R.id.activity_main);
         ActionBarDrawerToggle t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
 
@@ -351,7 +354,6 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
             polyline.remove();
             plogLabel.remove();
             try {
-
                 getDirections(currentLocation);
             } catch (ApiException e) {
                 e.printStackTrace();
@@ -447,6 +449,16 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
     public void startLogin(View v) {
         Intent intent = new Intent(Plogging.this, LandingPage.class);
         startActivity(intent);
+    }
+
+    // Hides nav bar if back button pressed
+    @Override
+    public void onBackPressed() {
+        if (this.dl.isDrawerOpen(nv)) {
+            this.dl.closeDrawer(nv);
+        } else {
+            super.onBackPressed();
+        }
     }
 }
 

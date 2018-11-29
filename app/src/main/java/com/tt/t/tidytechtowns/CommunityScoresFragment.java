@@ -96,6 +96,7 @@ public class CommunityScoresFragment extends Fragment {
 
         return rootView;
     }
+
 }
 
 // Class for storing communities and their scores

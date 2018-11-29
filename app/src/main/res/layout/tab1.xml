@@ -9,10 +9,10 @@
     <RelativeLayout
         android:id="@+id/firstContainer"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
+        android:layout_height="190dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
         android:background="@drawable/bg_border"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -21,122 +21,129 @@
 
         <TextView
             android:id="@+id/textView10"
-            android:layout_width="wrap_content"
+            android:layout_width="125dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="34dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="18dp"
+            android:layout_toStartOf="@+id/spinner"
             android:text="@string/how_many"
-            android:textSize="12sp"
-            />
+            android:textSize="12sp" />
 
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="67dp"
             android:layout_marginTop="16dp"
-            android:entries="@array/household_count"
-           />
+            android:layout_marginEnd="62dp"
+            android:entries="@array/household_count" />
 
         <TextView
             android:id="@+id/textView12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/textView10"
             android:layout_alignBaseline="@+id/electricity"
-            android:layout_below="@id/textView10"
             android:layout_marginStart="32dp"
+            android:layout_marginTop="7dp"
             android:text="@string/electricity"
-            android:textSize="20sp"
-            />
+            android:textSize="14sp" />
 
         <EditText
             android:id="@+id/electricity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/spinner"
             android:layout_below="@+id/spinner"
+            android:layout_alignEnd="@+id/spinner"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="1dp"
+            android:autofillHints=""
             android:ems="5"
-            android:inputType="number"
-           />
+            android:inputType="number" />
 
         <TextView
             android:id="@+id/elecUnits"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/electricity"
             android:layout_below="@id/spinner"
-            android:layout_toRightOf="@id/electricity"
+            android:layout_alignBaseline="@id/electricity"
+            android:layout_marginStart="-1dp"
+            android:layout_marginTop="14dp"
+            android:layout_toEndOf="@id/electricity"
             android:text="@string/elecU"
-            android:textSize="20sp"
-            />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/textView13"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/heating"
             android:layout_below="@+id/textView12"
+            android:layout_alignBaseline="@id/heating"
             android:layout_marginStart="32dp"
+            android:layout_marginTop="18dp"
             android:text="@string/heating"
-            android:textSize="20sp"
-            />
+            android:textSize="14sp" />
 
         <EditText
             android:id="@+id/heating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/spinner"
             android:layout_below="@id/electricity"
+            android:layout_alignEnd="@+id/spinner"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="1dp"
             android:ems="5"
-            android:inputType="number"
-             />
+            android:inputType="number" />
 
         <TextView
             android:id="@+id/heatUnits"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/heating"
             android:layout_below="@id/elecUnits"
-            android:layout_toRightOf="@id/heating"
+            android:layout_alignBaseline="@id/heating"
+            android:layout_marginStart="-1dp"
+            android:layout_marginTop="18dp"
+            android:layout_toEndOf="@id/heating"
             android:text="@string/heatU"
-            android:textSize="20sp"
-            />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/textView14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/coal"
             android:layout_below="@id/textView13"
-            android:layout_marginBottom="16dp"
+            android:layout_alignBaseline="@id/coal"
             android:layout_marginStart="32dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/coal"
-            android:textSize="20sp"
-             />
+            android:textSize="14sp" />
 
 
         <EditText
             android:id="@+id/coal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@id/spinner"
             android:layout_below="@id/heating"
+            android:layout_alignEnd="@id/spinner"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="1dp"
             android:ems="5"
-            android:inputType="number"
-            />
+            android:inputType="number" />
 
         <TextView
             android:id="@+id/coalUnits"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/coal"
             android:layout_below="@id/heatUnits"
-            android:layout_toRightOf="@id/coal"
+            android:layout_alignBaseline="@id/coal"
+            android:layout_marginStart="-1dp"
+            android:layout_marginTop="18dp"
+            android:layout_toEndOf="@id/coal"
             android:text="@string/coalU"
-            android:textSize="20sp"
-            />
+            android:textSize="20sp" />
 
 
     </RelativeLayout>
@@ -165,26 +172,28 @@
             android:layout_marginStart="32dp"
             android:text="@string/phone" />
 
+        <TextView
+            android:id="@+id/euro1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/phone"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="3dp"
+            android:layout_toStartOf="@+id/phone"
+            android:text="@string/money"
+            android:textSize="20sp" />
+
         <EditText
             android:id="@+id/phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="67dp"
+            android:layout_marginEnd="34dp"
             android:ems="5"
             android:inputType="number" />
 
-        <TextView
-            android:id="@+id/euro1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/phone"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="57dp"
-            android:text="@string/money"
-            android:textSize="20sp" />
+
 
 
         <TextView
@@ -196,15 +205,6 @@
             android:layout_marginStart="32dp"
             android:text="@string/Fand" />
 
-        <EditText
-            android:id="@+id/food"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/phone"
-            android:layout_alignEnd="@id/phone"
-            android:ems="5"
-            android:inputType="number" />
-
         <TextView
             android:id="@+id/euro2"
             android:layout_width="wrap_content"
@@ -215,6 +215,17 @@
             android:text="@string/money"
             android:textSize="20sp" />
 
+        <EditText
+            android:id="@+id/food"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/phone"
+            android:layout_alignEnd="@id/phone"
+            android:ems="5"
+            android:inputType="number" />
+
+
+
         <TextView
             android:id="@+id/textView15"
             android:layout_width="wrap_content"
@@ -223,16 +234,6 @@
             android:layout_alignTop="@id/recreational"
             android:layout_marginStart="32dp"
             android:text="@string/recreation" />
-
-
-        <EditText
-            android:id="@+id/recreational"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/food"
-            android:layout_alignEnd="@id/food"
-            android:ems="5"
-            android:inputType="number" />
 
         <TextView
             android:id="@+id/euro3"
@@ -244,16 +245,27 @@
             android:text="@string/money"
             android:textSize="20sp" />
 
+        <EditText
+            android:id="@+id/recreational"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/food"
+            android:layout_alignEnd="@id/food"
+            android:ems="5"
+            android:inputType="number" />
+
+
+
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/thirdContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/bg_border"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

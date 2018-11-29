@@ -29,7 +29,7 @@
     <string name="description">To have others join and contribute to your community, please
         distribute this unique community code. The other members of your community can use those
         unique string on the login page under "Join a Community"</string>
-    <string name="yourRank"> Your Rankings </string>
+    <string name="yourRank"> Individual Rankings </string>
     <string name="commRank"> Community Rankings </string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
@@ -37,6 +37,8 @@
     <string name="tab_text_1">Home</string>
     <string name="tab_text_2">Travel</string>
 
+    <!--Events strings-->
+    <string name="instruction">Tap date to show events</string>
 
     <!--Dialog strings-->
     <string name="ok">OK</string>
@@ -68,20 +70,20 @@
     <!--Carbon Calculator strings-->
 
     <!--Tab1 strings-->
-    <string name="how_many"><![CDATA[No. people living at \nyour residence?]]></string>
+    <string name="how_many"><![CDATA[People living\nin your house?]]></string>
     <string name="electricity">Electricity</string>
-    <string name="heating">Heating</string>
+    <string name="heating">Heating (oil)</string>
     <string name="coal">Coal</string>
     <string name="LPG">LPG</string>
     <string name="propane">Propane</string>
     <string name="woord">Wood</string>
-    <string name="total">Total Co2 Emissions are: %d</string>
+    <string name="total">Total CO2: %d</string>
     <string name="calculate">Calculate</string>
 
     <!--Tab Units-->
     <string name="elecU">kW/h</string>
-    <string name="heatU">L Oil</string>
-    <string name="coalU">tonnes</string>
+    <string name="heatU">L</string>
+    <string name="coalU">ton</string>
     <string name="money">&#8364;</string>
     <string name="distance">km</string>
 
@@ -110,5 +112,7 @@
 
     <!--PLogging info-->
     <string name="plogTitle">What is Plogging?</string>
+
+
 
 </resources>
