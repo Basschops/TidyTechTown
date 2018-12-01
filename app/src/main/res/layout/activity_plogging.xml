@@ -33,7 +33,7 @@
 
             <Button
                 android:id="@+id/plogBut"
-                android:layout_width="200dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_alignParentStart="true"
@@ -43,7 +43,7 @@
 
             <Button
                 android:id="@+id/showBinButPlog"
-                android:layout_width="200dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_alignParentEnd="true"
