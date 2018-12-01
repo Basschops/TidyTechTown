@@ -113,6 +113,10 @@
     <!--PLogging info-->
     <string name="plogTitle">What is Plogging?</string>
 
-
+    <!--Map Buttons-->
+    <string name="addBin">Add Bin</string>
+    <string name="report">Report Issue</string>
+    <string name="showBin">Show Bins</string>
+    <string name="goPlog">Go Plogging!</string>
 
 </resources>
