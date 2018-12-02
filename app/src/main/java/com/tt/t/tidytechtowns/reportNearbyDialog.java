@@ -53,7 +53,7 @@ public class reportNearbyDialog extends AppCompatDialogFragment{
             return builder.create();
         }
 
-    //@Override
+    // Overloaded to change string type
     public void show(FragmentManager manager, String tag, String type) {
         super.show(manager, tag);
         this.type = type;

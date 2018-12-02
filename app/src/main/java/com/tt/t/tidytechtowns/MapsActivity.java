@@ -210,6 +210,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                         if (!showingBin) {
                             showMarkers(mMarkerArray);
                             showingBin = true;
+                            Toast.makeText(getApplicationContext(), "Bins",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                     else {
@@ -224,6 +226,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                         if (!showingRec) {
                             showMarkers(mRecyclingArray);
                             showingRec = true;
+                            Toast.makeText(getApplicationContext(), "Recycling centres",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                     else {
@@ -238,6 +242,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                         if (!showingLitt) {
                             showMarkers(mLitterArray);
                             showingLitt = true;
+                            Toast.makeText(getApplicationContext(), "Litter",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                     else {
@@ -252,6 +258,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                         if (!showingDump) {
                             showMarkers(mDumpingArray);
                             showingDump = true;
+                            Toast.makeText(getApplicationContext(), "Illegal dumping",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                     else {
@@ -266,6 +274,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                         if (!showingGraf) {
                             showMarkers(mGraffitiArray);
                             showingGraf = true;
+                            Toast.makeText(getApplicationContext(), "Graffiti",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                     else {
@@ -280,6 +290,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                         if (!showingSpill) {
                             showMarkers(mSpillArray);
                             showingSpill = true;
+                            Toast.makeText(getApplicationContext(), "Chemical spill",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                     else {
