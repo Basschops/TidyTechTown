@@ -268,7 +268,7 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
                 include.remove(z);
             }
         }
-        // If location is null, only show route for markers
+        // If user location is null, only show route for markers
         if(o==null){
             o = include.get(0).getPosition();
             Toast.makeText(getApplicationContext(), "User location not detected. Try again.",
@@ -312,7 +312,7 @@ public class Plogging extends FragmentActivity implements OnMapReadyCallback,
             else {timeS = Integer.toString(timeI/60)+"min";}
 
             String details =  " Distance: " + distance+ "km\n " +
-                    "Walking time: "+timeS;;
+                    "Walking time: "+timeS;
             IconGenerator iconFactory = new IconGenerator(this);
             plogLabel = mMap.addMarker(new MarkerOptions().position(o).zIndex(1)
                     .icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(details)))

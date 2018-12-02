@@ -98,6 +98,19 @@ public class Welcome extends AppCompatActivity {
         else {yourScore.setText("0");}
     }
 
+    // Refreshes page information if the user back-navigates to here
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        db = new MyDatabase(this);
+        int score = (int) Math.round(db.returnScore());
+        if(score >=0) {
+            yourScore.setText(Integer.toString(score));
+        }
+        else {yourScore.setText("0");}
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -171,11 +184,6 @@ public class Welcome extends AppCompatActivity {
         @Override
         protected void onPostExecute(Weather weather) {
             super.onPostExecute(weather);
-
-//            if (weather.iconData != null && weather.iconData.length > 0) {
-//                Bitmap img = BitmapFactory.decodeByteArray(weather.iconData, 0, weather.iconData.length);
-//                imgView.setImageBitmap(img);
-//            }
 
             cityText.setText(format("%s,%s", weather.location.getCity(), weather.location.getCountry()));
             desc.setText(format("%s(%s)", weather.currentCondition.getCondition(), weather.currentCondition.getDescr()));

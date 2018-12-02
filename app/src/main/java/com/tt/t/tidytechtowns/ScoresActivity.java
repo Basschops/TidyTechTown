@@ -65,7 +65,26 @@ public class ScoresActivity extends AppCompatActivity {
         TextView uScore = findViewById(R.id.userScore);
         MyDatabase db = new MyDatabase(this);
         int score = (int) Math.round(db.returnScore());
-        uScore.setText(Integer.toString(score));
+        db.close();
+        if(score >=0) {
+            uScore.setText(Integer.toString(score));
+        }
+        else {uScore.setText("0");}
+    }
+
+    // Refreshes page information if the user back-navigates to here
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        TextView uScore = findViewById(R.id.userScore);
+        MyDatabase db = new MyDatabase(this);
+        db.close();
+        int score = (int) Math.round(db.returnScore());
+        if(score >=0) {
+            uScore.setText(Integer.toString(score));
+        }
+        else {uScore.setText("0");}
     }
 
     @Override

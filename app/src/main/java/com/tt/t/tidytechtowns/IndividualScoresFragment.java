@@ -75,6 +75,7 @@ public class IndividualScoresFragment extends Fragment {
 
         // Add user to the list
         int userScore = (int) Math.round(db.returnScore());
+        if(userScore<0){userScore=0;}
         db.close();
         individual user = new individual(userScore, "You");
         individuals.add(user);
